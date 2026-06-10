@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <color name="turquesa_light_start">#60D1DC</color>
+    <color name="turquesa_light_center">#BAECEF</color>
+    <color name="white">#FFFFFF</color>
+    <color name="capsula_light">#267A7A7A</color>
+    <color name="black">#000000</color>
+    <color name="text_dark">#1A1A1A</color>
+
+    <color name="turquesa_dark_start">#63A4B4</color>
+    <color name="turquesa_dark_center">#0B4E6B</color>
+    <color name="bg_dark_end">#121212</color>
+    <color name="capsula_dark">#731A1A1A</color>
+    <color name="text_light">#FFFFFF</color>
 </resources>
