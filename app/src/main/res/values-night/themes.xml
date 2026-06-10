@@ -1,7 +1,13 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Base.Theme.Acta" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your dark theme here. -->
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+<resources>
+    <style name="Theme.ActaApp" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="corGradienteInicio">@color/turquesa_dark_start</item>
+        <item name="corGradienteMeio">@color/turquesa_dark_center</item>
+        <item name="corGradienteFim">@color/bg_dark_end</item>
+
+        <item name="corFundoCapsula">@color/capsula_dark</item>
+        <item name="corCirculoSeta">@color/white</item>
+        <item name="corSetaInterna">@color/bg_dark_end</item>
+
+        <item name="corTextoPrincipal">@color/text_light</item>
     </style>
 </resources>
