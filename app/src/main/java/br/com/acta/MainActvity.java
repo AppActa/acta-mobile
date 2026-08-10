@@ -11,7 +11,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 public class MainActvity extends AppCompatActivity {
-
+    private MotionLayout btnComecar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,6 +22,8 @@ public class MainActvity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+
         MotionLayout motionLayoutButton = findViewById(R.id.btnComecar);
         motionLayoutButton.setTransitionListener(new MotionLayout.TransitionListener() {
             @Override
@@ -40,5 +42,17 @@ public class MainActvity extends AppCompatActivity {
             public void onTransitionTrigger(MotionLayout motionLayout, int triggerId, boolean positive, float progress) {
             }
         });
+    }
+    @Override
+    protected void onStart() {
+
+        MotionLayout motionLayoutButton = findViewById(R.id.btnComecar);
+        super.onStart();
+
+        // Toda vez que a tela ficar visível novamente, reinicia a animação
+        if (motionLayoutButton != null) {
+            motionLayoutButton.setProgress(0f);      // Reseta o progresso da animação para o início
+            motionLayoutButton.jumpToState(R.id.start); // Força a transição de volta para o estado inicial imediatamente
+        }
     }
 }

@@ -9,13 +9,21 @@
     android:background="?attr/imagemFundoBoasVindas"
     android:padding="32dp">
 
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="58dp"
+        android:layout_height="57dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/img" />
+
     <TextView
         android:id="@+id/txtSubtitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="4dp"
         android:layout_marginStart="8dp"
-        android:fontFamily="sans-serif-light"
+        android:fontFamily="@font/plus_jakarta_sans"
         android:text="Acta, seu app de PDCA"
         android:textColor="?attr/corTextoPrincipal"
         android:alpha="0.6"
@@ -29,7 +37,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="56dp"
         android:layout_marginStart="8dp"
-        android:fontFamily="sans-serif"
+        android:fontFamily="@font/plus_jakarta_sans"
         android:text="O ciclo da melhoria\ncomeça aqui!"
         android:textColor="?attr/corTextoPrincipal"
         android:textSize="36sp"
@@ -63,10 +71,11 @@
             android:id="@+id/txtComecar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="sans-serif-medium"
+            android:fontFamily="@font/plus_jakarta_sans"
             android:text="Começar"
             android:textColor="?attr/corTextoPrincipal"
             android:textSize="16sp"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -77,23 +86,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="24dp"
-            android:fontFamily="sans-serif-black"
+            android:fontFamily="@font/plus_jakarta_sans"
             android:text="&gt;&gt;&gt;"
             android:textColor="?attr/corTextoPrincipal"
             android:alpha="0.25"
             android:textSize="14sp"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.motion.widget.MotionLayout>
-
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="58dp"
-        android:layout_height="57dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/img" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
