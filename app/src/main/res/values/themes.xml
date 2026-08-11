@@ -8,6 +8,13 @@
     <attr name="corSetaInterna" format="color" />
     <attr name="corTextoPrincipal" format="color" />
 
+    <attr name="corTextoLoginPrincipal" format="color" />
+    <attr name="corTextoLoginSecundario" format="color" />
+    <attr name="corHintLogin" format="color" />
+    <attr name="corLinhaInput" format="color" />
+    <attr name="corBotaoLogin" format="color" />
+    <attr name="imagemFundoBoasVindas" format="reference" />
+
     <style name="Theme.ActaApp" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="corGradienteInicio">@color/turquesa_light_start</item>
         <item name="corGradienteMeio">@color/turquesa_light_center</item>
@@ -16,7 +23,13 @@
         <item name="corFundoCapsula">@color/capsula_light</item>
         <item name="corCirculoSeta">@color/black</item>
         <item name="corSetaInterna">@color/white</item>
-
         <item name="corTextoPrincipal">@color/black</item>
+
+        <item name="corTextoLoginPrincipal">@color/login_text_dark</item>
+        <item name="corTextoLoginSecundario">@color/login_text_muted</item>
+        <item name="corHintLogin">@color/login_edit_text_hint</item>
+        <item name="corLinhaInput">@color/login_edit_text_line</item>
+        <item name="corBotaoLogin">@color/login_btn_bg</item>
+        <item name="imagemFundoBoasVindas">@drawable/actafundo</item>
     </style>
 </resources>
