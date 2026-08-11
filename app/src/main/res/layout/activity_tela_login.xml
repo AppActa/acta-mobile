@@ -16,7 +16,9 @@
         android:layout_marginTop="32dp"
         android:contentDescription="Logo do app"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/img" />
+        />
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/scrollLogin"
@@ -49,6 +51,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <!-- Subtítulo -->
             <TextView
                 android:id="@+id/txtSubtituloLogin"
                 android:layout_width="0dp"
@@ -56,25 +59,42 @@
                 android:layout_marginTop="12dp"
                 android:fontFamily="@font/plus_jakarta_sans"
                 android:gravity="center"
-                android:text="Lorem ipsum dolor sit amet,\nconsectetur adipiscing elit,."
+                android:text="Junte-se ao ACTA e inicie um novo ciclo em sua carreira com o processo de PDCA"
                 android:textColor="#9E9E9E"
                 android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/txtTituloLogin" />
 
+            <!-- Mensagem de Erro (Oculta por padrão) -->
+            <TextView
+                android:id="@+id/txtMensagemErro"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:text="email ou senha incorretos*"
+                android:textColor="#E53935"
+                android:textSize="13sp"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txtSubtituloLogin"
+                tools:visibility="visible" />
+
+            <!-- Campo Email (Agora conectado abaixo da mensagem de erro) -->
             <TextView
                 android:id="@+id/lblEmail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="28dp"
+                android:layout_marginTop="16dp"
                 android:fontFamily="@font/plus_jakarta_sans"
                 android:text="Email"
                 android:textColor="#000000"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/txtSubtituloLogin" />
+                app:layout_constraintTop_toBottomOf="@id/txtMensagemErro" />
 
             <EditText
                 android:id="@+id/edtEmail"
