@@ -1,16 +1,20 @@
 package br.com.acta;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -47,8 +51,8 @@ public class TelaLogin extends AppCompatActivity {
         }
 
         ((TextView) findViewById(R.id.txtEsqueceuSenha)).setOnClickListener(view -> {
-            Intent intent = new Intent(this, MainActvity.class);
-            startActivity(intent);
+            mostrarDialogRecuperacao();
+
         });
 
         ((Button) findViewById(R.id.btnConcluido)).setOnClickListener(view -> {
@@ -62,6 +66,43 @@ public class TelaLogin extends AppCompatActivity {
         });
 
 
+    }
+    private void mostrarDialogRecuperacao() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        View dialogView = getLayoutInflater().inflate(R.layout.dialog_esqueceu_senha, null);
+        builder.setView(dialogView);
+
+        AlertDialog dialog = builder.create();
+
+        // Remove o fundo padrão quadrado do sistema para manter os cantos arredondados
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        }
+
+        EditText edtEmailRecuperacao = dialogView.findViewById(R.id.edtEmailRecuperacao);
+        Button btnConcluido = dialogView.findViewById(R.id.btnConcluidoRecuperacao);
+
+        btnConcluido.setOnClickListener(v -> {
+            String email = edtEmailRecuperacao.getText().toString().trim();
+
+            if (email.isEmpty()) {
+                edtEmailRecuperacao.setError("Informe o e-mail");
+                return;
+            }
+
+            // Envia o e-mail de redefinição pelo Firebase
+            FirebaseAuth.getInstance().sendPasswordResetEmail(email)
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(this, "E-mail de redefinição enviado!", Toast.LENGTH_LONG).show();
+                            dialog.dismiss();
+                        } else {
+                            TextView txtErro = findViewById(R.id.txtMensagemErro);
+                            txtErro.setVisibility(View.VISIBLE);
+                        }
+                    });
+        });
+        dialog.show();
     }
 
     private void autenticarUsuario(String txtEmail, String txtSenha) {
