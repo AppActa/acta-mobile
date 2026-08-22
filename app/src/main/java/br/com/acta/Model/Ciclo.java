@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.util.List;
 
+import br.com.acta.Model.Enum.StatusCiclo;
+
 public class Ciclo {
     private Long id;
 
