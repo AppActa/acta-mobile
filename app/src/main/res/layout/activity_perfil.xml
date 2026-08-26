@@ -2,17 +2,19 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/perfil"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F5F5F5"
     android:fillViewport="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/Perfil"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingBottom="24dp">
 
-        <!-- 1. Cartão Branco de Fundo (Acompanha dinamicamente a altura até o cargo) -->
+        <!-- 1. Cartão Branco de Fundo -->
         <View
             android:id="@+id/bgCardHeader"
             android:layout_width="match_parent"
@@ -48,7 +50,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:tint="#2B363B" />
 
-        <!-- 3. Container da Foto com Borda Circular Perfeita (Sem cortes) -->
+        <!-- 3. Container da Foto -->
         <FrameLayout
             android:id="@+id/containerFotoPerfil"
             android:layout_width="114dp"
@@ -77,6 +79,7 @@
             android:layout_marginStart="12dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
+            android:fontFamily="@font/plus_jakarta_sans"
             android:text="jones.prado@saveit.com"
             android:textColor="#9E9E9E"
             android:textSize="12sp"
@@ -90,6 +93,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
+            android:fontFamily="@font/plus_jakarta_sans"
             android:text="Jones Prado"
             android:textColor="#212121"
             android:textSize="22sp"
@@ -103,6 +107,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
+            android:fontFamily="@font/plus_jakarta_sans"
             android:text="UI Design | Marketing"
             android:textColor="#9E9E9E"
             android:textSize="13sp"
@@ -117,6 +122,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
             android:layout_marginTop="36dp"
+            android:fontFamily="@font/plus_jakarta_sans"
             android:text="Configurações"
             android:textColor="#424242"
             android:textSize="14sp"
@@ -159,6 +165,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="14dp"
                     android:layout_weight="1"
+                    android:fontFamily="@font/plus_jakarta_sans"
                     android:text="Editar perfil"
                     android:textColor="#424242"
                     android:textSize="14sp" />
@@ -166,6 +173,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/plus_jakarta_sans"
                     android:text="&gt;"
                     android:textColor="#666666"
                     android:textSize="16sp"
@@ -194,6 +202,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="14dp"
                     android:layout_weight="1"
+                    android:fontFamily="@font/plus_jakarta_sans"
                     android:text="Minhas equipes"
                     android:textColor="#424242"
                     android:textSize="14sp" />
@@ -201,6 +210,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/plus_jakarta_sans"
                     android:text="&gt;"
                     android:textColor="#666666"
                     android:textSize="16sp"
@@ -228,6 +238,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="14dp"
                     android:layout_weight="1"
+                    android:fontFamily="@font/plus_jakarta_sans"
                     android:text="Modo claro"
                     android:textColor="#424242"
                     android:textSize="14sp" />
@@ -260,6 +271,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="14dp"
                     android:layout_weight="1"
+                    android:fontFamily="@font/plus_jakarta_sans"
                     android:text="Notificações"
                     android:textColor="#424242"
                     android:textSize="14sp" />
@@ -292,6 +304,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"
+                    android:fontFamily="@font/plus_jakarta_sans"
                     android:text="Sair"
                     android:textColor="#D32F2F"
                     android:textSize="14sp"
