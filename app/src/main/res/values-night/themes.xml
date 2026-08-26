@@ -1,7 +1,7 @@
 <resources>
     <style name="Theme.ActaApp" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- ADICIONE ESTA LINHA: Aponta para o gradiente XML -->
-        <item name="imagemFundoBoasVindas">@drawable/background_gradient</item>
+        <item name="imagemFundoBoasVindas">@drawable/background_gradient_dark</item>
 
         <item name="corGradienteInicio">@color/turquesa_dark_start</item>
         <item name="corGradienteMeio">@color/turquesa_dark_center</item>
