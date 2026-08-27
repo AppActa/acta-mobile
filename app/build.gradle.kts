@@ -63,4 +63,15 @@ dependencies {
     compileOnly("org.projectlombok:lombok:1.18.32")
     annotationProcessor ("org.projectlombok:lombok:1.18.32")
     implementation ("com.google.code.gson:gson:2.10.1")
+
+    // Retrofit
+    implementation("com.squareup.retrofit2:retrofit:2.11.0")
+    // Conversor Gson (para converter JSON automaticamente em Objetos)
+    implementation("com.squareup.retrofit2:converter-gson:2.11.0")
+
+    // OkHttp3
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
+    // Interceptor para Log das requisições (opcional, mas muito útil para debug)
+    implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
 }
