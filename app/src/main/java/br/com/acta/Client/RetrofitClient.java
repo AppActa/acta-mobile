@@ -12,7 +12,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public final class RetrofitClient {
 
-    private static final String BASE_URL = "https://codcoz-api-postgres.koyeb.app/";
+    private static final String BASE_URL = "https://acta-pg-api.onrender.com/";
     private static Retrofit retrofit;
 
     private RetrofitClient() {
