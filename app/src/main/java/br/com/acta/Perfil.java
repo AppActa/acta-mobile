@@ -1,7 +1,9 @@
 package br.com.acta;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.widget.LinearLayout;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,6 +18,7 @@ public class Perfil extends AppCompatActivity {
 
     private SwitchMaterial switchModoClaro;
     private SharedPreferences preferences;
+    private LinearLayout btnEditarPerfil;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,6 +32,14 @@ public class Perfil extends AppCompatActivity {
 
         switchModoClaro = findViewById(R.id.switchModoClaro);
         preferences = getSharedPreferences("config_app", MODE_PRIVATE);
+        btnEditarPerfil = findViewById(R.id.btnEditarPerfil);
+        Bundle bundle = new Bundle();
+        btnEditarPerfil.setOnClickListener(v -> {
+            Intent intent = new Intent(Perfil.this, EditarPerfil.class);
+
+            startActivity(intent);
+        });
+
 
         boolean isModoClaro = preferences.getBoolean("is_modo_claro", true);
         switchModoClaro.setChecked(isModoClaro);
