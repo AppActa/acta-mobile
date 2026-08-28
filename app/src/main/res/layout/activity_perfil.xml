@@ -36,7 +36,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <!-- Botão Voltar -->
+        <!-- Botão Voltar (Atualizado com a nova imagem voltar.png) -->
         <ImageButton
             android:id="@+id/btnVoltar"
             android:layout_width="40dp"
@@ -45,10 +45,10 @@
             android:layout_marginTop="16dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="Voltar"
-            android:src="@android:drawable/ic_menu_revert"
+            android:scaleType="centerInside"
+            android:src="@drawable/voltar"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:tint="#2B363B" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <!-- 3. Container da Foto -->
         <FrameLayout
@@ -144,7 +144,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/txtTituloConfig">
 
-            <!-- Editar perfil -->
+            <!-- Editar perfil (Novo ícone: reicon_profile_filled) -->
             <LinearLayout
                 android:id="@+id/btnEditarPerfil"
                 android:layout_width="match_parent"
@@ -157,8 +157,7 @@
                     android:layout_height="32dp"
                     android:background="@drawable/bg_icon_container"
                     android:padding="6dp"
-                    android:src="@android:drawable/ic_menu_myplaces"
-                    app:tint="#FFFFFF" />
+                    android:src="@drawable/reicon_profile_filled" />
 
                 <TextView
                     android:layout_width="0dp"
@@ -180,7 +179,7 @@
                     android:textStyle="bold" />
             </LinearLayout>
 
-            <!-- Minhas equipes -->
+            <!-- Minhas equipes (Novo ícone: reicon_profile_2user_filled) -->
             <LinearLayout
                 android:id="@+id/btnMinhasEquipes"
                 android:layout_width="match_parent"
@@ -194,8 +193,7 @@
                     android:layout_height="32dp"
                     android:background="@drawable/bg_icon_container"
                     android:padding="6dp"
-                    android:src="@android:drawable/ic_menu_agenda"
-                    app:tint="#FFFFFF" />
+                    android:src="@drawable/reicon_profile_2user_filled" />
 
                 <TextView
                     android:layout_width="0dp"
@@ -217,7 +215,7 @@
                     android:textStyle="bold" />
             </LinearLayout>
 
-            <!-- Modo claro -->
+            <!-- Modo claro (Mantido temporariamente até você ter o ícone) -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
@@ -250,7 +248,7 @@
                     android:checked="true" />
             </LinearLayout>
 
-            <!-- Notificações -->
+            <!-- Notificações (Mantido ícone atual) -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="40dp"

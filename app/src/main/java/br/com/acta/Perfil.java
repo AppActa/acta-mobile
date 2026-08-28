@@ -1,15 +1,21 @@
 package br.com.acta;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.android.material.switchmaterial.SwitchMaterial;
+
 public class Perfil extends AppCompatActivity {
 
+    private SwitchMaterial switchModoClaro;
+    private SharedPreferences preferences;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,6 +27,25 @@ public class Perfil extends AppCompatActivity {
             return insets;
         });
 
+        switchModoClaro = findViewById(R.id.switchModoClaro);
+        preferences = getSharedPreferences("config_app", MODE_PRIVATE);
 
+        boolean isModoClaro = preferences.getBoolean("is_modo_claro", true);
+        switchModoClaro.setChecked(isModoClaro);
+        switchModoClaro.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                salvarPreferenciaTema(true);
+            } else {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                salvarPreferenciaTema(false);
+            }
+        });
+
+    }
+    private void salvarPreferenciaTema(boolean isModoClaro) {
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putBoolean("is_modo_claro", isModoClaro);
+        editor.apply();
     }
 }
