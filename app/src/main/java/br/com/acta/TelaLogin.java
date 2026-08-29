@@ -113,10 +113,11 @@ public class TelaLogin extends AppCompatActivity {
         autenticar.signInWithEmailAndPassword(txtEmail, txtSenha).addOnCompleteListener(task -> {
             TextView erro = findViewById(R.id.txtMensagemErro);
             if (task.isSuccessful()) {
-                Intent intent = new Intent(this, MainActvity.class);
-                startActivity(intent);
                 Toast.makeText(this, "Logado com sucesso!", Toast.LENGTH_SHORT).show();
                 erro.setVisibility(View.INVISIBLE);
+                Intent intent = new Intent(TelaLogin.this, Perfil.class);
+                startActivity(intent);
+
             } else {
                 erro.setVisibility(View.VISIBLE);
             }
