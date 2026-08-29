@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainEditarPerfil"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#3DA8BF">
+
+    <!-- Botão Voltar no Cabeçalho Azul -->
+    <ImageButton
+        android:id="@+id/btnVoltarEditarPerfil"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="Voltar"
+        android:scaleType="centerInside"
+        android:src="@drawable/voltar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Card Branco Arredondado Ocupando a Parte Principal -->
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scrollEditarPerfil"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="90dp"
+        android:background="@drawable/bg_cartao_topo_arredondado"
+        android:fillViewport="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="32dp"
+            android:paddingTop="28dp"
+            android:paddingBottom="32dp">
+
+            <!-- Título da Tela -->
+            <TextView
+                android:id="@+id/txtTituloEditarPerfil"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:text="Editar Perfil"
+                android:textColor="#212121"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <!-- Container da Foto de Perfil Circular -->
+            <FrameLayout
+                android:id="@+id/containerFotoEditar"
+                android:layout_width="128dp"
+                android:layout_height="128dp"
+                android:layout_marginTop="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txtTituloEditarPerfil">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/imgFotoEditarPerfil"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#B0BEC5"
+                    android:scaleType="centerCrop"
+                    app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Full" />
+
+                <!-- Botão de Edição Sobreposto (Lápis) -->
+                <ImageView
+                    android:id="@+id/btnAlterarFoto"
+                    android:layout_width="34dp"
+                    android:layout_height="34dp"
+                    android:layout_gravity="bottom|end"
+                    android:layout_marginEnd="4dp"
+                    android:layout_marginBottom="4dp"
+                    android:background="@drawable/bg_btn_edit_circle"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:padding="7dp"
+                    android:src="@android:drawable/ic_menu_edit"
+                    app:tint="#FFFFFF" />
+            </FrameLayout>
+
+            <!-- Campo Nome -->
+            <TextView
+                android:id="@+id/lblNomeEditar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="28dp"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:text="Nome"
+                android:textColor="#212121"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/containerFotoEditar" />
+
+            <EditText
+                android:id="@+id/edtNomeEditar"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="6dp"
+                android:background="@drawable/bg_campo_texto"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:hint="Jones Prado"
+                android:inputType="textPersonName"
+                android:paddingHorizontal="16dp"
+                android:textColor="#212121"
+                android:textColorHint="#9E9E9E"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/lblNomeEditar" />
+
+            <!-- Campo Email -->
+            <TextView
+                android:id="@+id/lblEmailEditar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:text="Email"
+                android:textColor="#212121"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/edtNomeEditar" />
+
+            <EditText
+                android:id="@+id/edtEmailEditar"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="6dp"
+                android:background="@drawable/bg_campo_texto"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:hint="jones.prado@empresa.com"
+                android:inputType="textEmailAddress"
+                android:paddingHorizontal="16dp"
+                android:textColor="#212121"
+                android:textColorHint="#9E9E9E"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/lblEmailEditar" />
+
+            <!-- Campo Descrição -->
+            <TextView
+                android:id="@+id/lblDescricaoEditar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:text="Descrição"
+                android:textColor="#212121"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/edtEmailEditar" />
+
+            <EditText
+                android:id="@+id/edtDescricaoEditar"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="6dp"
+                android:background="@drawable/bg_campo_texto"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:hint="Designer - Marketing"
+                android:inputType="text"
+                android:paddingHorizontal="16dp"
+                android:textColor="#212121"
+                android:textColorHint="#9E9E9E"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/lblDescricaoEditar" />
+
+            <!-- Botão Concluído -->
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnConcluidoEditarPerfil"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="32dp"
+                android:background="@drawable/bg_btn_editar_concluido"
+                android:clickable="true"
+                android:focusable="true"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:foreground="?attr/selectableItemBackground"
+                android:text="Concluído"
+                android:textAllCaps="false"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/edtDescricaoEditar" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
