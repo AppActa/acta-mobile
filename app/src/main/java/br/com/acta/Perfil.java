@@ -13,12 +13,25 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.google.android.material.switchmaterial.SwitchMaterial;
+import com.google.firebase.auth.FirebaseAuth;
+
+import br.com.acta.Api.MeApi;
+import br.com.acta.Auth.FirebaseTokenProvider;
+import br.com.acta.Auth.TokenProvider;
+import br.com.acta.Client.RepositoryCallback;
+import br.com.acta.Client.RetrofitClient;
+import br.com.acta.Model.Me;
+import br.com.acta.Services.MeService;
 
 public class Perfil extends AppCompatActivity {
 
     private SwitchMaterial switchModoClaro;
     private SharedPreferences preferences;
     private LinearLayout btnEditarPerfil;
+    TokenProvider tokenProvider = new FirebaseTokenProvider(FirebaseAuth.getInstance());
+    private MeApi meApi = RetrofitClient.getInstance(tokenProvider).create(MeApi.class);
+    private MeService meService = new MeService(meApi);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,5 +71,18 @@ public class Perfil extends AppCompatActivity {
         SharedPreferences.Editor editor = preferences.edit();
         editor.putBoolean("is_modo_claro", isModoClaro);
         editor.apply();
+    }
+    public void carregarMe(){
+        meService.getMe(new RepositoryCallback<Me>(){
+            @Override
+            public void onSuccess(Me me) {
+
+            }
+
+            @Override
+            public void onError(int code, String message) {
+
+            }
+        });
     }
 }
