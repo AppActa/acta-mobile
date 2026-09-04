@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -42,6 +43,7 @@ public class Perfil extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        carregarMe();
 
         switchModoClaro = findViewById(R.id.switchModoClaro);
         preferences = getSharedPreferences("config_app", MODE_PRIVATE);
@@ -76,6 +78,10 @@ public class Perfil extends AppCompatActivity {
         meService.getMe(new RepositoryCallback<Me>(){
             @Override
             public void onSuccess(Me me) {
+                TextView nome = findViewById(R.id.txtNome);
+                TextView email = findViewById(R.id.txtEmail);
+                nome.setText(me.getNome());
+                email.setText(me.getEmail());
 
             }
 
