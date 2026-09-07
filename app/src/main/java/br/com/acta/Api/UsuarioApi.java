@@ -10,7 +10,7 @@ import retrofit2.http.Path;
 
 public interface UsuarioApi {
 
-    @PATCH("/{id}")
+    @PATCH("/usuario/{id}")
     Call<Usuario> updateUsuario(@Path("id") Long id,
                                 @Body Map<String, Object> campos);
 }
