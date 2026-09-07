@@ -32,6 +32,9 @@ public class Perfil extends AppCompatActivity {
     TokenProvider tokenProvider = new FirebaseTokenProvider(FirebaseAuth.getInstance());
     private MeApi meApi = RetrofitClient.getInstance(tokenProvider).create(MeApi.class);
     private MeService meService = new MeService(meApi);
+    Long id;
+    TextView nome;
+    TextView email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +54,10 @@ public class Perfil extends AppCompatActivity {
         Bundle bundle = new Bundle();
         btnEditarPerfil.setOnClickListener(v -> {
             Intent intent = new Intent(Perfil.this, EditarPerfil.class);
-
+            bundle.putLong("USUARIO_ID", id);
+            bundle.putString("USUARIO_NOME", nome.getText().toString());
+            bundle.putString("USUARIO_EMAIL", email.getText().toString());
+            intent.putExtras(bundle);
             startActivity(intent);
         });
 
@@ -78,11 +84,11 @@ public class Perfil extends AppCompatActivity {
         meService.getMe(new RepositoryCallback<Me>(){
             @Override
             public void onSuccess(Me me) {
-                TextView nome = findViewById(R.id.txtNome);
-                TextView email = findViewById(R.id.txtEmail);
+                 nome = findViewById(R.id.txtNome);
+                 email = findViewById(R.id.txtEmail);
                 nome.setText(me.getNome());
                 email.setText(me.getEmail());
-
+                id = me.getIdUsuario();
             }
 
             @Override
