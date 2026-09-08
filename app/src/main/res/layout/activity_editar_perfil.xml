@@ -149,37 +149,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/lblEmailEditar" />
 
-            <!-- Campo Descrição -->
-            <TextView
-                android:id="@+id/lblDescricaoEditar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:fontFamily="@font/plus_jakarta_sans"
-                android:text="Descrição"
-                android:textColor="#212121"
-                android:textSize="15sp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/edtEmailEditar" />
-
-            <EditText
-                android:id="@+id/edtDescricaoEditar"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:layout_marginTop="6dp"
-                android:background="@drawable/bg_campo_texto"
-                android:fontFamily="@font/plus_jakarta_sans"
-                android:hint="Designer - Marketing"
-                android:inputType="text"
-                android:paddingHorizontal="16dp"
-                android:textColor="#212121"
-                android:textColorHint="#9E9E9E"
-                android:textSize="14sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/lblDescricaoEditar" />
-
             <!-- Botão Concluído -->
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnConcluidoEditarPerfil"
@@ -198,7 +167,7 @@
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/edtDescricaoEditar" />
+                app:layout_constraintTop_toBottomOf="@id/edtEmailEditar" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
