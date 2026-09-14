@@ -11,15 +11,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ActaApp">
+
+
         <activity
             android:name=".MainActvity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".TelaLogin"
             android:exported="false"
@@ -33,10 +35,12 @@
             android:name=".Perfil"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
+
         <activity
             android:name=".EditarPerfil"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
+
     </application>
 
 </manifest>
