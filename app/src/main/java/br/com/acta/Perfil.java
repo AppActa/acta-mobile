@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,12 +17,15 @@ import androidx.core.view.WindowInsetsCompat;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.firebase.auth.FirebaseAuth;
 
+import br.com.acta.Api.ColaboradorApi;
 import br.com.acta.Api.MeApi;
 import br.com.acta.Auth.FirebaseTokenProvider;
 import br.com.acta.Auth.TokenProvider;
 import br.com.acta.Client.RepositoryCallback;
 import br.com.acta.Client.RetrofitClient;
+import br.com.acta.Model.Colaborador;
 import br.com.acta.Model.Me;
+import br.com.acta.Services.ColaboradorService;
 import br.com.acta.Services.MeService;
 
 public class Perfil extends AppCompatActivity {
@@ -31,10 +35,13 @@ public class Perfil extends AppCompatActivity {
     private LinearLayout btnEditarPerfil;
     TokenProvider tokenProvider = new FirebaseTokenProvider(FirebaseAuth.getInstance());
     private MeApi meApi = RetrofitClient.getInstance(tokenProvider).create(MeApi.class);
+    private ColaboradorApi colaboradorApi = RetrofitClient.getInstance(tokenProvider).create(ColaboradorApi.class);
     private MeService meService = new MeService(meApi);
-    Long id;
-    TextView nome;
-    TextView email;
+    private ColaboradorService colaboradorService = new ColaboradorService(colaboradorApi);
+    private Long id = null;
+    private TextView nome;
+    private TextView email;
+    private TextView cargo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,14 +53,21 @@ public class Perfil extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        carregarMe();
 
+        nome = findViewById(R.id.txtNome);
+        email = findViewById(R.id.txtEmail);
+        cargo = findViewById(R.id.txtCargo);
         switchModoClaro = findViewById(R.id.switchModoClaro);
         preferences = getSharedPreferences("config_app", MODE_PRIVATE);
         btnEditarPerfil = findViewById(R.id.btnEditarPerfil);
-        Bundle bundle = new Bundle();
+        carregarMe();
         btnEditarPerfil.setOnClickListener(v -> {
+            if (id == null) {
+                Toast.makeText(Perfil.this, "Aguarde o carregamento dos dados...", Toast.LENGTH_SHORT).show();
+                return;
+            }
             Intent intent = new Intent(Perfil.this, EditarPerfil.class);
+            Bundle bundle = new Bundle();
             bundle.putLong("USUARIO_ID", id);
             bundle.putString("USUARIO_NOME", nome.getText().toString());
             bundle.putString("USUARIO_EMAIL", email.getText().toString());
@@ -84,16 +98,28 @@ public class Perfil extends AppCompatActivity {
         meService.getMe(new RepositoryCallback<Me>(){
             @Override
             public void onSuccess(Me me) {
-                 nome = findViewById(R.id.txtNome);
-                 email = findViewById(R.id.txtEmail);
                 nome.setText(me.getNome());
                 email.setText(me.getEmail());
                 id = me.getIdUsuario();
+                carregarColaborador(me.getIdColaborador());
             }
 
             @Override
             public void onError(int code, String message) {
+                Toast.makeText(Perfil.this, "Erro " + code + ": " + message, Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+    public void carregarColaborador(Long idUsuario){
+        colaboradorService.getColaborador(idUsuario,new RepositoryCallback<Colaborador>(){
+            @Override
+            public void onSuccess(Colaborador colaborador) {
+                cargo.setText(colaborador.getCargo());
+            }
 
+            @Override
+            public void onError(int code, String message) {
+                Toast.makeText(Perfil.this, "Erro " + code + ": " + message, Toast.LENGTH_LONG).show();
             }
         });
     }

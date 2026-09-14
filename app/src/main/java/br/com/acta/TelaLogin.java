@@ -45,8 +45,9 @@ public class TelaLogin extends AppCompatActivity {
 
         if (currentUser != null) {
             Log.d("Auth", "Usuário já está logado, pular tela de login.");
-            Intent intent = new Intent(this, MainActvity.class);
+            Intent intent = new Intent(this, Perfil.class);
             startActivity(intent);
+            finish();
         }
 
         ((TextView) findViewById(R.id.txtEsqueceuSenha)).setOnClickListener(view -> {
@@ -133,7 +134,7 @@ public class TelaLogin extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-                        startActivity(new Intent(this, MainActvity.class));
+                        startActivity(new Intent(this, Perfil.class));
                     }
                     else{
                         Toast.makeText(this, "Falha no login", Toast.LENGTH_SHORT).show();
