@@ -5,6 +5,8 @@ import com.google.gson.GsonBuilder;
 
 import java.util.concurrent.TimeUnit;
 
+import br.com.acta.Auth.AuthInterceptor;
+import br.com.acta.Auth.TokenProvider;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -18,7 +20,7 @@ public final class RetrofitClient {
     private RetrofitClient() {
     }
 
-    public static Retrofit getInstance() {
+    public static Retrofit getInstance(TokenProvider tokenProvider) {
         if (retrofit == null) {
 
             // Configurar logging para debug
@@ -28,6 +30,7 @@ public final class RetrofitClient {
             // Configurando OkHttpClient
             OkHttpClient client = new OkHttpClient.Builder()
                     .addInterceptor(logging)
+                    .addInterceptor(new AuthInterceptor(tokenProvider))
                     .connectTimeout(30, TimeUnit.SECONDS)
                     .readTimeout(30, TimeUnit.SECONDS)
                     .writeTimeout(30, TimeUnit.SECONDS)

@@ -1,6 +1,7 @@
 package br.com.acta.Model;
 
 import java.time.OffsetDateTime;
+import java.util.Set;
 
 import br.com.acta.Model.Enum.StatusGeral;
 import br.com.acta.Model.Enum.TipoUsuario;
@@ -26,7 +27,10 @@ public class Usuario {
 
     private StatusGeral status;
 
+    private Set<UsuarioCiclo> ciclos;
+
     private OffsetDateTime criadoEm;
 
     private OffsetDateTime atualizadoEm;
+    private Set<Meta> metas;
 }
