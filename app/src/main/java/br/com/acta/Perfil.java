@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
@@ -39,6 +40,7 @@ import java.util.Map;
 
 import br.com.acta.Api.ColaboradorApi;
 import br.com.acta.Api.MeApi;
+import br.com.acta.Api.UsuarioApi;
 import br.com.acta.Auth.FirebaseTokenProvider;
 import br.com.acta.Auth.TokenProvider;
 import br.com.acta.AutoRotation.AutoRotation;
@@ -50,6 +52,7 @@ import br.com.acta.Model.Usuario;
 import br.com.acta.Services.ColaboradorService;
 import br.com.acta.Services.MeService;
 import br.com.acta.Services.UsuarioService;
+import retrofit2.Callback;
 
 public class Perfil extends AppCompatActivity {
 
@@ -59,17 +62,34 @@ public class Perfil extends AppCompatActivity {
     TokenProvider tokenProvider = new FirebaseTokenProvider(FirebaseAuth.getInstance());
     private MeApi meApi = RetrofitClient.getInstance(tokenProvider).create(MeApi.class);
     private ColaboradorApi colaboradorApi = RetrofitClient.getInstance(tokenProvider).create(ColaboradorApi.class);
+    private UsuarioApi usuarioApi = RetrofitClient.getInstance(tokenProvider).create(UsuarioApi.class);
     private MeService meService = new MeService(meApi);
     private ColaboradorService colaboradorService = new ColaboradorService(colaboradorApi);
+
+    private UsuarioService usuarioService = new UsuarioService(usuarioApi);
     private Long id = null;
     private TextView nome;
     private TextView email;
     private TextView cargo;
     private ImageView editarImg;
-
-    private UsuarioService usuarioService;
     private Uri fotoUri;
-    private ActivityResultLauncher<Intent> cameraLauncher;
+    private ImageView fotoPerfil;
+    private final ActivityResultLauncher<Intent> cameraLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+
+                    // 1. Pega a Uri temporária da foto capturada/selecionada
+                    Uri fotoLocalUri = result.getData().getData();
+
+                    if (fotoLocalUri != null) {
+                        // 2. Inicia o processo de persistência completo
+                        processarEAtualizarFoto(fotoLocalUri);
+                    }
+                }
+            }
+    );
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,6 +122,7 @@ public class Perfil extends AppCompatActivity {
             Button camera = dialogView.findViewById(R.id.btnOpcaoCamera);
             camera.setOnClickListener(view -> {
 
+                dialog.dismiss();
             });
 
         });
@@ -154,9 +175,9 @@ public class Perfil extends AppCompatActivity {
             }
         });
     }
-    private void salvarCloudinary(){
+    private void salvarCloudinary(Uri fotoTirada){
         MediaManager.get()
-                .upload(fotoUri)
+                .upload(fotoTirada)
                 .option("folder", "fotos")
                 .unsigned("fotoCloud")
                 .preprocess(new ImagePreprocessChain()
@@ -164,7 +185,7 @@ public class Perfil extends AppCompatActivity {
                                 .addStep(new Limit(1000, 1000))
                                 .addStep(new DimensionsValidator(10, 10, 1000, 1000))
 //                        .addStep(new Rotate(90))
-                                .addStep(new AutoRotation(getApplicationContext(), fotoUri))
+                                .addStep(new AutoRotation(getApplicationContext(), fotoTirada))
                                 .saveWith(new BitmapEncoder(BitmapEncoder.Format.WEBP, 80))
                 )
                 .callback(new UploadCallback() {
@@ -182,6 +203,10 @@ public class Perfil extends AppCompatActivity {
                     public void onSuccess(String requestId, Map resultData) {
                         //Obter a URL da imagem
                         String url = resultData.get("url").toString();
+                        Map<String, Object> camposAtualizados = new HashMap<>();
+                        camposAtualizados.put("url_foto", url);
+                        salvarUrlBanco(id,camposAtualizados);
+
                     }
 
                     @Override
@@ -196,4 +221,18 @@ public class Perfil extends AppCompatActivity {
                 })
                 .dispatch();
     }
+    private void salvarUrlBanco(Long idUsuario,Map<String, Object>camposAtualizados){
+        usuarioService.patchUsuario(idUsuario,  camposAtualizados, new RepositoryCallback<Usuario>() {
+            @Override
+            public void onSuccess(Usuario resposta) {
+                Toast.makeText(Perfil.this, "Foto atualizada com sucesso!", Toast.LENGTH_SHORT).show();
+                finish();
+            }
+
+            @Override
+            public void onError(int code, String message) {
+                Toast.makeText(Perfil.this, "Erro: " + message, Toast.LENGTH_LONG).show();
+            }
+    });
+}
 }
