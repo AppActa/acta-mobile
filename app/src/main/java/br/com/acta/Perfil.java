@@ -20,10 +20,12 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.core.content.FileProvider;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.bumptech.glide.Glide;
 import com.cloudinary.android.MediaManager;
 import com.cloudinary.android.callback.ErrorInfo;
 import com.cloudinary.android.callback.UploadCallback;
@@ -32,9 +34,11 @@ import com.cloudinary.android.preprocess.BitmapEncoder;
 import com.cloudinary.android.preprocess.DimensionsValidator;
 import com.cloudinary.android.preprocess.ImagePreprocessChain;
 import com.cloudinary.android.preprocess.Limit;
+import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -74,21 +78,17 @@ public class Perfil extends AppCompatActivity {
     private ImageView editarImg;
     private Uri fotoUri;
     private ImageView fotoPerfil;
-    private final ActivityResultLauncher<Intent> cameraLauncher = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(),
-            result -> {
-                if (result.getResultCode() == RESULT_OK && result.getData() != null) {
-
-                    // 1. Pega a Uri temporária da foto capturada/selecionada
-                    Uri fotoLocalUri = result.getData().getData();
-
-                    if (fotoLocalUri != null) {
-                        // 2. Inicia o processo de persistência completo
-                        processarEAtualizarFoto(fotoLocalUri);
-                    }
+    ShapeableImageView imgFotoPerfil;
+    private ActivityResultLauncher<Uri> cameraLigar =
+            registerForActivityResult(new ActivityResultContracts.TakePicture(), tirou -> {
+                if (tirou) {
+                    imgFotoPerfil.post(() -> {
+                        imgFotoPerfil.setImageURI(null);
+                        imgFotoPerfil.setImageURI(fotoUri);
+                        salvarCloudinary(fotoUri);
+                    });
                 }
-            }
-    );
+            });
 
 
     @Override
@@ -120,7 +120,12 @@ public class Perfil extends AppCompatActivity {
             }
             dialog.show();
             Button camera = dialogView.findViewById(R.id.btnOpcaoCamera);
+            Button galeria = dialogView.findViewById(R.id.btnOpcaoGaleria);
             camera.setOnClickListener(view -> {
+                cameraLigar
+                dialog.dismiss();
+            });
+            galeria.setOnClickListener(view->{
 
                 dialog.dismiss();
             });
@@ -221,8 +226,8 @@ public class Perfil extends AppCompatActivity {
                 })
                 .dispatch();
     }
-    private void salvarUrlBanco(Long idUsuario,Map<String, Object>camposAtualizados){
-        usuarioService.patchUsuario(idUsuario,  camposAtualizados, new RepositoryCallback<Usuario>() {
+    private void salvarUrlBanco(Long idUsuario,Map<String, Object>camposAtualizados) {
+        usuarioService.patchUsuario(idUsuario, camposAtualizados, new RepositoryCallback<Usuario>() {
             @Override
             public void onSuccess(Usuario resposta) {
                 Toast.makeText(Perfil.this, "Foto atualizada com sucesso!", Toast.LENGTH_SHORT).show();
@@ -233,6 +238,34 @@ public class Perfil extends AppCompatActivity {
             public void onError(int code, String message) {
                 Toast.makeText(Perfil.this, "Erro: " + message, Toast.LENGTH_LONG).show();
             }
-    });
-}
+        });
+    }
+    private void buscarFotoDoBanco(Long idUsuario){
+        usuarioService.buscarUsuario(idUsuario, new RepositoryCallback<Usuario>() {
+            @Override
+            public void onSuccess(Usuario usuario) {
+                imgFotoPerfil = findViewById(R.id.imgFotoPerfil);
+                // Verifica se o usuário e a URL da foto não são nulos
+                if (usuario != null && usuario.getFotoUrl() != null && !usuario.getFotoUrl().isEmpty()) {
+
+                    // Carrega a imagem da URL remota (Cloudinary) no ImageView usando o Glide
+                    Glide.with(Perfil.this)
+                            .load(usuario.getFotoUrl())
+                            .placeholder(R.drawable.reicon_profile_filled) // foto temporária durante o download
+                            .error(R.drawable.reicon_profile_filled)       // foto em caso de falha no carregamento
+                            .into(imgFotoPerfil);
+
+                } else {
+                    // Caso o usuário não tenha foto cadastrada, exibe a imagem padrão
+                    imgFotoPerfil.setImageResource(R.drawable.reicon_profile_filled);
+                }
+            }
+
+            @Override
+            public void onError(int statusCode, String message) {
+
+            }
+        });
+    }
+
 }
