@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -141,7 +142,7 @@ public class Perfil extends AppCompatActivity {
                 dialog.dismiss();
             });
             galeria.setOnClickListener(view->{
-
+                abrirGaleria();
                 dialog.dismiss();
             });
 
@@ -288,6 +289,10 @@ public class Perfil extends AppCompatActivity {
         fotoUri = FileProvider.getUriForFile(this, getPackageName() + ".fileprovider", arquivo);
 
         cameraLigar.launch(fotoUri);
+    }
+    private void abrirGaleria(){
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        galeriaAbrir.launch(intent);
     }
 
 }
