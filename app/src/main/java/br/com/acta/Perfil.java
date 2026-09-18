@@ -15,6 +15,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AlertDialog;
@@ -89,6 +91,19 @@ public class Perfil extends AppCompatActivity {
                     });
                 }
             });
+    private ActivityResultLauncher<Intent> galeriaAbrir =
+            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult o) {
+                    if (o.getData() != null){
+                        // obter a URI
+                        fotoUri = o.getData().getData();
+                        imgFotoPerfil.setImageURI(null);
+                        imgFotoPerfil.setImageURI(fotoUri);
+                        salvarCloudinary(fotoUri);
+                    }
+                }
+            });
 
 
     @Override
@@ -122,7 +137,7 @@ public class Perfil extends AppCompatActivity {
             Button camera = dialogView.findViewById(R.id.btnOpcaoCamera);
             Button galeria = dialogView.findViewById(R.id.btnOpcaoGaleria);
             camera.setOnClickListener(view -> {
-                cameraLigar
+                tirarFoto();
                 dialog.dismiss();
             });
             galeria.setOnClickListener(view->{
@@ -184,7 +199,7 @@ public class Perfil extends AppCompatActivity {
         MediaManager.get()
                 .upload(fotoTirada)
                 .option("folder", "fotos")
-                .unsigned("fotoCloud")
+                .unsigned("ml_default")
                 .preprocess(new ImagePreprocessChain()
                                 .loadWith(new BitmapDecoder(1000, 1000))
                                 .addStep(new Limit(1000, 1000))
@@ -266,6 +281,13 @@ public class Perfil extends AppCompatActivity {
 
             }
         });
+    }
+    private void tirarFoto(){
+        File arquivo = new File(getExternalFilesDir(null), "foto_"+System.currentTimeMillis()+".jpg");
+
+        fotoUri = FileProvider.getUriForFile(this, getPackageName() + ".fileprovider", arquivo);
+
+        cameraLigar.launch(fotoUri);
     }
 
 }
