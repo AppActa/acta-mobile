@@ -80,7 +80,6 @@ public class Perfil extends AppCompatActivity {
     private TextView cargo;
     private ImageView editarImg;
     private Uri fotoUri;
-    private ImageView fotoPerfil;
     ShapeableImageView imgFotoPerfil;
     private ActivityResultLauncher<Uri> cameraLigar =
             registerForActivityResult(new ActivityResultContracts.TakePicture(), tirou -> {
@@ -128,7 +127,16 @@ public class Perfil extends AppCompatActivity {
         switchModoClaro = findViewById(R.id.switchModoClaro);
         preferences = getSharedPreferences("config_app", MODE_PRIVATE);
         editarImg = findViewById(R.id.btnAlterarFotoPerfil);
+        imgFotoPerfil = findViewById(R.id.imgFotoPerfil);
         carregarMe();
+        LinearLayout sair = findViewById(R.id.btnSair);
+        sair.setOnClickListener(view -> {
+            FirebaseAuth.getInstance().signOut();
+            Intent intent = new Intent(Perfil.this, TelaLogin.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
+        });
         editarImg.setOnClickListener(v -> {
             AlertDialog dialog = builder.create();
             if (dialog.getWindow() != null) {
@@ -175,6 +183,7 @@ public class Perfil extends AppCompatActivity {
                 email.setText(me.getEmail());
                 id = me.getIdUsuario();
                 carregarColaborador(me.getIdColaborador());
+                buscarFotoDoBanco(id);
             }
 
             @Override
@@ -223,7 +232,7 @@ public class Perfil extends AppCompatActivity {
                     @Override
                     public void onSuccess(String requestId, Map resultData) {
                         //Obter a URL da imagem
-                        String url = resultData.get("url").toString();
+                        String url = resultData.get("secure_url").toString();
                         Map<String, Object> camposAtualizados = new HashMap<>();
                         camposAtualizados.put("url_foto", url);
                         salvarUrlBanco(id,camposAtualizados);
@@ -247,7 +256,7 @@ public class Perfil extends AppCompatActivity {
             @Override
             public void onSuccess(Usuario resposta) {
                 Toast.makeText(Perfil.this, "Foto atualizada com sucesso!", Toast.LENGTH_SHORT).show();
-                finish();
+                buscarFotoDoBanco(id);
             }
 
             @Override

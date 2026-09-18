@@ -35,19 +35,6 @@ public class Usuario {
     private Set<Meta> metas;
     private String fotoUrl;
 
-    public Usuario(Long id, String nome, String email, TipoUsuario tipo, Long idEmpresa, StatusGeral status, Set<UsuarioCiclo> ciclos, OffsetDateTime criadoEm, OffsetDateTime atualizadoEm, Set<Meta> metas, String fotoUrl) {
-        this.id = id;
-        this.nome = nome;
-        this.email = email;
-        this.tipo = tipo;
-        this.idEmpresa = idEmpresa;
-        this.status = status;
-        this.ciclos = ciclos;
-        this.criadoEm = criadoEm;
-        this.atualizadoEm = atualizadoEm;
-        this.metas = metas;
-        this.fotoUrl = fotoUrl;
-    }
 
     public Long getId() {
         return id;
