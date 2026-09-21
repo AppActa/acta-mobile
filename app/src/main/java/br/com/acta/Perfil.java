@@ -138,22 +138,32 @@ public class Perfil extends AppCompatActivity {
             finish();
         });
         editarImg.setOnClickListener(v -> {
-            AlertDialog dialog = builder.create();
+            // 1. Infla o layout SEMPRE dentro do clique para criar uma nova instância de view
+            View viewDialog = LayoutInflater.from(Perfil.this).inflate(R.layout.dialog_selecionar_foto, null);
+
+            AlertDialog dialog = new AlertDialog.Builder(Perfil.this)
+                    .setView(viewDialog)
+                    .create();
+
             if (dialog.getWindow() != null) {
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             }
+
             dialog.show();
-            Button camera = dialogView.findViewById(R.id.btnOpcaoCamera);
-            Button galeria = dialogView.findViewById(R.id.btnOpcaoGaleria);
+
+            // 2. Busca os botões dentro da view recém-inflada do diálogo atual
+            Button camera = viewDialog.findViewById(R.id.btnOpcaoCamera);
+            Button galeria = viewDialog.findViewById(R.id.btnOpcaoGaleria);
+
             camera.setOnClickListener(view -> {
                 tirarFoto();
                 dialog.dismiss();
             });
-            galeria.setOnClickListener(view->{
+
+            galeria.setOnClickListener(view -> {
                 abrirGaleria();
                 dialog.dismiss();
             });
-
         });
 
 
