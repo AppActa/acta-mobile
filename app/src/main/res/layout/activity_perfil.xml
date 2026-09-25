@@ -15,6 +15,8 @@
         android:paddingBottom="24dp">
 
         <!-- 1. Cartão Branco de Fundo -->
+
+        <!-- 2. Banner Superior com Degradê Azul -->
         <View
             android:id="@+id/bgCardHeader"
             android:layout_width="match_parent"
@@ -23,14 +25,15 @@
             android:background="@drawable/bg_header_white_card"
             app:layout_constraintBottom_toBottomOf="@id/txtCargo"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
 
-        <!-- 2. Banner Superior com Degradê Azul -->
         <View
             android:id="@+id/headerBackground"
             android:layout_width="match_parent"
-            android:layout_height="140dp"
+            android:layout_height="170dp"
             android:background="@drawable/bg_header_gradient"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -158,46 +161,10 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/txtTituloConfig">
 
-            <!-- Minhas equipes -->
-            <LinearLayout
-                android:id="@+id/btnMinhasEquipes"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:background="@drawable/bg_icon_container"
-                    android:padding="6dp"
-                    android:src="@drawable/reicon_profile_2user_filled" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="14dp"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/plus_jakarta_sans"
-                    android:text="Minhas equipes"
-                    android:textColor="#424242"
-                    android:textSize="14sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/plus_jakarta_sans"
-                    android:text="&gt;"
-                    android:textColor="#666666"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
             <!-- Modo claro -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:layout_marginTop="8dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
@@ -206,7 +173,7 @@
                     android:layout_height="32dp"
                     android:background="@drawable/bg_icon_container"
                     android:padding="6dp"
-                    android:src="@android:drawable/ic_menu_compass"
+                    android:src="@drawable/sol_modo_claro"
                     app:tint="#FFFFFF" />
 
                 <TextView
@@ -239,7 +206,7 @@
                     android:layout_height="32dp"
                     android:background="@drawable/bg_icon_container"
                     android:padding="6dp"
-                    android:src="@android:drawable/ic_popup_reminder"
+                    android:src="@drawable/sino"
                     app:tint="#FFFFFF" />
 
                 <TextView

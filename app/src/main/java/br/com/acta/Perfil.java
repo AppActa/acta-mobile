@@ -7,6 +7,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -26,9 +27,12 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.content.FileProvider;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.cloudinary.android.MediaManager;
 import com.cloudinary.android.callback.ErrorInfo;
 import com.cloudinary.android.callback.UploadCallback;
@@ -87,8 +91,12 @@ public class Perfil extends AppCompatActivity {
                     imgFotoPerfil.post(() -> {
                         imgFotoPerfil.setImageURI(null);
                         imgFotoPerfil.setImageURI(fotoUri);
-                        salvarCloudinary(fotoUri);
                     });
+
+                    // Delay de 5 segundos antes de enviar ao Cloudinary,0
+                    imgFotoPerfil.postDelayed(() -> {
+                        salvarCloudinary(fotoUri);
+                    }, 7000);
                 }
             });
     private ActivityResultLauncher<Intent> galeriaAbrir =
@@ -100,7 +108,11 @@ public class Perfil extends AppCompatActivity {
                         fotoUri = o.getData().getData();
                         imgFotoPerfil.setImageURI(null);
                         imgFotoPerfil.setImageURI(fotoUri);
-                        salvarCloudinary(fotoUri);
+
+                        // Delay de 5 segundos antes de enviar ao Cloudinary
+                        imgFotoPerfil.postDelayed(() -> {
+                            salvarCloudinary(fotoUri);
+                        }, 5000);
                     }
                 }
             });
@@ -116,6 +128,39 @@ public class Perfil extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
+            getWindow().setStatusBarColor(android.graphics.Color.TRANSPARENT);
+            androidx.core.view.WindowInsetsControllerCompat controller =
+                    new androidx.core.view.WindowInsetsControllerCompat(getWindow(), getWindow().getDecorView());
+            controller.setAppearanceLightStatusBars(false); // 'false' deixa o relógio e bateria brancos
+        }
+        // 2. Zera o padding superior do ScrollView para o azul do topo ir até a borda da tela
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.perfil), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            // top = 0 permite que o cabeçalho azul ocupe a barra de status
+            v.setPadding(systemBars.left, 0, systemBars.right, systemBars.bottom);
+            return insets;
+        });
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.btnVoltar), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            android.view.ViewGroup.MarginLayoutParams params =
+                    (android.view.ViewGroup.MarginLayoutParams) v.getLayoutParams();
+            params.topMargin = systemBars.top + 16;
+            v.setLayoutParams(params);
+            return insets;
+        });
+
+        try {
+            java.util.Map<String, String> config = new java.util.HashMap<>();
+            config.put("cloud_name", br.com.acta.BuildConfig.CLOUDINARY_CLOUD_NAME);
+            config.put("api_key", br.com.acta.BuildConfig.CLOUDINARY_API_KEY);
+            config.put("api_secret", br.com.acta.BuildConfig.CLOUDINARY_API_SECRET);
+
+            com.cloudinary.android.MediaManager.init(this, config);
+        } catch (IllegalStateException e) {
+            // Evita crash caso inicialize duas vezes
+        }
+
 
         LayoutInflater inflater = LayoutInflater.from(this);
         View dialogView = inflater.inflate(R.layout.dialog_selecionar_foto, null);
@@ -219,15 +264,15 @@ public class Perfil extends AppCompatActivity {
         MediaManager.get()
                 .upload(fotoTirada)
                 .option("folder", "fotos")
-                .unsigned("ml_default")
-                .preprocess(new ImagePreprocessChain()
-                                .loadWith(new BitmapDecoder(1000, 1000))
-                                .addStep(new Limit(1000, 1000))
-                                .addStep(new DimensionsValidator(10, 10, 1000, 1000))
+                .unsigned("novoteste")
+//                .preprocess(new ImagePreprocessChain()
+//                                .loadWith(new BitmapDecoder(1000, 1000))
+//                                .addStep(new Limit(1000, 1000))
+//                                .addStep(new DimensionsValidator(10, 10, 1000, 1000))
 //                        .addStep(new Rotate(90))
-                                .addStep(new AutoRotation(getApplicationContext(), fotoTirada))
-                                .saveWith(new BitmapEncoder(BitmapEncoder.Format.WEBP, 80))
-                )
+//                                .addStep(new AutoRotation(getApplicationContext(), fotoTirada))
+//                                .saveWith(new BitmapEncoder(BitmapEncoder.Format.WEBP, 80))
+//                )
                 .callback(new UploadCallback() {
                     @Override
                     public void onStart(String requestId) {
@@ -244,7 +289,7 @@ public class Perfil extends AppCompatActivity {
                         //Obter a URL da imagem
                         String url = resultData.get("secure_url").toString();
                         Map<String, Object> camposAtualizados = new HashMap<>();
-                        camposAtualizados.put("url_foto", url);
+                        camposAtualizados.put("fotoUrl", url);
                         salvarUrlBanco(id,camposAtualizados);
 
                     }
@@ -282,12 +327,12 @@ public class Perfil extends AppCompatActivity {
                 imgFotoPerfil = findViewById(R.id.imgFotoPerfil);
                 // Verifica se o usuário e a URL da foto não são nulos
                 if (usuario != null && usuario.getFotoUrl() != null && !usuario.getFotoUrl().isEmpty()) {
-
-                    // Carrega a imagem da URL remota (Cloudinary) no ImageView usando o Glide
                     Glide.with(Perfil.this)
                             .load(usuario.getFotoUrl())
-                            .placeholder(R.drawable.reicon_profile_filled) // foto temporária durante o download
-                            .error(R.drawable.reicon_profile_filled)       // foto em caso de falha no carregamento
+                            .skipMemoryCache(true) // Ignora cache em memória
+                            .diskCacheStrategy(DiskCacheStrategy.NONE) // Força baixar a imagem atualizada
+                            .placeholder(R.drawable.reicon_profile_filled)
+                            .error(R.drawable.reicon_profile_filled)
                             .into(imgFotoPerfil);
 
                 } else {
@@ -298,7 +343,8 @@ public class Perfil extends AppCompatActivity {
 
             @Override
             public void onError(int statusCode, String message) {
-
+                imgFotoPerfil.setImageResource(R.drawable.ic_arrow_forward);
+                    Toast.makeText(Perfil.this, "Erro foto (" + statusCode + "): " + message, Toast.LENGTH_LONG).show();
             }
         });
     }

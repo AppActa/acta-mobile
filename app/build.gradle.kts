@@ -19,6 +19,19 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        // Sintaxe nativa do Gradle baseada em Providers integrada perfeitamente no Kotlin DSL
+        val cloudName = providers.gradleProperty("CLOUDINARY_CLOUD_NAME").getOrElse("")
+        val apiKey = providers.gradleProperty("CLOUDINARY_API_KEY").getOrElse("")
+        val apiSecret = providers.gradleProperty("CLOUDINARY_API_SECRET").getOrElse("")
+
+        buildConfigField("String", "CLOUDINARY_CLOUD_NAME", cloudName)
+        buildConfigField("String", "CLOUDINARY_API_KEY", apiKey)
+        buildConfigField("String", "CLOUDINARY_API_SECRET", apiSecret)
+    }
+
+    buildFeatures {
+        buildConfig = true
     }
 
     buildTypes {

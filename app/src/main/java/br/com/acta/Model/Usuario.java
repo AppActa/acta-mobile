@@ -1,6 +1,6 @@
 package br.com.acta.Model;
 
-import java.time.OffsetDateTime;
+import com.google.gson.annotations.SerializedName;
 import java.util.Set;
 
 import br.com.acta.Model.Enum.StatusGeral;
@@ -29,10 +29,12 @@ public class Usuario {
 
     private Set<UsuarioCiclo> ciclos;
 
-    private OffsetDateTime criadoEm;
+    private String criadoEm;
 
-    private OffsetDateTime atualizadoEm;
+    private String atualizadoEm;
     private Set<Meta> metas;
+
+    @SerializedName(value = "fotoUrl", alternate = {"url_foto", "urlFoto", "foto_url"})
     private String fotoUrl;
 
 
@@ -92,19 +94,19 @@ public class Usuario {
         this.ciclos = ciclos;
     }
 
-    public OffsetDateTime getCriadoEm() {
+    public String getCriadoEm() {
         return criadoEm;
     }
 
-    public void setCriadoEm(OffsetDateTime criadoEm) {
+    public void setCriadoEm(String criadoEm) {
         this.criadoEm = criadoEm;
     }
 
-    public OffsetDateTime getAtualizadoEm() {
+    public String getAtualizadoEm() {
         return atualizadoEm;
     }
 
-    public void setAtualizadoEm(OffsetDateTime atualizadoEm) {
+    public void setAtualizadoEm(String atualizadoEm) {
         this.atualizadoEm = atualizadoEm;
     }
 
