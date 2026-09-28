@@ -27,8 +27,9 @@ public class Enqueue {
 
             @Override
             public void onFailure(Call<T> call, Throwable throwable) {
-                callback.onError(0, "Não foi possível acessar a API ACTA.");
-                System.out.println( "Não foi possível acessar a API ACTA.");
+                callback.onError(0, "Falha na requisição: " + throwable.getMessage());
+                System.out.println( "Não foi possível acessar a API ACTA: " + throwable.getMessage());
+                throwable.printStackTrace();
             }
         });
     }

@@ -156,24 +156,4 @@ public class TelaLogin extends AppCompatActivity {
                         }
 
                     });
-
-
-//    public void loginGoogle(){
-//        //Abrindo a conexção com o FireBase
-//        FirebaseAuth autenticar = FirebaseAuth.getInstance();
-//
-//        //Configurar Google Sign In, para receber o token do arquivo que é gerado automaticamente
-//        GoogleSignInOptions gso = new GoogleSignInOptions
-//                .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-//                .requestIdToken(getString(R.string.default_web_client_id))
-//                .requestEmail()
-//                .build();
-//
-//        GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-//
-//        //Activity for result, nós não temos controle dela, esperamos somente o resultado
-//        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-//        signInLauncher.launch(signInIntent);
-//
-//    }
 }

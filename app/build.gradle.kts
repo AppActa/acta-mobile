@@ -19,6 +19,19 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        // Sintaxe nativa do Gradle baseada em Providers integrada perfeitamente no Kotlin DSL
+        val cloudName = providers.gradleProperty("CLOUDINARY_CLOUD_NAME").getOrElse("")
+        val apiKey = providers.gradleProperty("CLOUDINARY_API_KEY").getOrElse("")
+        val apiSecret = providers.gradleProperty("CLOUDINARY_API_SECRET").getOrElse("")
+
+        buildConfigField("String", "CLOUDINARY_CLOUD_NAME", cloudName)
+        buildConfigField("String", "CLOUDINARY_API_KEY", apiKey)
+        buildConfigField("String", "CLOUDINARY_API_SECRET", apiSecret)
+    }
+
+    buildFeatures {
+        buildConfig = true
     }
 
     buildTypes {
@@ -74,4 +87,8 @@ dependencies {
     // Interceptor para Log das requisições (opcional, mas muito útil para debug)
     implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
+
+    implementation("com.cloudinary:cloudinary-android:3.1.2")
+    implementation("com.github.bumptech.glide:glide:4.16.0")
+    annotationProcessor("com.github.bumptech.glide:compiler:4.16.0")
 }

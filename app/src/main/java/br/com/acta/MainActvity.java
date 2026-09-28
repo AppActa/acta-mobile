@@ -18,6 +18,16 @@ public class MainActvity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        try {
+            java.util.Map<String, String> config = new java.util.HashMap<>();
+            config.put("cloud_name", br.com.acta.BuildConfig.CLOUDINARY_CLOUD_NAME);
+            config.put("api_key", br.com.acta.BuildConfig.CLOUDINARY_API_KEY);
+            config.put("api_secret", br.com.acta.BuildConfig.CLOUDINARY_API_SECRET);
+
+            com.cloudinary.android.MediaManager.init(this, config);
+        } catch (IllegalStateException e) {
+            // Evita crash caso inicialize duas vezes
+        }
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
@@ -57,9 +67,8 @@ public class MainActvity extends AppCompatActivity {
         MotionLayout motionLayoutButton = findViewById(R.id.btnComecar);
         super.onStart();
 
-        // Toda vez que a tela ficar visível novamente, reinicia a animação
         if (motionLayoutButton != null) {
-            motionLayoutButton.setProgress(0f);      // Reseta o progresso da animação para o início
+            motionLayoutButton.setProgress(0f);      // Reseta o progresso da animação para o início'
             motionLayoutButton.jumpToState(R.id.start); // Força a transição de volta para o estado inicial imediatamente
         }
     }

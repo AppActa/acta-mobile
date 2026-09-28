@@ -16,4 +16,7 @@ public class UsuarioService {
     public void patchUsuario(Long id, Map<String, Object> campos, RepositoryCallback<Usuario> callback) {
         Enqueue.enqueue(api.updateUsuario(id, campos), callback);
     }
+    public void buscarUsuario(Long id,RepositoryCallback<Usuario> callback){
+        Enqueue.enqueue(api.buscarUsuario(id), callback);
+    }
 }
