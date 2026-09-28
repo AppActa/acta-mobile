@@ -35,7 +35,7 @@ jobs:
         uses: android-actions/setup-android@v3
 
       - name: instalar sdk 36
-        run: sdkmanager "platform-tools" "platforms;android-36"
+        run: sdkmanager "platform-tools" "platforms;android-36" "build-tools;36.0.0"
 
       - name: permitir execução do gradle
         run: chmod +x ./gradlew
