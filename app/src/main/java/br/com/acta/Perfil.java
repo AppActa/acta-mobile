@@ -7,7 +7,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -27,20 +26,13 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.content.FileProvider;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
-import androidx.core.view.WindowInsetsControllerCompat;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.cloudinary.android.MediaManager;
 import com.cloudinary.android.callback.ErrorInfo;
 import com.cloudinary.android.callback.UploadCallback;
-import com.cloudinary.android.preprocess.BitmapDecoder;
-import com.cloudinary.android.preprocess.BitmapEncoder;
-import com.cloudinary.android.preprocess.DimensionsValidator;
-import com.cloudinary.android.preprocess.ImagePreprocessChain;
-import com.cloudinary.android.preprocess.Limit;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.firebase.auth.FirebaseAuth;
@@ -54,7 +46,6 @@ import br.com.acta.Api.MeApi;
 import br.com.acta.Api.UsuarioApi;
 import br.com.acta.Auth.FirebaseTokenProvider;
 import br.com.acta.Auth.TokenProvider;
-import br.com.acta.AutoRotation.AutoRotation;
 import br.com.acta.Client.RepositoryCallback;
 import br.com.acta.Client.RetrofitClient;
 import br.com.acta.Model.Colaborador;
@@ -63,7 +54,6 @@ import br.com.acta.Model.Usuario;
 import br.com.acta.Services.ColaboradorService;
 import br.com.acta.Services.MeService;
 import br.com.acta.Services.UsuarioService;
-import retrofit2.Callback;
 
 public class Perfil extends AppCompatActivity {
 

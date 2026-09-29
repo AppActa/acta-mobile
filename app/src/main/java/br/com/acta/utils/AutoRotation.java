@@ -1,4 +1,4 @@
-package br.com.acta.AutoRotation;
+package br.com.acta.utils;
 
 import android.content.Context;
 import android.graphics.Bitmap;

@@ -32,7 +32,13 @@ public class MainActvity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            int padding32 = (int) (32 * v.getResources().getDisplayMetrics().density);
+            v.setPadding(
+                    systemBars.left + padding32,
+                    systemBars.top + padding32,
+                    systemBars.right + padding32,
+                    systemBars.bottom + padding32
+            );
             return insets;
         });
 

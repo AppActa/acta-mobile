@@ -1,5 +1,8 @@
 package br.com.acta.Model;
 
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import com.google.gson.annotations.SerializedName;
 import java.util.Set;
 
