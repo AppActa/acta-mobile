@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/containerMenuInferior"
+    android:layout_width="match_parent"
+    android:layout_height="88dp"
+    android:background="@drawable/bg_menu_inferior"
+    android:baselineAligned="false"
+    android:elevation="12dp"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingHorizontal="16dp">
+
+    <!-- Opção 1 (Esquerda) -->
+    <FrameLayout
+        android:id="@+id/btnMenuOpcao1"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground">
+
+        <View
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:background="@drawable/bg_quadrado_placeholder" />
+    </FrameLayout>
+
+    <!-- Opção 2 (Centro-Esquerda) -->
+    <FrameLayout
+        android:id="@+id/btnMenuOpcao2"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground">
+
+        <View
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:background="@drawable/bg_quadrado_placeholder" />
+    </FrameLayout>
+
+    <!-- Opção 3 (Centro - Logo) -->
+    <FrameLayout
+        android:id="@+id/btnMenuLogo"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground">
+
+        <ImageView
+            android:layout_width="58dp"
+            android:layout_height="58dp"
+            android:layout_gravity="center"
+            android:contentDescription="Logo Acta"
+            android:scaleType="fitCenter"
+            android:src="@drawable/logo_azul" />
+    </FrameLayout>
+
+    <!-- Opção 4 (Centro-Direita) -->
+    <FrameLayout
+        android:id="@+id/btnMenuOpcao4"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground">
+
+        <View
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:background="@drawable/bg_quadrado_placeholder" />
+    </FrameLayout>
+
+    <!-- Opção 5 (Direita) -->
+    <FrameLayout
+        android:id="@+id/btnMenuOpcao5"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground">
+
+        <View
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:background="@drawable/bg_quadrado_placeholder" />
+    </FrameLayout>
+
+</LinearLayout>

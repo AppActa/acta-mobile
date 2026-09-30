@@ -36,5 +36,6 @@ public class Ciclo {
 
     private OffsetDateTime criadoEm;
     private OffsetDateTime atualizadoEm;
+    private String iconeUrl;
 
 }

@@ -45,7 +45,7 @@ public class TelaLogin extends AppCompatActivity {
 
         if (currentUser != null) {
             Log.d("Auth", "Usuário já está logado, pular tela de login.");
-            Intent intent = new Intent(this, Perfil.class);
+            Intent intent = new Intent(this, HomeActivity.class);
             startActivity(intent);
             finish();
         }
@@ -115,7 +115,7 @@ public class TelaLogin extends AppCompatActivity {
             if (task.isSuccessful()) {
                 Toast.makeText(this, "Logado com sucesso!", Toast.LENGTH_SHORT).show();
                 erro.setVisibility(View.INVISIBLE);
-                Intent intent = new Intent(TelaLogin.this, Perfil.class);
+                Intent intent = new Intent(TelaLogin.this, HomeActivity.class);
                 startActivity(intent);
 
             } else {
