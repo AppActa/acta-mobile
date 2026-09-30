@@ -1,66 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mainHome"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/imagemFundoBoasVindas">
 
-    <!-- Cabeçalho Superior -->
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/headerHome"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingHorizontal="24dp"
-        android:paddingTop="16dp"
-        android:paddingBottom="20dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <!-- Logo Esquerda -->
-        <ImageView
-            android:id="@+id/imgLogoHeader"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:contentDescription="Logo Acta"
-            android:src="@drawable/img"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <!-- Foto de Perfil Redonda (Direita) -->
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/imgPerfilHeader"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/reicon_profile_filled"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Full" />
-
-        <!-- Sino de Notificações (Ao lado da foto de perfil) -->
-        <ImageView
-            android:id="@+id/btnSinoHeader"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_marginEnd="16dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:clickable="true"
-            android:contentDescription="Notificações"
-            android:focusable="true"
-            android:padding="2dp"
-            android:src="@drawable/sino"
-            app:layout_constraintBottom_toBottomOf="@id/imgPerfilHeader"
-            app:layout_constraintEnd_toStartOf="@id/imgPerfilHeader"
-            app:layout_constraintTop_toTopOf="@id/imgPerfilHeader" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <!-- Contêiner do Fragment -->
+    <!-- Contêiner do Fragment (Ocupa todo o espaço acima do menu) -->
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragmentContainer"
         android:name="androidx.navigation.fragment.NavHostFragment"
@@ -71,14 +17,14 @@
         app:layout_constraintBottom_toTopOf="@id/menuInferior"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/headerHome" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <!-- Menu Inferior -->
     <include
         android:id="@+id/menuInferior"
         layout="@layout/layout_menu_inferior"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="104dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

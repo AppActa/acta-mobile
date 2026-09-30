@@ -33,10 +33,5 @@ public class HomeActivity extends AppCompatActivity {
         if (navHostFragment != null) {
             navController = navHostFragment.getNavController();
         }
-        ImageView imgFotoPerfil = findViewById(R.id.imgPerfilHeader);
-        imgFotoPerfil.setOnClickListener(view -> {
-            Intent intent = new Intent(this, Perfil.class);
-            startActivity(intent);
-        });
     }
 }

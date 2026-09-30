@@ -4,104 +4,170 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_cartao_topo_arredondado"
+    android:background="?attr/imagemFundoBoasVindas"
     android:fillViewport="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingHorizontal="24dp"
-        android:paddingTop="28dp"
-        android:paddingBottom="24dp">
+        android:layout_height="wrap_content">
 
-        <!-- Saudação do Usuário -->
-        <TextView
-            android:id="@+id/txtSaudacao"
-            android:layout_width="0dp"
+        <!-- Cabeçalho Superior do Fragmento -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/headerFragment"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/plus_jakarta_sans"
-            android:text="Bom dia, Jones!"
-            android:textColor="#111111"
-            android:textSize="26sp"
-            android:textStyle="bold"
+            android:paddingHorizontal="24dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/txtSubtituloInicio"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:fontFamily="@font/plus_jakarta_sans"
-            android:text="Acompanhe o andamento dos seus\nciclos PDCA."
-            android:textColor="#616161"
-            android:textSize="15sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/txtSaudacao" />
-
-        <!-- Seção Meus Ciclos -->
-        <TextView
-            android:id="@+id/lblMeusCiclos"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:fontFamily="@font/plus_jakarta_sans"
-            android:text="Meus ciclos"
-            android:textColor="#111111"
-            android:textSize="22sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/txtSubtituloInicio" />
-
-        <!-- Botão Ver Todos -->
-        <LinearLayout
-            android:id="@+id/btnVerTodos"
-            android:layout_width="wrap_content"
-            android:layout_height="32dp"
-            android:background="@drawable/bg_btn_ver_todos"
-            android:clickable="true"
-            android:focusable="true"
-            android:foreground="?attr/selectableItemBackground"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:paddingHorizontal="14dp"
-            app:layout_constraintBottom_toBottomOf="@id/lblMeusCiclos"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/lblMeusCiclos">
-
+            <!-- Logo Esquerda -->
             <ImageView
-                android:layout_width="14dp"
-                android:layout_height="14dp"
-                android:contentDescription="Ícone Ver Todos"
-                android:src="@android:drawable/ic_menu_sort_by_size"
-                app:tint="#FFFFFF" />
+                android:id="@+id/imgLogoHeader"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:contentDescription="Logo Acta"
+                android:src="@drawable/img"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <!-- Foto de Perfil Redonda (Direita) -->
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/imgPerfilHeader"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/reicon_profile_filled"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Full" />
+
+            <!-- Sino de Notificações (Ao lado da foto de perfil) -->
+            <ImageView
+                android:id="@+id/btnSinoHeader"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginEnd="16dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:contentDescription="Notificações"
+                android:focusable="true"
+                android:padding="2dp"
+                android:src="@drawable/sino"
+                app:layout_constraintBottom_toBottomOf="@id/imgPerfilHeader"
+                app:layout_constraintEnd_toStartOf="@id/imgPerfilHeader"
+                app:layout_constraintTop_toTopOf="@id/imgPerfilHeader" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- Cartão Branco Arredondado no Topo -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/containerConteudoBranco"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@drawable/bg_cartao_topo_arredondado"
+            android:paddingHorizontal="24dp"
+            android:paddingTop="28dp"
+            android:paddingBottom="24dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/headerFragment">
+
+            <!-- Saudação do Usuário -->
+            <TextView
+                android:id="@+id/txtSaudacao"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:text="Bom dia, Jones!"
+                android:textColor="#111111"
+                android:textSize="26sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
+                android:id="@+id/txtSubtituloInicio"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:text="Acompanhe o andamento dos seus\nciclos PDCA."
+                android:textColor="#616161"
+                android:textSize="15sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txtSaudacao" />
+
+            <!-- Seção Meus Ciclos -->
+            <TextView
+                android:id="@+id/lblMeusCiclos"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="6dp"
+                android:layout_marginTop="32dp"
                 android:fontFamily="@font/plus_jakarta_sans"
-                android:text="Ver todos"
-                android:textColor="#FFFFFF"
-                android:textSize="12sp"
-                android:textStyle="bold" />
-        </LinearLayout>
+                android:text="Meus ciclos"
+                android:textColor="#111111"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txtSubtituloInicio" />
 
-        <!-- RecyclerView Horizontal dos Ciclos -->
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvMeusCiclos"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:clipToPadding="false"
-            android:orientation="horizontal"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/lblMeusCiclos"
-            tools:listitem="@layout/item_ciclo_card" />
+            <!-- Botão Ver Todos -->
+            <LinearLayout
+                android:id="@+id/btnVerTodos"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:background="@drawable/bg_btn_ver_todos"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingHorizontal="14dp"
+                app:layout_constraintBottom_toBottomOf="@id/lblMeusCiclos"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/lblMeusCiclos">
+
+                <ImageView
+                    android:layout_width="14dp"
+                    android:layout_height="14dp"
+                    android:contentDescription="Ícone Ver Todos"
+                    android:src="@android:drawable/ic_menu_sort_by_size"
+                    app:tint="#FFFFFF" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:fontFamily="@font/plus_jakarta_sans"
+                    android:text="Ver todos"
+                    android:textColor="#FFFFFF"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <!-- RecyclerView Horizontal dos Ciclos -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvMeusCiclos"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:clipToPadding="false"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/lblMeusCiclos"
+                tools:listitem="@layout/item_ciclo_card" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
