@@ -12,6 +12,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -20,11 +21,13 @@ import com.google.android.material.imageview.ShapeableImageView;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import br.com.acta.Adapter.CicloAdapter;
 import br.com.acta.Api.CicloApi;
 import br.com.acta.Api.MeApi;
 import br.com.acta.Api.UsuarioApi;
+import br.com.acta.Api.UsuarioCicloApi;
 import br.com.acta.Auth.FirebaseTokenProvider;
 import br.com.acta.Auth.TokenProvider;
 import br.com.acta.Client.RepositoryCallback;
@@ -35,13 +38,16 @@ import br.com.acta.Model.Usuario;
 import br.com.acta.Model.UsuarioCiclo;
 import br.com.acta.Services.CicloService;
 import br.com.acta.Services.MeService;
+import br.com.acta.Services.UsuarioCicloService;
 import br.com.acta.Services.UsuarioService;
 
 public class InicioFragment extends Fragment {
     private final TokenProvider tokenProvider = new FirebaseTokenProvider(FirebaseAuth.getInstance());
     private final UsuarioApi usuarioApi = RetrofitClient.getInstance(tokenProvider).create(UsuarioApi.class);
+    private final UsuarioCicloApi usuarioCicloApi = RetrofitClient.getInstance(tokenProvider).create(UsuarioCicloApi.class);
     private final CicloApi cicloApi = RetrofitClient.getInstance(tokenProvider).create(CicloApi.class);
     private final UsuarioService usuarioService = new UsuarioService(usuarioApi);
+    private final UsuarioCicloService usuarioCicloService = new UsuarioCicloService(usuarioCicloApi);
     private final CicloService cicloService = new CicloService(cicloApi);
     private final MeApi meApi = RetrofitClient.getInstance(tokenProvider).create(MeApi.class);
     private final MeService meService = new MeService(meApi);
@@ -49,7 +55,6 @@ public class InicioFragment extends Fragment {
 
     private Long id;
     private TextView txtSaudacao;
-    private ArrayList<Ciclo> listCiclo;
     ArrayList<UsuarioCiclo> listUsuarioCiclo;
 
     @Nullable
@@ -62,12 +67,10 @@ public class InicioFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         RecyclerView recyclerView = view.findViewById(R.id.rvMeusCiclos);
-        adapter = new CicloAdapter();
 
         ShapeableImageView imgPerfilHeader = view.findViewById(R.id.imgPerfilHeader);
         txtSaudacao = view.findViewById(R.id.txtSaudacao);
-
-        carregarMe(imgPerfilHeader);
+        carregarMe(imgPerfilHeader,recyclerView);
 
         if (imgPerfilHeader != null) {
             imgPerfilHeader.setOnClickListener(v -> {
@@ -77,7 +80,7 @@ public class InicioFragment extends Fragment {
         }
     }
 
-    private void buscarFotoDoBanco(Long idUsuario, ImageView imgFotoPerfil) {
+    private void buscarUsuarioFotoECiclo(Long idUsuario, ImageView imgFotoPerfil,RecyclerView rvMeusCiclos) {
         if (!isAdded()) return;
 
         usuarioService.buscarUsuario(idUsuario, new RepositoryCallback<Usuario>() {
@@ -96,7 +99,22 @@ public class InicioFragment extends Fragment {
                 } else {
                     imgFotoPerfil.setImageResource(R.drawable.reicon_profile_filled);
                 }
+                if (usuario != null && usuario.getCiclos() != null) {
+                    List<Ciclo> listaCiclos = new ArrayList<>();
+
+                    // Converte o Set<UsuarioCiclo> em uma List<Ciclo>
+                    for (UsuarioCiclo uc : usuario.getCiclos()) {
+                        if (uc.getCiclo() != null) {
+                            listaCiclos.add(uc.getCiclo());
+                        }
+                    }
+                    rvMeusCiclos.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false));
+
+                    CicloAdapter adapter = new CicloAdapter(listaCiclos);
+                    rvMeusCiclos.setAdapter(adapter);
+                }
             }
+
 
             @Override
             public void onError(int statusCode, String message) {
@@ -106,7 +124,7 @@ public class InicioFragment extends Fragment {
         });
     }
 
-    public void carregarMe(ImageView imgPerfilHeader) {
+    public void carregarMe(ImageView imgPerfilHeader,RecyclerView rvMeusCiclos) {
         meService.getMe(new RepositoryCallback<Me>() {
             @Override
             public void onSuccess(Me me) {
@@ -118,7 +136,7 @@ public class InicioFragment extends Fragment {
                     txtSaudacao.setText("Bom dia, " + me.getNome() + "!");
                 }
 
-                buscarFotoDoBanco(id, imgPerfilHeader);
+                buscarUsuarioFotoECiclo(id, imgPerfilHeader,rvMeusCiclos);
             }
 
             @Override

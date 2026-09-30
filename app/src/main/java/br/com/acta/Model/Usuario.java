@@ -1,6 +1,7 @@
 package br.com.acta.Model;
 
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import com.google.gson.annotations.SerializedName;
@@ -17,7 +18,9 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
+@Entity(tableName = "usuario_sistema")
 public class Usuario {
+    @PrimaryKey
     private Long id;
 
     private String nome;
@@ -29,12 +32,13 @@ public class Usuario {
     private Long idEmpresa;
 
     private StatusGeral status;
-
+    @Ignore
     private Set<UsuarioCiclo> ciclos;
 
     private String criadoEm;
 
     private String atualizadoEm;
+    @Ignore
     private Set<Meta> metas;
 
     @SerializedName(value = "fotoUrl", alternate = {"url_foto", "urlFoto", "foto_url"})
