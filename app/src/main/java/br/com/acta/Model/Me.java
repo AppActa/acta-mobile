@@ -1,10 +1,14 @@
 package br.com.acta.Model;
 
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@Entity(tableName = "tb_me")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -12,6 +16,7 @@ import lombok.Setter;
 public class Me {
     private String firebaseUid;
 
+    @PrimaryKey
     private Long idUsuario;
 
     private Long idEmpresa;

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/card"
+    android:layout_width="138dp"
+    android:layout_height="195dp"
+    android:layout_marginEnd="12dp"
+    android:background="@drawable/bg_card_ciclo"
+    android:padding="10dp">
+
+    <!-- Bloco Quadrado do Ícone do Ciclo -->
+    <FrameLayout
+        android:id="@+id/containerIconeCiclo"
+        android:layout_width="118dp"
+        android:layout_height="85dp"
+        android:background="@drawable/bg_btn_principal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/imgIconeCiclo"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:contentDescription="Ícone do Ciclo"
+            android:src="@android:drawable/ic_menu_today"
+            app:tint="#FFFFFF" />
+    </FrameLayout>
+
+    <!-- Título do Ciclo -->
+    <TextView
+        android:id="@+id/txtTituloCiclo"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:ellipsize="end"
+        android:fontFamily="@font/plus_jakarta_sans"
+        android:gravity="center"
+        android:maxLines="2"
+        android:textColor="#212121"
+        android:textSize="11sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/containerIconeCiclo"
+        tools:text="Redução do tempo de atendimento" />
+
+    <!-- Badge de Status -->
+    <TextView
+        android:id="@+id/txtStatusCiclo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="2dp"
+        android:background="@drawable/bg_status_pill"
+        android:fontFamily="@font/plus_jakarta_sans"
+        android:paddingHorizontal="10dp"
+        android:paddingVertical="3dp"
+        android:textColor="#FFFFFF"
+        android:textSize="10sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="Status: Do" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

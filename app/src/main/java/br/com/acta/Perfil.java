@@ -153,6 +153,7 @@ public class Perfil extends AppCompatActivity {
         preferences = getSharedPreferences("config_app", MODE_PRIVATE);
         editarImg = findViewById(R.id.btnAlterarFotoPerfil);
         imgFotoPerfil = findViewById(R.id.imgFotoPerfil);
+        ImageView volta = findViewById(R.id.btnVoltar);
         carregarMe();
         LinearLayout sair = findViewById(R.id.btnSair);
         sair.setOnClickListener(view -> {
@@ -202,6 +203,10 @@ public class Perfil extends AppCompatActivity {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
                 salvarPreferenciaTema(false);
             }
+        });
+        volta.setOnClickListener(view -> {
+            Intent intent = new Intent(this, HomeActivity.class);
+            startActivity(intent);
         });
 
     }

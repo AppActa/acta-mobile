@@ -1,6 +1,9 @@
 package br.com.acta.Model;
 
-import java.time.LocalDate;
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
+
 import java.util.List;
 
 import br.com.acta.Model.Contatos.Email;
@@ -10,15 +13,22 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@Entity(tableName = "tb_colaborador")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 public class Colaborador {
+    @PrimaryKey
     private Long id;
     private String nome;
+
+    @Ignore
     private List<Email> email;
+
+    @Ignore
     private List<Telefone> telefone;
+
     private String cpf;
     private String cargo;
     private String area;
