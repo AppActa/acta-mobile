@@ -35,6 +35,7 @@ import br.com.acta.Client.RetrofitClient;
 import br.com.acta.DAO.AppDatabase;
 import br.com.acta.DAO.ColaboradorDao;
 import br.com.acta.DAO.MeDao;
+import br.com.acta.DAO.UsuarioCicloDao;
 import br.com.acta.DAO.UsuarioDao;
 import br.com.acta.Model.Ciclo;
 import br.com.acta.Model.Colaborador;
@@ -59,7 +60,6 @@ public class HomeActivity extends AppCompatActivity {
     private final CicloService cicloService = new CicloService(cicloApi);
     private final MeApi meApi = RetrofitClient.getInstance(tokenProvider).create(MeApi.class);
     private final MeService meService = new MeService(meApi);
-    private CicloAdapter adapter;
     private ColaboradorApi colaboradorApi = RetrofitClient.getInstance(tokenProvider).create(ColaboradorApi.class);
     private ColaboradorService colaboradorService = new ColaboradorService(colaboradorApi);
 
@@ -67,6 +67,7 @@ public class HomeActivity extends AppCompatActivity {
     private UsuarioDao usuarioDao;
     private MeDao meDao;
     private ColaboradorDao colaboradorDao;
+    private UsuarioCicloDao usuarioCicloDao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +78,7 @@ public class HomeActivity extends AppCompatActivity {
         usuarioDao = AppDatabase.getInstance(this).usuarioDao();
         meDao = AppDatabase.getInstance(this).meDao();
         colaboradorDao = AppDatabase.getInstance(this).colaboradorDao();
+        usuarioCicloDao = AppDatabase.getInstance(this).usuarioCicloDao();
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.mainHome), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -109,6 +111,7 @@ public class HomeActivity extends AppCompatActivity {
             public void onSuccess(Me me) {
                 id = me.getIdUsuario();
                 buscarUsuario(id);
+                carregarColaborador(id);
                 meDao.salvar(me);
             }
 
@@ -123,6 +126,19 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onSuccess(Colaborador colaborador) {
                 colaboradorDao.salvar(colaborador);
+            }
+
+            @Override
+            public void onError(int code, String message) {
+
+            }
+        });
+    }
+    public void carregarUsuarioCiclo(Long idCiclo){
+        usuarioCicloService.buscarUsuarioCiclo(idCiclo,new RepositoryCallback<UsuarioCiclo>(){
+            @Override
+            public void onSuccess(UsuarioCiclo usuarioCiclo) {
+                usuarioCicloDao.salvar(usuarioCiclo);
             }
 
             @Override
