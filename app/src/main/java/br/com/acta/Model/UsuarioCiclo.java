@@ -4,7 +4,10 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+import com.google.gson.annotations.SerializedName;
+
 import br.com.acta.Model.Enum.PapelCiclo;
+import br.com.acta.Model.Enum.StatusCiclo;
 import br.com.acta.Model.Id.UsuarioCicloId;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,6 +23,26 @@ public class UsuarioCiclo {
     @PrimaryKey(autoGenerate = true)
     private Long idLocal;
 
+    @SerializedName("idUsuario")
+    private Long idUsuario;
+
+    @SerializedName("idCiclo")
+    private Long idCiclo;
+
+    @SerializedName("nomeUsuario")
+    private String nomeUsuario;
+
+    @SerializedName("nomeCiclo")
+    private String nomeCiclo;
+
+    @SerializedName("statusCiclo")
+    private StatusCiclo statusCiclo;
+
+    @SerializedName("iconeUrl")
+    private String iconeUrl;
+
+    private PapelCiclo papelCiclo;
+
     @Ignore
     private UsuarioCicloId id;
 
@@ -29,15 +52,60 @@ public class UsuarioCiclo {
     @Ignore
     private Ciclo ciclo;
 
-    @Ignore
-    private PapelCiclo papelCiclo;
-
     public Long getIdLocal() {
         return idLocal;
     }
 
     public void setIdLocal(Long idLocal) {
         this.idLocal = idLocal;
+    }
+
+    public Long getIdUsuario() {
+        return idUsuario;
+    }
+
+    public void setIdUsuario(Long idUsuario) {
+        this.idUsuario = idUsuario;
+    }
+
+    public Long getIdCiclo() {
+        return idCiclo;
+    }
+
+    public void setIdCiclo(Long idCiclo) {
+        this.idCiclo = idCiclo;
+    }
+
+    public String getNomeUsuario() {
+        return nomeUsuario;
+    }
+
+    public void setNomeUsuario(String nomeUsuario) {
+        this.nomeUsuario = nomeUsuario;
+    }
+
+    public String getNomeCiclo() {
+        return nomeCiclo;
+    }
+
+    public void setNomeCiclo(String nomeCiclo) {
+        this.nomeCiclo = nomeCiclo;
+    }
+
+    public StatusCiclo getStatusCiclo() {
+        return statusCiclo;
+    }
+
+    public void setStatusCiclo(StatusCiclo statusCiclo) {
+        this.statusCiclo = statusCiclo;
+    }
+
+    public String getIconeUrl() {
+        return iconeUrl;
+    }
+
+    public void setIconeUrl(String iconeUrl) {
+        this.iconeUrl = iconeUrl;
     }
 
     public UsuarioCicloId getId() {

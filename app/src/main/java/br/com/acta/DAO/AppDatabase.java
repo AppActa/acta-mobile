@@ -14,7 +14,7 @@ import br.com.acta.Model.Meta;
 import br.com.acta.Model.Usuario;
 import br.com.acta.Model.UsuarioCiclo;
 
-@Database(entities = {Usuario.class, Ciclo.class, Me.class, Meta.class, Colaborador.class, Empresa.class, UsuarioCiclo.class}, version = 1, exportSchema = false)
+@Database(entities = {Usuario.class, Ciclo.class, Me.class, Meta.class, Colaborador.class, Empresa.class, UsuarioCiclo.class}, version = 2, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
     public abstract UsuarioDao usuarioDao();
     public abstract MeDao meDao();
@@ -30,7 +30,10 @@ public abstract class AppDatabase extends RoomDatabase {
                     context.getApplicationContext(),
                     AppDatabase.class,
                     "acta_local_db"
-            ).allowMainThreadQueries().build();
+            )
+            .fallbackToDestructiveMigration()
+            .allowMainThreadQueries()
+            .build();
         }
         return INSTANCE;
     }

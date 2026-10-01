@@ -19,4 +19,10 @@ public interface UsuarioCicloDao {
 
     @Query("SELECT * FROM tb_usuario_ciclo")
     List<UsuarioCiclo> listarTodos();
+
+    @Query("SELECT * FROM tb_usuario_ciclo WHERE idUsuario = :idUsuario")
+    List<UsuarioCiclo> buscarPorIdUsuario(Long idUsuario);
+
+    @Query("SELECT * FROM tb_usuario_ciclo WHERE idCiclo = :idCiclo")
+    List<UsuarioCiclo> buscarPorIdCiclo(Long idCiclo);
 }

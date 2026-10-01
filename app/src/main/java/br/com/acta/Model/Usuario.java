@@ -33,6 +33,7 @@ public class Usuario {
 
     private StatusGeral status;
     @Ignore
+    @SerializedName(value = "ciclos", alternate = {"usuarioCiclos", "ciclosUsuario", "usuario_ciclos", "ciclos_usuario"})
     private Set<UsuarioCiclo> ciclos;
 
     private String criadoEm;

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/card"
-    android:layout_width="138dp"
+    android:layout_width="152dp"
     android:layout_height="195dp"
     android:layout_marginEnd="12dp"
     android:background="@drawable/bg_card_ciclo"
@@ -12,7 +12,7 @@
     <!-- Bloco Quadrado do Ícone do Ciclo -->
     <FrameLayout
         android:id="@+id/containerIconeCiclo"
-        android:layout_width="118dp"
+        android:layout_width="132dp"
         android:layout_height="85dp"
         android:background="@drawable/bg_btn_principal"
         app:layout_constraintEnd_toEndOf="parent"
@@ -54,8 +54,10 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="2dp"
         android:background="@drawable/bg_status_pill"
+        android:ellipsize="end"
         android:fontFamily="@font/plus_jakarta_sans"
-        android:paddingHorizontal="10dp"
+        android:maxLines="1"
+        android:paddingHorizontal="8dp"
         android:paddingVertical="3dp"
         android:textColor="#FFFFFF"
         android:textSize="10sp"
@@ -63,6 +65,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:text="Status: Do" />
+        tools:text="Status: CONCLUIDO" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
