@@ -97,7 +97,6 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onSuccess(Me me) {
                 id = me.getIdUsuario();
-                carregarColaborador(me.getIdColaborador());
                 buscarUsuario(id);
             }
 

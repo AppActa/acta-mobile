@@ -6,9 +6,14 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
+import br.com.acta.Model.Ciclo;
+import br.com.acta.Model.Colaborador;
+import br.com.acta.Model.Empresa;
+import br.com.acta.Model.Me;
+import br.com.acta.Model.Meta;
 import br.com.acta.Model.Usuario;
 
-@Database(entities = {Usuario.class}, version = 1, exportSchema = false)
+@Database(entities = {Usuario.class, Ciclo.class, Me.class, Meta.class, Colaborador.class, Empresa.class}, version = 1, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
     public abstract UsuarioDao usuarioDao();
 
