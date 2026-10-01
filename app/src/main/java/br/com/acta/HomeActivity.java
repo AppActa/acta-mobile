@@ -24,6 +24,7 @@ import java.util.List;
 
 import br.com.acta.Adapter.CicloAdapter;
 import br.com.acta.Api.CicloApi;
+import br.com.acta.Api.ColaboradorApi;
 import br.com.acta.Api.MeApi;
 import br.com.acta.Api.UsuarioApi;
 import br.com.acta.Api.UsuarioCicloApi;
@@ -32,12 +33,16 @@ import br.com.acta.Auth.TokenProvider;
 import br.com.acta.Client.RepositoryCallback;
 import br.com.acta.Client.RetrofitClient;
 import br.com.acta.DAO.AppDatabase;
+import br.com.acta.DAO.ColaboradorDao;
+import br.com.acta.DAO.MeDao;
 import br.com.acta.DAO.UsuarioDao;
 import br.com.acta.Model.Ciclo;
+import br.com.acta.Model.Colaborador;
 import br.com.acta.Model.Me;
 import br.com.acta.Model.Usuario;
 import br.com.acta.Model.UsuarioCiclo;
 import br.com.acta.Services.CicloService;
+import br.com.acta.Services.ColaboradorService;
 import br.com.acta.Services.MeService;
 import br.com.acta.Services.UsuarioCicloService;
 import br.com.acta.Services.UsuarioService;
@@ -55,15 +60,23 @@ public class HomeActivity extends AppCompatActivity {
     private final MeApi meApi = RetrofitClient.getInstance(tokenProvider).create(MeApi.class);
     private final MeService meService = new MeService(meApi);
     private CicloAdapter adapter;
+    private ColaboradorApi colaboradorApi = RetrofitClient.getInstance(tokenProvider).create(ColaboradorApi.class);
+    private ColaboradorService colaboradorService = new ColaboradorService(colaboradorApi);
 
     private Long id;
-    UsuarioDao usuarioDao = AppDatabase.getInstance(this).usuarioDao();
+    private UsuarioDao usuarioDao;
+    private MeDao meDao;
+    private ColaboradorDao colaboradorDao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_home);
+
+        usuarioDao = AppDatabase.getInstance(this).usuarioDao();
+        meDao = AppDatabase.getInstance(this).meDao();
+        colaboradorDao = AppDatabase.getInstance(this).colaboradorDao();
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.mainHome), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -84,8 +97,6 @@ public class HomeActivity extends AppCompatActivity {
             public void onSuccess(Usuario usuario) {
                 usuarioDao.salvar(usuario);
             }
-
-
             @Override
             public void onError(int statusCode, String message) {
             }
@@ -98,6 +109,20 @@ public class HomeActivity extends AppCompatActivity {
             public void onSuccess(Me me) {
                 id = me.getIdUsuario();
                 buscarUsuario(id);
+                meDao.salvar(me);
+            }
+
+            @Override
+            public void onError(int code, String message) {
+
+            }
+        });
+    }
+    public void carregarColaborador(Long idColaborador){
+        colaboradorService.getColaborador( idColaborador,new RepositoryCallback<Colaborador>(){
+            @Override
+            public void onSuccess(Colaborador colaborador) {
+                colaboradorDao.salvar(colaborador);
             }
 
             @Override
