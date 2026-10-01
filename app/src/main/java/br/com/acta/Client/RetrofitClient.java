@@ -25,7 +25,8 @@ public final class RetrofitClient {
 
             // Configurar logging para debug
             HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-            logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+            // Evita registrar códigos de convite enviados nos corpos das requisições.
+            logging.setLevel(HttpLoggingInterceptor.Level.BASIC);
 
             // Configurando OkHttpClient
             OkHttpClient client = new OkHttpClient.Builder()

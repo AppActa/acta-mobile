@@ -9,6 +9,7 @@
 
     <color name="turquesa_dark_start">#63A4B4</color>
     <color name="turquesa_dark_center">#0B4E6B</color>
+    <color name="favicon_background">#081524</color>
     <color name="bg_dark_end">#121212</color>
     <color name="capsula_dark">#731A1A1A</color>
     <color name="text_light">#FFFFFF</color>
