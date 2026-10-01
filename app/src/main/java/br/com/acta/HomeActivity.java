@@ -33,6 +33,7 @@ import br.com.acta.Auth.TokenProvider;
 import br.com.acta.Client.RepositoryCallback;
 import br.com.acta.Client.RetrofitClient;
 import br.com.acta.DAO.AppDatabase;
+import br.com.acta.DAO.CicloDao;
 import br.com.acta.DAO.ColaboradorDao;
 import br.com.acta.DAO.MeDao;
 import br.com.acta.DAO.UsuarioCicloDao;
@@ -68,6 +69,7 @@ public class HomeActivity extends AppCompatActivity {
     private MeDao meDao;
     private ColaboradorDao colaboradorDao;
     private UsuarioCicloDao usuarioCicloDao;
+    private CicloDao cicloDao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +81,8 @@ public class HomeActivity extends AppCompatActivity {
         meDao = AppDatabase.getInstance(this).meDao();
         colaboradorDao = AppDatabase.getInstance(this).colaboradorDao();
         usuarioCicloDao = AppDatabase.getInstance(this).usuarioCicloDao();
+        cicloDao = AppDatabase.getInstance(this).cicloDao();
+        carregarMe();
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.mainHome), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -98,6 +102,14 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onSuccess(Usuario usuario) {
                 usuarioDao.salvar(usuario);
+                if (usuario != null && usuario.getCiclos() != null) {
+                    for (UsuarioCiclo uc : usuario.getCiclos()) {
+                        usuarioCicloDao.salvar(uc);
+                        if (uc.getCiclo() != null) {
+                            cicloDao.salvar(uc.getCiclo());
+                        }
+                    }
+                }
             }
             @Override
             public void onError(int statusCode, String message) {
@@ -126,19 +138,6 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onSuccess(Colaborador colaborador) {
                 colaboradorDao.salvar(colaborador);
-            }
-
-            @Override
-            public void onError(int code, String message) {
-
-            }
-        });
-    }
-    public void carregarUsuarioCiclo(Long idCiclo){
-        usuarioCicloService.buscarUsuarioCiclo(idCiclo,new RepositoryCallback<UsuarioCiclo>(){
-            @Override
-            public void onSuccess(UsuarioCiclo usuarioCiclo) {
-                usuarioCicloDao.salvar(usuarioCiclo);
             }
 
             @Override
