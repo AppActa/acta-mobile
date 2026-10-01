@@ -61,13 +61,13 @@ public class Perfil extends AppCompatActivity {
     private SharedPreferences preferences;
     private LinearLayout btnEditarPerfil;
     TokenProvider tokenProvider = new FirebaseTokenProvider(FirebaseAuth.getInstance());
-    private MeApi meApi = RetrofitClient.getInstance(tokenProvider).create(MeApi.class);
-    private ColaboradorApi colaboradorApi = RetrofitClient.getInstance(tokenProvider).create(ColaboradorApi.class);
-    private UsuarioApi usuarioApi = RetrofitClient.getInstance(tokenProvider).create(UsuarioApi.class);
-    private MeService meService = new MeService(meApi);
-    private ColaboradorService colaboradorService = new ColaboradorService(colaboradorApi);
+    private final MeApi meApi = RetrofitClient.getInstance(tokenProvider).create(MeApi.class);
+    private final ColaboradorApi colaboradorApi = RetrofitClient.getInstance(tokenProvider).create(ColaboradorApi.class);
+    private final UsuarioApi usuarioApi = RetrofitClient.getInstance(tokenProvider).create(UsuarioApi.class);
+    private final MeService meService = new MeService(meApi);
+    private final ColaboradorService colaboradorService = new ColaboradorService(colaboradorApi);
 
-    private UsuarioService usuarioService = new UsuarioService(usuarioApi);
+    private final UsuarioService usuarioService = new UsuarioService(usuarioApi);
     private Long id = null;
     private TextView nome;
     private TextView email;
@@ -113,24 +113,14 @@ public class Perfil extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_perfil);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.perfil), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+        KeyboardInsets.apply(findViewById(R.id.perfil), false);
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
             getWindow().setStatusBarColor(android.graphics.Color.TRANSPARENT);
             androidx.core.view.WindowInsetsControllerCompat controller =
                     new androidx.core.view.WindowInsetsControllerCompat(getWindow(), getWindow().getDecorView());
             controller.setAppearanceLightStatusBars(false); // 'false' deixa o relógio e bateria brancos
         }
-        // 2. Zera o padding superior do ScrollView para o azul do topo ir até a borda da tela
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.perfil), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            // top = 0 permite que o cabeçalho azul ocupe a barra de status
-            v.setPadding(systemBars.left, 0, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+        // O cabeçalho continua sob a barra de status; a utilidade aplica apenas o inset inferior no perfil.
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.btnVoltar), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             android.view.ViewGroup.MarginLayoutParams params =

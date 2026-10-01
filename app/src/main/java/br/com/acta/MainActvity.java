@@ -8,13 +8,10 @@ import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.constraintlayout.motion.widget.MotionLayout;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 public class MainActvity extends AppCompatActivity {
     private MotionLayout btnComecar;
-    private SharedPreferences preferences;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,19 +27,9 @@ public class MainActvity extends AppCompatActivity {
         }
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            int padding32 = (int) (32 * v.getResources().getDisplayMetrics().density);
-            v.setPadding(
-                    systemBars.left + padding32,
-                    systemBars.top + padding32,
-                    systemBars.right + padding32,
-                    systemBars.bottom + padding32
-            );
-            return insets;
-        });
+        KeyboardInsets.apply(findViewById(R.id.main));
 
-        preferences = getSharedPreferences("config_app", MODE_PRIVATE);
+        SharedPreferences preferences = getSharedPreferences("config_app", MODE_PRIVATE);
         boolean isModoClaro = preferences.getBoolean("is_modo_claro",true);
         AppCompatDelegate.setDefaultNightMode(isModoClaro ? AppCompatDelegate.MODE_NIGHT_NO : AppCompatDelegate.MODE_NIGHT_YES);
 
