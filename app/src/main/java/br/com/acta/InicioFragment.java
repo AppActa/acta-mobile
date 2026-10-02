@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -86,6 +87,12 @@ public class InicioFragment extends Fragment {
                 startActivity(intent);
             });
         }
+        View btnVerTodos = view.findViewById(R.id.btnVerTodos);
+        if (btnVerTodos != null) {
+            btnVerTodos.setOnClickListener(v -> {
+                androidx.navigation.Navigation.findNavController(v).navigate(R.id.meusCiclosFragment);
+            });
+        }
     }
 
     private void carregarDadosSQLiteLocal(ShapeableImageView imgPerfilHeader, RecyclerView recyclerView) {
@@ -141,7 +148,7 @@ public class InicioFragment extends Fragment {
                                 .skipMemoryCache(true)
                                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                                 .placeholder(R.drawable.reicon_profile_filled)
-                                .error(R.drawable.reicon_profile_filled)
+                                .error(R.drawable.logo_azul)
                                 .into(imgFotoPerfil);
                     }
                 }

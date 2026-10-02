@@ -56,7 +56,7 @@ public class CicloAdapter extends RecyclerView.Adapter<CicloAdapter.CardViewHold
                     .error(R.drawable.reicon_profile_filled)
                     .into(holder.imagemCiclo);
         } else {
-            holder.imagemCiclo.setImageResource(R.drawable.reicon_profile_filled);
+            holder.imagemCiclo.setImageResource(R.drawable.ic_arrow_forward);
         }
         holder.titulo.setText(ciclo.getTitulo());
         holder.status.setText("Status:"+ ciclo.getStatus());
