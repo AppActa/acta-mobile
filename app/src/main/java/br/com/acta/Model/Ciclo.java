@@ -25,6 +25,7 @@ public class Ciclo {
 
     private String descricao;
 
+    @Ignore
     private StatusCiclo status;
 
     private String dataInicio;

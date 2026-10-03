@@ -11,18 +11,16 @@ import br.com.acta.Model.Colaborador;
 import br.com.acta.Model.Empresa;
 import br.com.acta.Model.Me;
 import br.com.acta.Model.Meta;
-import br.com.acta.Model.PlanoAcao;
 import br.com.acta.Model.Usuario;
 import br.com.acta.Model.UsuarioCiclo;
 
-@Database(entities = {Usuario.class, Ciclo.class, Me.class, Meta.class, Colaborador.class, Empresa.class, UsuarioCiclo.class, PlanoAcao.class}, version = 3, exportSchema = false)
+@Database(entities = {Usuario.class, Ciclo.class, Me.class, Meta.class, Colaborador.class, Empresa.class, UsuarioCiclo.class}, version = 2, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
     public abstract UsuarioDao usuarioDao();
     public abstract MeDao meDao();
     public abstract CicloDao cicloDao();
     public abstract ColaboradorDao colaboradorDao();
     public abstract UsuarioCicloDao usuarioCicloDao();
-    public abstract PlanoAcaoDao planoAcaoDao();
 
     private static AppDatabase INSTANCE;
 
