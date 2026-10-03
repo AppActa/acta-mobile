@@ -4,8 +4,6 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-import java.time.LocalDate;
-import java.time.OffsetDateTime;
 import java.util.List;
 
 import br.com.acta.Model.Enum.StatusCiclo;
@@ -27,17 +25,13 @@ public class Ciclo {
 
     private String descricao;
 
-    @Ignore
     private StatusCiclo status;
 
-    @Ignore
-    private LocalDate dataInicio;
+    private String dataInicio;
 
-    @Ignore
-    private LocalDate dataEstimadaFim;
+    private String dataEstimadaFim;
 
-    @Ignore
-    private LocalDate dataFimReal;
+    private String dataFimReal;
 
     private Long idEmpresa;
 
@@ -46,11 +40,9 @@ public class Ciclo {
     @Ignore
     private List<UsuarioCiclo> colaboradores;
 
-    @Ignore
-    private OffsetDateTime criadoEm;
+    private String criadoEm;
 
-    @Ignore
-    private OffsetDateTime atualizadoEm;
+    private String atualizadoEm;
 
     private String iconeUrl;
 }

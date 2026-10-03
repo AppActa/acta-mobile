@@ -48,6 +48,7 @@ import br.com.acta.Auth.FirebaseTokenProvider;
 import br.com.acta.Auth.TokenProvider;
 import br.com.acta.Client.RepositoryCallback;
 import br.com.acta.Client.RetrofitClient;
+import br.com.acta.DAO.AppDatabase;
 import br.com.acta.Model.Colaborador;
 import br.com.acta.Model.Me;
 import br.com.acta.Model.Usuario;
@@ -157,6 +158,9 @@ public class Perfil extends AppCompatActivity {
         carregarMe();
         LinearLayout sair = findViewById(R.id.btnSair);
         sair.setOnClickListener(view -> {
+            new Thread(() -> {
+                AppDatabase.getInstance(Perfil.this).clearAllTables();
+            }).start();
             FirebaseAuth.getInstance().signOut();
             Intent intent = new Intent(Perfil.this, TelaLogin.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
