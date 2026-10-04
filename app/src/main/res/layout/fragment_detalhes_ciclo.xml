@@ -160,27 +160,19 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/txtPrazoFinalCiclo" />
 
-            <!-- Cartão 1: Análise de causas -->
-            <include
-                android:id="@+id/cardAnaliseCausasInclude"
-                layout="@layout/item_card_analise_causas"
-                android:layout_width="match_parent"
+            <!-- RecyclerView dos Planos de Ação -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvPlanosAcao"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
+                android:clipToPadding="false"
+                android:nestedScrollingEnabled="false"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/lblPlanejamento" />
-
-            <!-- Cartão 2: Plano 5W2H Fixo -->
-            <include
-                android:id="@+id/cardPlano5W2HInclude"
-                layout="@layout/item_card_plano_5w2h"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/cardAnaliseCausasInclude" />
+                app:layout_constraintTop_toBottomOf="@id/lblPlanejamento"
+                tools:listitem="@layout/item_card_plano_acao" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

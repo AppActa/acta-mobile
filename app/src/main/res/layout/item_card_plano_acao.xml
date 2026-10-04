@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cardPlanoAcaoItem"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="16dp"
+    android:layout_marginVertical="8dp"
+    android:background="@drawable/bg_card_white"
+    android:elevation="4dp"
+    android:padding="20dp">
+
+    <!-- Subtítulo / Origem -->
+    <TextView
+        android:id="@+id/lblOrigemPlanoAcao"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/plus_jakarta_sans"
+        android:text="Origem: MANUAL"
+        android:textColor="#006775"
+        android:textSize="13sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/txtStatusPlanoAcao"
+        app:layout_constraintEnd_toStartOf="@id/txtStatusPlanoAcao"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/txtStatusPlanoAcao" />
+
+    <!-- Status Badge (Pílula) -->
+    <TextView
+        android:id="@+id/txtStatusPlanoAcao"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_pill_pendente"
+        android:fontFamily="@font/plus_jakarta_sans"
+        android:paddingHorizontal="14dp"
+        android:paddingVertical="5dp"
+        android:textColor="#238357"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="EM_EXECUCAO" />
+
+    <!-- Nome do Plano de Ação -->
+    <TextView
+        android:id="@+id/txtNomePlanoAcao"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:ellipsize="end"
+        android:fontFamily="@font/plus_jakarta_sans"
+        android:maxLines="2"
+        android:textColor="#083248"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txtStatusPlanoAcao"
+        tools:text="Plano de Redução de Avarias no Estoque" />
+
+    <!-- Objetivo / Descrição -->
+    <TextView
+        android:id="@+id/txtObjetivoPlanoAcao"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:ellipsize="end"
+        android:fontFamily="@font/plus_jakarta_sans"
+        android:lineSpacingExtra="2dp"
+        android:maxLines="3"
+        android:textColor="#616161"
+        android:textSize="13sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txtNomePlanoAcao"
+        tools:text="Otimizar o processo de recebimento e organização de insumos para reduzir o tempo de separação." />
+
+    <!-- Tag de Prioridade -->
+    <TextView
+        android:id="@+id/txtPrioridadePlanoAcao"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:fontFamily="@font/plus_jakarta_sans"
+        android:textColor="#006775"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txtObjetivoPlanoAcao"
+        tools:text="Prioridade: ALTA" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
