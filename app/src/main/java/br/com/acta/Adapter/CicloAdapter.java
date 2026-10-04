@@ -1,5 +1,6 @@
 package br.com.acta.Adapter;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,8 +20,10 @@ import java.util.List;
 import br.com.acta.Api.CicloApi;
 import br.com.acta.Auth.FirebaseTokenProvider;
 import br.com.acta.Auth.TokenProvider;
+import br.com.acta.CicloPdcaActivity;
 import br.com.acta.Client.RetrofitClient;
 import br.com.acta.Model.Ciclo;
+import br.com.acta.Model.Enum.StatusCiclo;
 import br.com.acta.R;
 
 public class CicloAdapter extends RecyclerView.Adapter<CicloAdapter.CardViewHolder> {
@@ -57,7 +60,9 @@ public class CicloAdapter extends RecyclerView.Adapter<CicloAdapter.CardViewHold
         holder.titulo.setText(ciclo.getTitulo());
         holder.status.setText("Status:" + ciclo.getStatus());
         holder.card.setOnClickListener(v -> {
-
+            Intent intent = new Intent(v.getContext(), CicloPdcaActivity.class);
+            intent.putExtra("idCiclo", ciclo.getId());
+            v.getContext().startActivity(intent);
         });
     }
 
