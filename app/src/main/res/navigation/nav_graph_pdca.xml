@@ -11,4 +11,10 @@
         android:label="Detalhes do Ciclo"
         tools:layout="@layout/fragment_detalhes_ciclo" />
 
+    <fragment
+        android:id="@+id/detalhesPlanoAcaoFragment"
+        android:name="br.com.acta.DetalhesPlanoAcaoFragment"
+        android:label="Detalhes do Plano de Ação"
+        tools:layout="@layout/fragment_detalhes_plano_acao" />
+
 </navigation>

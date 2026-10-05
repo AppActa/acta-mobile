@@ -1,5 +1,6 @@
 package br.com.acta.Adapter;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.com.acta.CicloPdcaActivity;
 import br.com.acta.Model.PlanoAcao;
 import br.com.acta.R;
 
@@ -35,8 +37,15 @@ public class PlanoAcaoAdapter extends RecyclerView.Adapter<PlanoAcaoAdapter.Plan
     @Override
     public void onBindViewHolder(@NonNull PlanoAcaoViewHolder holder, int position) {
         PlanoAcao plano = planoAcaoList.get(position);
-        holder.card.setOnClickListener(view -> {
-
+        holder.card.setOnClickListener(v -> {
+            Intent intent = new Intent(v.getContext(), CicloPdcaActivity.class);
+            if (plano.getId() != null) {
+                intent.putExtra("idPlanoAcao", plano.getId());
+            }
+            if (plano.getIdCiclo() != null) {
+                intent.putExtra("idCiclo", plano.getIdCiclo());
+            }
+            v.getContext().startActivity(intent);
         });
 
         if (plano.getOrigem() != null) {
