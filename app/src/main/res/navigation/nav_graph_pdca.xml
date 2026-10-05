@@ -3,7 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph_pdca"
-    app:startDestination="@id/detalhesCicloFragment">
+    app:startDestination="@id/geralCicloFragment">
+
+    <fragment
+        android:id="@+id/geralCicloFragment"
+        android:name="br.com.acta.GeralCicloFragment"
+        android:label="Visão Geral do Ciclo"
+        tools:layout="@layout/fragment_geral_ciclo" />
 
     <fragment
         android:id="@+id/detalhesCicloFragment"
