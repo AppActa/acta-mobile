@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,8 +24,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.acta.Adapter.CicloAdapter;
+import br.com.acta.Adapter.TarefaAdapter;
 import br.com.acta.Api.CicloApi;
 import br.com.acta.Api.MeApi;
+import br.com.acta.Api.TarefaApi;
 import br.com.acta.Api.UsuarioApi;
 import br.com.acta.Api.UsuarioCicloApi;
 import br.com.acta.Auth.FirebaseTokenProvider;
@@ -36,13 +37,17 @@ import br.com.acta.Client.RetrofitClient;
 import br.com.acta.DAO.AppDatabase;
 import br.com.acta.DAO.CicloDao;
 import br.com.acta.DAO.MeDao;
+import br.com.acta.DAO.TarefaDao;
 import br.com.acta.DAO.UsuarioDao;
 import br.com.acta.Model.Ciclo;
+import br.com.acta.Model.Enum.StatusTarefa;
 import br.com.acta.Model.Me;
+import br.com.acta.Model.Tarefa;
 import br.com.acta.Model.Usuario;
 import br.com.acta.Model.UsuarioCiclo;
 import br.com.acta.Services.CicloService;
 import br.com.acta.Services.MeService;
+import br.com.acta.Services.TarefaService;
 import br.com.acta.Services.UsuarioCicloService;
 import br.com.acta.Services.UsuarioService;
 
@@ -51,14 +56,18 @@ public class InicioFragment extends Fragment {
     private final UsuarioApi usuarioApi = RetrofitClient.getInstance(tokenProvider).create(UsuarioApi.class);
     private final UsuarioCicloApi usuarioCicloApi = RetrofitClient.getInstance(tokenProvider).create(UsuarioCicloApi.class);
     private final CicloApi cicloApi = RetrofitClient.getInstance(tokenProvider).create(CicloApi.class);
+    private final TarefaApi tarefaApi = RetrofitClient.getInstance(tokenProvider).create(TarefaApi.class);
     private final UsuarioService usuarioService = new UsuarioService(usuarioApi);
     private final UsuarioCicloService usuarioCicloService = new UsuarioCicloService(usuarioCicloApi);
     private final CicloService cicloService = new CicloService(cicloApi);
+    private final TarefaService tarefaService = new TarefaService(tarefaApi);
     private final MeApi meApi = RetrofitClient.getInstance(tokenProvider).create(MeApi.class);
     private final MeService meService = new MeService(meApi);
 
     private Long id;
     private TextView txtSaudacao;
+    private TextView txtResumoTarefas;
+    private RecyclerView rvMinhasTarefas;
 
     @Nullable
     @Override
@@ -72,6 +81,12 @@ public class InicioFragment extends Fragment {
         RecyclerView recyclerView = view.findViewById(R.id.rvMeusCiclos);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false));
 
+        rvMinhasTarefas = view.findViewById(R.id.rvMinhasTarefas);
+        if (rvMinhasTarefas != null) {
+            rvMinhasTarefas.setLayoutManager(new LinearLayoutManager(requireContext()));
+        }
+
+        txtResumoTarefas = view.findViewById(R.id.txtResumoTarefas);
         ShapeableImageView imgPerfilHeader = view.findViewById(R.id.imgPerfilHeader);
         txtSaudacao = view.findViewById(R.id.txtSaudacao);
 
@@ -80,6 +95,7 @@ public class InicioFragment extends Fragment {
 
         // 2. Chamar a API em segundo plano para atualizar
         carregarMe(imgPerfilHeader, recyclerView);
+        carregarMinhasTarefasAPI();
 
         if (imgPerfilHeader != null) {
             imgPerfilHeader.setOnClickListener(v -> {
@@ -120,8 +136,65 @@ public class InicioFragment extends Fragment {
             if (ciclosLocais != null && !ciclosLocais.isEmpty()) {
                 recyclerView.setAdapter(new CicloAdapter(ciclosLocais));
             }
+
+            // C. Carregar Tarefas Locais do TarefaDao
+            TarefaDao tarefaDao = AppDatabase.getInstance(requireContext()).tarefaDao();
+            List<Tarefa> tarefasLocais = tarefaDao.listarTodas();
+            if (tarefasLocais != null && !tarefasLocais.isEmpty()) {
+                exibirTarefasAte2Dias(tarefasLocais);
+            }
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    private void carregarMinhasTarefasAPI() {
+        tarefaService.buscarMinhas(new RepositoryCallback<List<Tarefa>>() {
+            @Override
+            public void onSuccess(List<Tarefa> tarefas) {
+                if (!isAdded() || tarefas == null) return;
+
+                // Salvar no SQLite local
+                try {
+                    AppDatabase.getInstance(requireContext()).tarefaDao().salvarTodos(tarefas);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                exibirTarefasAte2Dias(tarefas);
+            }
+
+            @Override
+            public void onError(int code, String message) {
+            }
+        });
+    }
+
+    private void exibirTarefasAte2Dias(List<Tarefa> tarefas) {
+        if (!isAdded() || tarefas == null) return;
+
+        List<Tarefa> tarefasProximas = new ArrayList<>();
+        int atrasadas = 0;
+        int emAndamento = 0;
+
+        for (Tarefa t : tarefas) {
+            if (t.getStatus() == StatusTarefa.ATRASADA) {
+                atrasadas++;
+                tarefasProximas.add(t);
+            } else if (t.getStatus() == StatusTarefa.EM_ANDAMENTO || t.getStatus() == StatusTarefa.PENDENTE) {
+                emAndamento++;
+                if (tarefasProximas.size() < 2) {
+                    tarefasProximas.add(t);
+                }
+            }
+        }
+
+        if (txtResumoTarefas != null) {
+            txtResumoTarefas.setText(atrasadas + " atrasada · " + emAndamento + " em andamento");
+        }
+
+        if (rvMinhasTarefas != null) {
+            rvMinhasTarefas.setAdapter(new TarefaAdapter(tarefasProximas));
         }
     }
 
