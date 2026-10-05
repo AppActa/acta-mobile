@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -44,7 +45,13 @@ public class DetalhesPlanoAcaoFragment extends Fragment {
 
         ImageButton btnVoltar = view.findViewById(R.id.btnVoltarDetalhesPlanoAcao);
         if (btnVoltar != null) {
-            btnVoltar.setOnClickListener(v -> requireActivity().finish());
+            btnVoltar.setOnClickListener(v -> {
+                try {
+                    Navigation.findNavController(v).navigateUp();
+                } catch (Exception e) {
+                    requireActivity().finish();
+                }
+            });
         }
 
         txtNomePlano = view.findViewById(R.id.txtNomePlanoAcaoDetalhe);
@@ -52,11 +59,15 @@ public class DetalhesPlanoAcaoFragment extends Fragment {
         txtStatus = view.findViewById(R.id.txtStatusPlanoAcaoDetalhe);
         txtObjetivo = view.findViewById(R.id.txtObjetivoPlanoAcaoDetalhe);
 
-        if (requireActivity().getIntent() != null && requireActivity().getIntent().hasExtra("idPlanoAcao")) {
-            Long idPlanoAcao = requireActivity().getIntent().getLongExtra("idPlanoAcao", 0L);
-            if (idPlanoAcao != 0L) {
-                buscarPlanoAcao(idPlanoAcao);
-            }
+        Long idPlanoAcao = 0L;
+        if (getArguments() != null && getArguments().containsKey("idPlanoAcao")) {
+            idPlanoAcao = getArguments().getLong("idPlanoAcao", 0L);
+        } else if (requireActivity().getIntent() != null && requireActivity().getIntent().hasExtra("idPlanoAcao")) {
+            idPlanoAcao = requireActivity().getIntent().getLongExtra("idPlanoAcao", 0L);
+        }
+
+        if (idPlanoAcao != 0L) {
+            buscarPlanoAcao(idPlanoAcao);
         }
     }
 

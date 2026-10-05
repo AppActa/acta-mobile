@@ -146,7 +146,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/txtDataInicioCiclo" />
 
-            <!-- Título de Seção "Planejamento" -->
+            <!-- Título de Seção "Planos de ação" -->
             <TextView
                 android:id="@+id/lblPlanejamento"
                 android:layout_width="wrap_content"
@@ -159,6 +159,22 @@
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/txtPrazoFinalCiclo" />
+
+            <!-- Mensagem quando não houver planos de ação -->
+            <TextView
+                android:id="@+id/txtSemPlanosAcao"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:gravity="center"
+                android:text="Sem planos de ação em planejamento"
+                android:textColor="#757575"
+                android:textSize="15sp"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/lblPlanejamento" />
 
             <!-- RecyclerView dos Planos de Ação -->
             <androidx.recyclerview.widget.RecyclerView

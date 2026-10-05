@@ -120,9 +120,20 @@ public class DetalhesCicloFragment extends Fragment {
             public void onSuccess(List<PlanoAcao> planoAcaoList) {
                 if (!isAdded()) return;
 
-                if (rvPlanosAcao != null && planoAcaoList != null) {
-                    PlanoAcaoAdapter adapter = new PlanoAcaoAdapter(planoAcaoList);
-                    rvPlanosAcao.setAdapter(adapter);
+                View view = getView();
+                if (view == null) return;
+                TextView txtSemPlanos = view.findViewById(R.id.txtSemPlanosAcao);
+
+                if (planoAcaoList != null && !planoAcaoList.isEmpty()) {
+                    if (txtSemPlanos != null) txtSemPlanos.setVisibility(View.GONE);
+                    if (rvPlanosAcao != null) {
+                        rvPlanosAcao.setVisibility(View.VISIBLE);
+                        PlanoAcaoAdapter adapter = new PlanoAcaoAdapter(planoAcaoList);
+                        rvPlanosAcao.setAdapter(adapter);
+                    }
+                } else {
+                    if (rvPlanosAcao != null) rvPlanosAcao.setVisibility(View.GONE);
+                    if (txtSemPlanos != null) txtSemPlanos.setVisibility(View.VISIBLE);
                 }
             }
 
