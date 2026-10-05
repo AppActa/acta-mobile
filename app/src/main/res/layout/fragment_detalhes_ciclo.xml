@@ -153,7 +153,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="28dp"
                 android:fontFamily="@font/plus_jakarta_sans"
-                android:text="Planejamento"
+                android:text="Planos de ação"
                 android:textColor="#083248"
                 android:textSize="22sp"
                 android:textStyle="bold"

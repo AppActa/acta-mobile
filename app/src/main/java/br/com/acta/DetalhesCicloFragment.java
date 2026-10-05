@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -44,6 +45,11 @@ public class DetalhesCicloFragment extends Fragment {
     private final CicloService cicloService = new CicloService(cicloApi);
 
     private RecyclerView rvPlanosAcao;
+    TextView responsavel;
+    TextView dataInicio;
+    TextView dataFinal;
+    TextView titulo;
+    TextView status;
 
     @Nullable
     @Override
@@ -69,16 +75,37 @@ public class DetalhesCicloFragment extends Fragment {
         if (requireActivity().getIntent() != null && requireActivity().getIntent().hasExtra("idCiclo")) {
             Long idCiclo = requireActivity().getIntent().getLongExtra("idCiclo", 0L);
             if (idCiclo != 0L) {
-                buscarCiclo(idCiclo);
+                buscarCiclo(idCiclo, view);
                 buscarPlanoAcao(idCiclo);
             }
         }
     }
 
-    private void buscarCiclo(Long idCiclo) {
+    private void buscarCiclo(Long idCiclo, View view) {
         cicloService.getCiclo(idCiclo, new RepositoryCallback<Ciclo>() {
             @Override
             public void onSuccess(Ciclo ciclo) {
+                if (!isAdded() || ciclo == null) return;
+
+                dataFinal = view.findViewById(R.id.txtPrazoFinalCiclo);
+                if (dataFinal != null && ciclo.getDataEstimadaFim() != null) {
+                    dataFinal.setText("Prazo final: " + ciclo.getDataEstimadaFim());
+                }
+
+                dataInicio = view.findViewById(R.id.txtDataInicioCiclo);
+                if (dataInicio != null && ciclo.getDataInicio() != null) {
+                    dataInicio.setText("Iniciado em: " + ciclo.getDataInicio());
+                }
+
+                titulo = view.findViewById(R.id.txtTituloCicloDetalhe);
+                if (titulo != null && ciclo.getTitulo() != null) {
+                    titulo.setText(ciclo.getTitulo());
+                }
+
+                status = view.findViewById(R.id.txtStatusCicloDetalhe);
+                if (status != null && ciclo.getStatus() != null) {
+                    status.setText("Status: " + ciclo.getStatus().name());
+                }
             }
 
             @Override

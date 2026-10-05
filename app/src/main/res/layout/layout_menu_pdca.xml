@@ -6,9 +6,11 @@
     android:layout_height="100dp"
     android:background="@drawable/bg_menu_inferior"
     android:baselineAligned="false"
+    android:clipToOutline="true"
     android:elevation="12dp"
     android:gravity="center_vertical"
     android:orientation="horizontal"
+    android:outlineProvider="background"
     android:paddingHorizontal="8dp">
 
     <!-- 1. Geral -->
