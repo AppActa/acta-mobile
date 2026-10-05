@@ -3,6 +3,7 @@ package br.com.acta;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -26,6 +27,14 @@ public class CicloPdcaActivity extends AppCompatActivity {
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.mainCicloPdca), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+
+            View menu = findViewById(R.id.menuPdca);
+            if (menu != null) {
+                ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) menu.getLayoutParams();
+                params.bottomMargin = systemBars.bottom;
+                menu.setLayoutParams(params);
+            }
+
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, 0);
             return insets;
         });

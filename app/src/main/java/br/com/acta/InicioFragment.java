@@ -310,6 +310,13 @@ public class InicioFragment extends Fragment {
 
                         contador[0]++;
                         if (contador[0] == totalCiclos) {
+                            try {
+                                CicloDao cicloDao = AppDatabase.getInstance(requireContext()).cicloDao();
+                                cicloDao.limparTabela();
+                                cicloDao.salvarTodos(listaCiclosCompleta);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
                             exibirCiclosNaTela(listaCiclosCompleta, rvMeusCiclos);
                         }
                     }
@@ -320,6 +327,13 @@ public class InicioFragment extends Fragment {
 
                         contador[0]++;
                         if (contador[0] == totalCiclos) {
+                            try {
+                                CicloDao cicloDao = AppDatabase.getInstance(requireContext()).cicloDao();
+                                cicloDao.limparTabela();
+                                cicloDao.salvarTodos(listaCiclosCompleta);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
                             exibirCiclosNaTela(listaCiclosCompleta, rvMeusCiclos);
                         }
                     }
@@ -327,6 +341,13 @@ public class InicioFragment extends Fragment {
             } else {
                 contador[0]++;
                 if (contador[0] == totalCiclos) {
+                    try {
+                        CicloDao cicloDao = AppDatabase.getInstance(requireContext()).cicloDao();
+                        cicloDao.limparTabela();
+                        cicloDao.salvarTodos(listaCiclosCompleta);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                     exibirCiclosNaTela(listaCiclosCompleta, rvMeusCiclos);
                 }
             }

@@ -77,6 +77,7 @@
                 android:textSize="14sp" />
 
             <TextView
+                android:id="@+id/txtStatusPlan"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/plus_jakarta_sans"
@@ -138,6 +139,7 @@
                 android:textSize="14sp" />
 
             <TextView
+                android:id="@+id/txtStatusDo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/plus_jakarta_sans"
@@ -199,6 +201,7 @@
                 android:textSize="14sp" />
 
             <TextView
+                android:id="@+id/txtStatusCheck"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/plus_jakarta_sans"
@@ -261,6 +264,7 @@
                 android:textSize="14sp" />
 
             <TextView
+                android:id="@+id/txtStatusAct"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/plus_jakarta_sans"

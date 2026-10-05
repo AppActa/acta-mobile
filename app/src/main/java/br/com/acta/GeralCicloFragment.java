@@ -21,6 +21,7 @@ import br.com.acta.Auth.TokenProvider;
 import br.com.acta.Client.RepositoryCallback;
 import br.com.acta.Client.RetrofitClient;
 import br.com.acta.Model.Ciclo;
+import br.com.acta.Model.Enum.StatusCiclo;
 import br.com.acta.Services.CicloService;
 import br.com.acta.Services.UsuarioCicloService;
 import br.com.acta.Services.UsuarioService;
@@ -88,11 +89,69 @@ public class GeralCicloFragment extends Fragment {
                 if (txtPrazoFinal != null && ciclo.getDataEstimadaFim() != null) {
                     txtPrazoFinal.setText("Prazo final: " + ciclo.getDataEstimadaFim());
                 }
+
+                atualizarStatusPdca(ciclo.getStatus());
             }
 
             @Override
             public void onError(int code, String message) {
             }
         });
+    }
+
+    private int obterIndiceStatus(StatusCiclo statusCiclo) {
+        if (statusCiclo == null) return 0;
+        String statusStr = statusCiclo.name().toUpperCase();
+        switch (statusStr) {
+            case "EXECUCAO":
+            case "DO":
+            case "DOING":
+                return 1;
+            case "VERIFICACAO":
+            case "CHECK":
+            case "ACOMPANHAR":
+                return 2;
+            case "PADRONIZACAO":
+            case "ACT":
+            case "CONCLUIDO":
+            case "DONE":
+                return 3;
+            case "PLANEJAMENTO":
+            case "PLAN":
+            default:
+                return 0;
+        }
+    }
+
+    private void atualizarStatusPdca(StatusCiclo statusCiclo) {
+        View view = getView();
+        if (view == null) return;
+
+        View statusCard = view.findViewById(R.id.cardStatusCicloInclude);
+        if (statusCard == null) return;
+
+        TextView txtPlan = statusCard.findViewById(R.id.txtStatusPlan);
+        TextView txtDo = statusCard.findViewById(R.id.txtStatusDo);
+        TextView txtCheck = statusCard.findViewById(R.id.txtStatusCheck);
+        TextView txtAct = statusCard.findViewById(R.id.txtStatusAct);
+
+        if (txtPlan == null || txtDo == null || txtCheck == null || txtAct == null) return;
+
+        int cicloIndex = obterIndiceStatus(statusCiclo);
+
+        configurarTextoFase(txtPlan, 0, cicloIndex);
+        configurarTextoFase(txtDo, 1, cicloIndex);
+        configurarTextoFase(txtCheck, 2, cicloIndex);
+        configurarTextoFase(txtAct, 3, cicloIndex);
+    }
+
+    private void configurarTextoFase(TextView textView, int faseIndex, int cicloIndex) {
+        if (faseIndex < cicloIndex) {
+            textView.setText("Concluído");
+        } else if (faseIndex == cicloIndex) {
+            textView.setText("Em andamento");
+        } else {
+            textView.setText("Aguardando");
+        }
     }
 }
