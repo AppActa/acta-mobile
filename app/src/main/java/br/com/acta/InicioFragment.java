@@ -20,6 +20,8 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -177,15 +179,41 @@ public class InicioFragment extends Fragment {
         int atrasadas = 0;
         int emAndamento = 0;
 
+        LocalDate hoje = LocalDate.now();
+        LocalDate limite2Dias = hoje.plusDays(2);
+        DateTimeFormatter formatterIso = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        DateTimeFormatter formatterBr = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
         for (Tarefa t : tarefas) {
+            boolean dentroDoPrazo2Dias = false;
+
+            if (t.getDataFimPrevista() != null && !t.getDataFimPrevista().trim().isEmpty()) {
+                try {
+                    LocalDate dataPrazo;
+                    String rawData = t.getDataFimPrevista().trim();
+                    if (rawData.contains("-")) {
+                        dataPrazo = LocalDate.parse(rawData.substring(0, 10), formatterIso);
+                    } else {
+                        dataPrazo = LocalDate.parse(rawData, formatterBr);
+                    }
+
+                    // Inclui se a data for menor ou igual a hoje + 2 dias
+                    if (!dataPrazo.isAfter(limite2Dias)) {
+                        dentroDoPrazo2Dias = true;
+                    }
+                } catch (Exception e) {
+                    dentroDoPrazo2Dias = true;
+                }
+            } else {
+                dentroDoPrazo2Dias = true;
+            }
+
             if (t.getStatus() == StatusTarefa.ATRASADA) {
                 atrasadas++;
                 tarefasProximas.add(t);
-            } else if (t.getStatus() == StatusTarefa.EM_ANDAMENTO || t.getStatus() == StatusTarefa.PENDENTE) {
+            } else if (dentroDoPrazo2Dias && (t.getStatus() == StatusTarefa.EM_ANDAMENTO || t.getStatus() == StatusTarefa.PENDENTE)) {
                 emAndamento++;
-                if (tarefasProximas.size() < 2) {
-                    tarefasProximas.add(t);
-                }
+                tarefasProximas.add(t);
             }
         }
 

@@ -11,7 +11,7 @@
     android:elevation="3dp"
     android:padding="20dp">
 
-    <!-- Círculo Verde com Ícone de Escudo -->
+    <!-- Círculo Verde com Ícone -->
     <FrameLayout
         android:id="@+id/containerIconeTarefa"
         android:layout_width="48dp"
@@ -30,7 +30,7 @@
             app:tint="#FFFFFF" />
     </FrameLayout>
 
-    <!-- Botão Pílula "Acessar ciclo" -->
+    <!-- Botão Pílula "Acessar plano de ação" -->
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnAcessarCicloTarefa"
         android:layout_width="wrap_content"
@@ -41,7 +41,7 @@
         android:fontFamily="@font/plus_jakarta_sans"
         android:foreground="?attr/selectableItemBackground"
         android:paddingHorizontal="16dp"
-        android:text="Acessar ciclo"
+        android:text="Acessar plano de ação"
         android:textAllCaps="false"
         android:textColor="#FFFFFF"
         android:textSize="12sp"
@@ -67,7 +67,7 @@
         app:layout_constraintTop_toBottomOf="@id/containerIconeTarefa"
         tools:text="Revisar permissões de acesso" />
 
-    <!-- Nome do Ciclo -->
+    <!-- Nome do Plano de Ação -->
     <TextView
         android:id="@+id/txtCicloTarefa"
         android:layout_width="0dp"
@@ -79,7 +79,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/txtTituloTarefa"
-        tools:text="Ciclo: Proteção de dados e acessos" />
+        tools:text="Plano: Proteção de dados e acessos" />
 
     <!-- Prazo da Tarefa -->
     <TextView

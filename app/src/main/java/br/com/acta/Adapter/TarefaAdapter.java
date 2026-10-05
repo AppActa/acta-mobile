@@ -38,9 +38,9 @@ public class TarefaAdapter extends RecyclerView.Adapter<TarefaAdapter.TarefaView
         holder.txtTitulo.setText(tarefa.getStatus() != null ? "Tarefa: " + tarefa.getStatus().name() : "Revisar permissões de acesso");
 
         if (tarefa.getPlanoAcao() != null && tarefa.getPlanoAcao().getNome() != null) {
-            holder.txtCiclo.setText("Ciclo: " + tarefa.getPlanoAcao().getNome());
+            holder.txtCiclo.setText("Plano: " + tarefa.getPlanoAcao().getNome());
         } else {
-            holder.txtCiclo.setText("Ciclo: Proteção de dados e acessos");
+            holder.txtCiclo.setText("Plano: Proteção de dados e acessos");
         }
 
         if (tarefa.getDataFimPrevista() != null) {
@@ -58,7 +58,7 @@ public class TarefaAdapter extends RecyclerView.Adapter<TarefaAdapter.TarefaView
         holder.btnAcessarCiclo.setOnClickListener(v -> {
             Intent intent = new Intent(v.getContext(), CicloPdcaActivity.class);
             if (tarefa.getIdPlanoAcao() != null) {
-                intent.putExtra("idCiclo", tarefa.getIdPlanoAcao());
+                intent.putExtra("idPlanoAcao", tarefa.getIdPlanoAcao());
             }
             v.getContext().startActivity(intent);
         });
