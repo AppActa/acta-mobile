@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -34,6 +35,9 @@ public class PlanoAcaoAdapter extends RecyclerView.Adapter<PlanoAcaoAdapter.Plan
     @Override
     public void onBindViewHolder(@NonNull PlanoAcaoViewHolder holder, int position) {
         PlanoAcao plano = planoAcaoList.get(position);
+        holder.card.setOnClickListener(view -> {
+
+        });
 
         if (plano.getOrigem() != null) {
             holder.lblOrigem.setText("Origem: " + plano.getOrigem().name());
@@ -83,6 +87,7 @@ public class PlanoAcaoAdapter extends RecyclerView.Adapter<PlanoAcaoAdapter.Plan
         TextView txtNome;
         TextView txtObjetivo;
         TextView txtPrioridade;
+        ConstraintLayout card;
 
         public PlanoAcaoViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -91,6 +96,7 @@ public class PlanoAcaoAdapter extends RecyclerView.Adapter<PlanoAcaoAdapter.Plan
             txtNome = itemView.findViewById(R.id.txtNomePlanoAcao);
             txtObjetivo = itemView.findViewById(R.id.txtObjetivoPlanoAcao);
             txtPrioridade = itemView.findViewById(R.id.txtPrioridadePlanoAcao);
+            card = itemView.findViewById(R.id.cardPlanoAcaoItem);
         }
     }
 }
