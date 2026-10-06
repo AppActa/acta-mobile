@@ -3,7 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph_pdca"
-    app:startDestination="@id/detalhesCicloFragment">
+    app:startDestination="@id/geralCicloFragment">
+
+    <fragment
+        android:id="@+id/geralCicloFragment"
+        android:name="br.com.acta.GeralCicloFragment"
+        android:label="Visão Geral do Ciclo"
+        tools:layout="@layout/fragment_geral_ciclo" />
 
     <fragment
         android:id="@+id/detalhesCicloFragment"
@@ -16,5 +22,11 @@
         android:name="br.com.acta.DetalhesPlanoAcaoFragment"
         android:label="Detalhes do Plano de Ação"
         tools:layout="@layout/fragment_detalhes_plano_acao" />
+
+    <fragment
+        android:id="@+id/detalhes5W2HFragment"
+        android:name="br.com.acta.Detalhes5W2HFragment"
+        android:label="Detalhes 5W2H"
+        tools:layout="@layout/fragment_detalhes_5w2h" />
 
 </navigation>
