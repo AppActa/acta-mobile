@@ -23,4 +23,10 @@
         android:label="Detalhes do Plano de Ação"
         tools:layout="@layout/fragment_detalhes_plano_acao" />
 
+    <fragment
+        android:id="@+id/detalhes5W2HFragment"
+        android:name="br.com.acta.Detalhes5W2HFragment"
+        android:label="Detalhes 5W2H"
+        tools:layout="@layout/fragment_detalhes_5w2h" />
+
 </navigation>

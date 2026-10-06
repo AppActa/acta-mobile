@@ -54,6 +54,13 @@ public class DetalhesPlanoAcaoFragment extends Fragment {
             });
         }
 
+        View card5W2H = view.findViewById(R.id.cardPlano5W2HInclude);
+        if (card5W2H != null) {
+            card5W2H.setOnClickListener(v -> {
+                Navigation.findNavController(v).navigate(R.id.detalhes5W2HFragment);
+            });
+        }
+
         txtNomePlano = view.findViewById(R.id.txtNomePlanoAcaoDetalhe);
         txtPrioridade = view.findViewById(R.id.txtPrioridadePlanoAcaoDetalhe);
         txtStatus = view.findViewById(R.id.txtStatusPlanoAcaoDetalhe);
