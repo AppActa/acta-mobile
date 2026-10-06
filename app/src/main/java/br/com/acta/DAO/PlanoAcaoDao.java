@@ -11,6 +11,7 @@ import br.com.acta.Model.PlanoAcao;
 
 @Dao
 public interface PlanoAcaoDao {
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void salvar(PlanoAcao planoAcao);
 
@@ -22,4 +23,7 @@ public interface PlanoAcaoDao {
 
     @Query("SELECT * FROM tb_plano_acao WHERE idCiclo = :idCiclo")
     List<PlanoAcao> buscarPorCiclo(Long idCiclo);
+
+    @Query("SELECT * FROM tb_plano_acao")
+    List<PlanoAcao> listarTodos();
 }

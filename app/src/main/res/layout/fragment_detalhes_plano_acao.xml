@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/imagemFundoBoasVindas"
+    android:fillViewport="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- 1. Topo Verde-Água (Cabeçalho com botão voltar e nome do plano) -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/headerDetalhesPlanoAcao"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="24dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="24dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <!-- Botão Voltar -->
+            <ImageButton
+                android:id="@+id/btnVoltarDetalhesPlanoAcao"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="Voltar"
+                android:scaleType="fitCenter"
+                android:src="@drawable/voltar"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <!-- Nome do Plano de Ação -->
+            <TextView
+                android:id="@+id/txtNomePlanoAcaoDetalhe"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:text="Plano de Redução de Avarias no Estoque"
+                android:textColor="#111111"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/btnVoltarDetalhesPlanoAcao" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- 2. Cartão Branco que ocupa todo o resto da tela -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/containerDetalhesPlanoBranco"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_cartao_topo_arredondado"
+            android:minHeight="600dp"
+            android:paddingHorizontal="24dp"
+            android:paddingTop="28dp"
+            android:paddingBottom="40dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/headerDetalhesPlanoAcao"
+            app:layout_constraintVertical_bias="0.0">
+
+            <!-- Prioridade e Status Badge -->
+            <TextView
+                android:id="@+id/txtPrioridadePlanoAcaoDetalhe"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:text="Prioridade: Alta"
+                android:textColor="#006775"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@id/txtStatusPlanoAcaoDetalhe"
+                app:layout_constraintEnd_toStartOf="@id/txtStatusPlanoAcaoDetalhe"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/txtStatusPlanoAcaoDetalhe" />
+
+            <TextView
+                android:id="@+id/txtStatusPlanoAcaoDetalhe"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_status_pill_dark"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="5dp"
+                android:text="Em execução"
+                android:textColor="#FFFFFF"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <!-- Objetivo / Descrição -->
+            <TextView
+                android:id="@+id/txtObjetivoPlanoAcaoDetalhe"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:lineSpacingExtra="2dp"
+                android:text="Otimizar o processo de recebimento e organização de insumos para reduzir o tempo de separação"
+                android:textColor="#616161"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txtStatusPlanoAcaoDetalhe" />
+
+            <!-- Título de Seção "Planejamento" -->
+            <TextView
+                android:id="@+id/lblPlanejamentoPlanoAcao"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="28dp"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:text="Planejamento"
+                android:textColor="#083248"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txtObjetivoPlanoAcaoDetalhe" />
+
+            <!-- Cartão 1: Análise de causas -->
+            <include
+                android:id="@+id/cardAnaliseCausasInclude"
+                layout="@layout/item_card_analise_causas"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/lblPlanejamentoPlanoAcao" />
+
+            <!-- Cartão 2: Plano 5W2H -->
+            <include
+                android:id="@+id/cardPlano5W2HInclude"
+                layout="@layout/item_card_plano_5w2h"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cardAnaliseCausasInclude" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>

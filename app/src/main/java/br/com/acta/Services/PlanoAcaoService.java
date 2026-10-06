@@ -7,17 +7,17 @@ import br.com.acta.Client.RepositoryCallback;
 import br.com.acta.Model.PlanoAcao;
 
 public class PlanoAcaoService {
-    private final PlanoAcaoApi api;
+    private final PlanoAcaoApi planoAcaoApi;
 
-    public PlanoAcaoService(PlanoAcaoApi api) {
-        this.api = api;
+    public PlanoAcaoService(PlanoAcaoApi planoAcaoApi) {
+        this.planoAcaoApi = planoAcaoApi;
     }
 
     public void buscarPorId(Long id, RepositoryCallback<PlanoAcao> callback) {
-        Enqueue.enqueue(api.buscarPorId(id), callback);
+        Enqueue.enqueue(planoAcaoApi.buscarPorId(id), callback);
     }
 
     public void buscarPorCiclo(Long idCiclo, RepositoryCallback<List<PlanoAcao>> callback) {
-        Enqueue.enqueue(api.buscarPorCiclo(idCiclo), callback);
+        Enqueue.enqueue(planoAcaoApi.buscarPorCiclo(idCiclo), callback);
     }
 }

@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cardTarefaItem"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="16dp"
+    android:layout_marginVertical="8dp"
+    android:background="@drawable/bg_card_white"
+    android:elevation="3dp"
+    android:padding="20dp">
+
+    <!-- Círculo Verde com Ícone -->
+    <FrameLayout
+        android:id="@+id/containerIconeTarefa"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="@drawable/bg_circle_green"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/imgIconeTarefa"
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:layout_gravity="center"
+            android:contentDescription="Ícone Tarefa"
+            android:src="@drawable/reicon_profile_filled"
+            app:tint="#FFFFFF" />
+    </FrameLayout>
+
+    <!-- Botão Pílula "Acessar plano de ação" -->
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnAcessarCicloTarefa"
+        android:layout_width="wrap_content"
+        android:layout_height="36dp"
+        android:background="@drawable/bg_btn_acessar_ciclo"
+        android:clickable="true"
+        android:focusable="true"
+        android:fontFamily="@font/plus_jakarta_sans"
+        android:foreground="?attr/selectableItemBackground"
+        android:paddingHorizontal="16dp"
+        android:text="Acessar plano de ação"
+        android:textAllCaps="false"
+        android:textColor="#FFFFFF"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/containerIconeTarefa"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/containerIconeTarefa" />
+
+    <!-- Título da Tarefa -->
+    <TextView
+        android:id="@+id/txtTituloTarefa"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:ellipsize="end"
+        android:fontFamily="@font/plus_jakarta_sans"
+        android:maxLines="2"
+        android:textColor="#111111"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/containerIconeTarefa"
+        tools:text="Revisar permissões de acesso" />
+
+    <!-- Nome do Plano de Ação -->
+    <TextView
+        android:id="@+id/txtCicloTarefa"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:fontFamily="@font/plus_jakarta_sans"
+        android:textColor="#212121"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txtTituloTarefa"
+        tools:text="Plano: Proteção de dados e acessos" />
+
+    <!-- Prazo da Tarefa -->
+    <TextView
+        android:id="@+id/txtPrazoTarefa"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:fontFamily="@font/plus_jakarta_sans"
+        android:textColor="#212121"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txtCicloTarefa"
+        tools:text="Prazo: Amanhã" />
+
+    <!-- Status da Tarefa -->
+    <TextView
+        android:id="@+id/txtStatusTarefa"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:fontFamily="@font/plus_jakarta_sans"
+        android:textColor="#212121"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txtPrazoTarefa"
+        tools:text="Status: Em andamento" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -12,10 +12,11 @@ import br.com.acta.Model.Empresa;
 import br.com.acta.Model.Me;
 import br.com.acta.Model.Meta;
 import br.com.acta.Model.PlanoAcao;
+import br.com.acta.Model.Tarefa;
 import br.com.acta.Model.Usuario;
 import br.com.acta.Model.UsuarioCiclo;
 
-@Database(entities = {Usuario.class, Ciclo.class, Me.class, Meta.class, Colaborador.class, Empresa.class, UsuarioCiclo.class, PlanoAcao.class}, version = 3, exportSchema = false)
+@Database(entities = {Usuario.class, Ciclo.class, Me.class, Meta.class, Colaborador.class, Empresa.class, UsuarioCiclo.class, PlanoAcao.class, Tarefa.class}, version = 4, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
     public abstract UsuarioDao usuarioDao();
     public abstract MeDao meDao();
@@ -23,6 +24,7 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract ColaboradorDao colaboradorDao();
     public abstract UsuarioCicloDao usuarioCicloDao();
     public abstract PlanoAcaoDao planoAcaoDao();
+    public abstract TarefaDao tarefaDao();
 
     private static AppDatabase INSTANCE;
 

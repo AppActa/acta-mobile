@@ -259,7 +259,7 @@ public class TelaLogin extends AppCompatActivity {
     }
 
     private void abrirPerfil() {
-        startActivity(new Intent(this, Perfil.class));
+        startActivity(new Intent(this, HomeActivity.class));
         finish();
     }
 

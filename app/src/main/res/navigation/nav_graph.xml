@@ -17,4 +17,10 @@
         android:label="Meus Ciclos"
         tools:layout="@layout/fragment_meus_ciclos" />
 
+    <fragment
+        android:id="@+id/detalhesCicloFragment"
+        android:name="br.com.acta.DetalhesCicloFragment"
+        android:label="Detalhes do Ciclo"
+        tools:layout="@layout/fragment_detalhes_ciclo" />
+
 </navigation>

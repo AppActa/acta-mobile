@@ -68,16 +68,17 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/containerConteudoBranco"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:background="@drawable/bg_cartao_topo_arredondado"
             android:paddingHorizontal="24dp"
             android:paddingTop="28dp"
-            android:paddingBottom="32dp"
+            android:paddingBottom="40dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/headerFragment">
+            app:layout_constraintTop_toBottomOf="@id/headerFragment"
+            app:layout_constraintVertical_bias="0.0">
 
             <!-- Saudação do Usuário -->
             <TextView
@@ -120,7 +121,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/txtSubtituloInicio" />
 
-            <!-- Botão Ver Todos -->
+            <!-- Botão Ver Todos Ciclos -->
             <LinearLayout
                 android:id="@+id/btnVerTodos"
                 android:layout_width="wrap_content"
@@ -167,6 +168,82 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/lblMeusCiclos"
                 tools:listitem="@layout/item_ciclo_card" />
+
+            <!-- Seção Minhas Tarefas -->
+            <TextView
+                android:id="@+id/lblMinhasTarefas"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:text="Minhas tarefas"
+                android:textColor="#111111"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/rvMeusCiclos" />
+
+            <!-- Subtítulo de Resumo das Tarefas -->
+            <TextView
+                android:id="@+id/txtResumoTarefas"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:text="1 atrasada · 2 em andamento"
+                android:textColor="#757575"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toStartOf="@id/btnVerTodasTarefas"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/lblMinhasTarefas" />
+
+            <!-- Botão Ver Todas Tarefas -->
+            <LinearLayout
+                android:id="@+id/btnVerTodasTarefas"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:background="@drawable/bg_btn_ver_todos"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingHorizontal="14dp"
+                app:layout_constraintBottom_toBottomOf="@id/lblMinhasTarefas"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/lblMinhasTarefas">
+
+                <ImageView
+                    android:layout_width="14dp"
+                    android:layout_height="14dp"
+                    android:contentDescription="Ícone Ver Todas"
+                    android:src="@android:drawable/ic_menu_sort_by_size"
+                    app:tint="#FFFFFF" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:fontFamily="@font/plus_jakarta_sans"
+                    android:text="Ver todas"
+                    android:textColor="#FFFFFF"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <!-- RecyclerView Vertical das Tarefas (Filtro 2 dias) -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvMinhasTarefas"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:clipToPadding="false"
+                android:nestedScrollingEnabled="false"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txtResumoTarefas"
+                tools:listitem="@layout/item_card_tarefa" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
