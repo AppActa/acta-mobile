@@ -7,7 +7,10 @@
     android:layout_height="wrap_content"
     android:layout_margin="12dp"
     android:background="@drawable/bg_card_white"
+    android:clickable="true"
     android:elevation="4dp"
+    android:focusable="true"
+    android:foreground="?attr/selectableItemBackground"
     android:padding="20dp">
 
     <!-- Subtítulo "Plano de ação 5W2H" -->
@@ -20,77 +23,38 @@
         android:textColor="#006775"
         android:textSize="14sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@id/txtStatusPendente"
-        app:layout_constraintEnd_toStartOf="@id/txtStatusPendente"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/txtStatusPendente" />
-
-    <!-- Status Badge "Pendente" -->
-    <TextView
-        android:id="@+id/txtStatusPendente"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/bg_pill_pendente"
-        android:fontFamily="@font/plus_jakarta_sans"
-        android:paddingHorizontal="14dp"
-        android:paddingVertical="5dp"
-        android:text="Pendente"
-        android:textColor="#238357"
-        android:textSize="12sp"
-        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Título Principal "Contribuição pendente" -->
+    <!-- Título Indicativo -->
     <TextView
         android:id="@+id/txtTituloPlano5W2H"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="8dp"
         android:fontFamily="@font/plus_jakarta_sans"
-        android:text="Contribuição pendente"
+        android:text="Visualizar 5W2H"
         android:textColor="#083248"
-        android:textSize="22sp"
+        android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/txtStatusPendente" />
+        app:layout_constraintTop_toBottomOf="@id/lblCategoria5W2H" />
 
-    <!-- Descrição das respostas -->
+    <!-- Descrição Indicativa -->
     <TextView
-        android:id="@+id/txtDescricaoPlano5W2H"
+        android:id="@+id/txtDescricao5W2H"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="6dp"
+        android:layout_marginTop="4dp"
         android:fontFamily="@font/plus_jakarta_sans"
-        android:lineSpacingExtra="2dp"
-        android:text="Enviada em 28 set · 6 respostas compartilhadas com o gestor."
+        android:text="Toque para abrir os detalhes"
         android:textColor="#616161"
         android:textSize="13sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/txtTituloPlano5W2H" />
-
-    <!-- Botão "Enviar resposta" -->
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btnEnviarResposta"
-        android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/bg_btn_enviar_resposta"
-        android:clickable="true"
-        android:elevation="3dp"
-        android:focusable="true"
-        android:fontFamily="@font/plus_jakarta_sans"
-        android:foreground="?attr/selectableItemBackground"
-        android:text="Enviar resposta"
-        android:textAllCaps="false"
-        android:textColor="#FFFFFF"
-        android:textSize="15sp"
-        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/txtDescricaoPlano5W2H" />
+        app:layout_constraintTop_toBottomOf="@id/txtTituloPlano5W2H" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
