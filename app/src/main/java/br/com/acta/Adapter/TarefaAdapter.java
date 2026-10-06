@@ -19,9 +19,11 @@ import br.com.acta.R;
 public class TarefaAdapter extends RecyclerView.Adapter<TarefaAdapter.TarefaViewHolder> {
 
     private final List<Tarefa> tarefaList;
+    private final List<Tarefa> tarefaListFull;
 
     public TarefaAdapter(List<Tarefa> tarefaList) {
         this.tarefaList = tarefaList != null ? tarefaList : new ArrayList<>();
+        this.tarefaListFull = new ArrayList<>(this.tarefaList);
     }
 
     @NonNull
@@ -67,6 +69,31 @@ public class TarefaAdapter extends RecyclerView.Adapter<TarefaAdapter.TarefaView
     @Override
     public int getItemCount() {
         return tarefaList.size();
+    }
+
+    public void filtrar(String texto) {
+        tarefaList.clear();
+        if (texto == null || texto.trim().isEmpty()) {
+            tarefaList.addAll(tarefaListFull);
+        } else {
+            String filtro = texto.toLowerCase().trim();
+            for (Tarefa tarefa : tarefaListFull) {
+                boolean match = false;
+                if (tarefa.getStatus() != null && tarefa.getStatus().name().toLowerCase().contains(filtro)) {
+                    match = true;
+                }
+                if (tarefa.getDataFimPrevista() != null && tarefa.getDataFimPrevista().toLowerCase().contains(filtro)) {
+                    match = true;
+                }
+                if (tarefa.getPlanoAcao() != null && tarefa.getPlanoAcao().getNome() != null && tarefa.getPlanoAcao().getNome().toLowerCase().contains(filtro)) {
+                    match = true;
+                }
+                if (match) {
+                    tarefaList.add(tarefa);
+                }
+            }
+        }
+        notifyDataSetChanged();
     }
 
     public static class TarefaViewHolder extends RecyclerView.ViewHolder {

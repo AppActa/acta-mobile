@@ -111,6 +111,13 @@ public class InicioFragment extends Fragment {
                 androidx.navigation.Navigation.findNavController(v).navigate(R.id.meusCiclosFragment);
             });
         }
+
+        View btnVerTodasTarefas = view.findViewById(R.id.btnVerTodasTarefas);
+        if (btnVerTodasTarefas != null) {
+            btnVerTodasTarefas.setOnClickListener(v -> {
+                androidx.navigation.Navigation.findNavController(v).navigate(R.id.minhasTarefasFragment);
+            });
+        }
     }
 
     private void carregarDadosSQLiteLocal(ShapeableImageView imgPerfilHeader, RecyclerView recyclerView) {

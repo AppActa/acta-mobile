@@ -46,6 +46,16 @@ public class CicloPdcaActivity extends AppCompatActivity {
             navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
                 atualizarMenuAtivo(destination.getId());
             });
+
+            // Se veio um idPlanoAcao na Intent, navega direto para os detalhes do plano de ação
+            if (getIntent() != null && getIntent().hasExtra("idPlanoAcao")) {
+                Long idPlanoAcao = getIntent().getLongExtra("idPlanoAcao", 0L);
+                if (idPlanoAcao != 0L) {
+                    Bundle args = new Bundle();
+                    args.putLong("idPlanoAcao", idPlanoAcao);
+                    navController.navigate(R.id.detalhesPlanoAcaoFragment, args);
+                }
+            }
         }
 
         View btnMenuGeral = findViewById(R.id.btnMenuGeral);

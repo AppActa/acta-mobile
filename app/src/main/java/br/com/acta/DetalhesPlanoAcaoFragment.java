@@ -77,6 +77,11 @@ public class DetalhesPlanoAcaoFragment extends Fragment {
             public void onSuccess(PlanoAcao plano) {
                 if (!isAdded() || plano == null) return;
 
+                // Salva o idCiclo na Intent da Activity para que ao voltar o GeralCicloFragment funcione perfeitamente
+                if (plano.getIdCiclo() != null && requireActivity().getIntent() != null) {
+                    requireActivity().getIntent().putExtra("idCiclo", plano.getIdCiclo());
+                }
+
                 if (txtNomePlano != null && plano.getNome() != null) {
                     txtNomePlano.setText(plano.getNome());
                 }
