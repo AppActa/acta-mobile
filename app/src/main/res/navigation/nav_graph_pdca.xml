@@ -29,4 +29,10 @@
         android:label="Detalhes 5W2H"
         tools:layout="@layout/fragment_detalhes_5w2h" />
 
+    <fragment
+        android:id="@+id/doCicloFragment"
+        android:name="br.com.acta.DoCicloFragment"
+        android:label="Do - Execução"
+        tools:layout="@layout/fragment_do_ciclo" />
+
 </navigation>

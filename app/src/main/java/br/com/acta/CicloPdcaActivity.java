@@ -79,30 +79,55 @@ public class CicloPdcaActivity extends AppCompatActivity {
                 }
             });
         }
+
+        View btnMenuDo = findViewById(R.id.btnMenuDo);
+        if (btnMenuDo != null) {
+            btnMenuDo.setOnClickListener(v -> {
+                if (navController != null && navController.getCurrentDestination() != null) {
+                    if (navController.getCurrentDestination().getId() != R.id.doCicloFragment) {
+                        navController.navigate(R.id.doCicloFragment);
+                    }
+                }
+            });
+        }
     }
 
     private void atualizarMenuAtivo(int destinationId) {
         View containerGeral = findViewById(R.id.containerGeral);
         View containerPlan = findViewById(R.id.containerPlan);
+        View containerDo = findViewById(R.id.containerDo);
+
         ImageView imgGeral = findViewById(R.id.imgGeral);
         TextView txtGeral = findViewById(R.id.txtGeral);
         ImageView imgPlan = findViewById(R.id.imgPlan);
         TextView txtPlan = findViewById(R.id.txtPlan);
+        ImageView imgDo = findViewById(R.id.imgDo);
+        TextView txtDo = findViewById(R.id.txtDo);
+
+        // Reset all backgrounds and tints
+        if (containerGeral != null) containerGeral.setBackground(null);
+        if (containerPlan != null) containerPlan.setBackground(null);
+        if (containerDo != null) containerDo.setBackground(null);
+
+        if (imgGeral != null) imgGeral.setColorFilter(Color.parseColor("#212121"));
+        if (txtGeral != null) txtGeral.setTextColor(Color.parseColor("#212121"));
+        if (imgPlan != null) imgPlan.setColorFilter(Color.parseColor("#212121"));
+        if (txtPlan != null) txtPlan.setTextColor(Color.parseColor("#212121"));
+        if (imgDo != null) imgDo.setColorFilter(Color.parseColor("#00A7B5"));
+        if (txtDo != null) txtDo.setTextColor(Color.parseColor("#00A7B5"));
 
         if (destinationId == R.id.geralCicloFragment) {
             if (containerGeral != null) containerGeral.setBackgroundResource(R.drawable.bg_menu_active_circle);
-            if (containerPlan != null) containerPlan.setBackground(null);
             if (imgGeral != null) imgGeral.setColorFilter(Color.parseColor("#083248"));
             if (txtGeral != null) txtGeral.setTextColor(Color.parseColor("#083248"));
-            if (imgPlan != null) imgPlan.setColorFilter(Color.parseColor("#212121"));
-            if (txtPlan != null) txtPlan.setTextColor(Color.parseColor("#212121"));
         } else if (destinationId == R.id.detalhesCicloFragment) {
             if (containerPlan != null) containerPlan.setBackgroundResource(R.drawable.bg_menu_active_circle);
-            if (containerGeral != null) containerGeral.setBackground(null);
             if (imgPlan != null) imgPlan.setColorFilter(Color.parseColor("#083248"));
             if (txtPlan != null) txtPlan.setTextColor(Color.parseColor("#083248"));
-            if (imgGeral != null) imgGeral.setColorFilter(Color.parseColor("#212121"));
-            if (txtGeral != null) txtGeral.setTextColor(Color.parseColor("#212121"));
+        } else if (destinationId == R.id.doCicloFragment) {
+            if (containerDo != null) containerDo.setBackgroundResource(R.drawable.bg_circle_do);
+            if (imgDo != null) imgDo.setColorFilter(Color.parseColor("#083248"));
+            if (txtDo != null) txtDo.setTextColor(Color.parseColor("#083248"));
         }
     }
 }
