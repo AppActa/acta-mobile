@@ -1,19 +1,27 @@
 package br.com.acta;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import br.com.acta.Api.CicloApi;
+import br.com.acta.Api.PlanoAcaoApi;
+import br.com.acta.Api.TarefaApi;
 import br.com.acta.Api.UsuarioApi;
 import br.com.acta.Api.UsuarioCicloApi;
 import br.com.acta.Auth.FirebaseTokenProvider;
@@ -22,7 +30,12 @@ import br.com.acta.Client.RepositoryCallback;
 import br.com.acta.Client.RetrofitClient;
 import br.com.acta.Model.Ciclo;
 import br.com.acta.Model.Enum.StatusCiclo;
+import br.com.acta.Model.Enum.StatusTarefa;
+import br.com.acta.Model.PlanoAcao;
+import br.com.acta.Model.Tarefa;
 import br.com.acta.Services.CicloService;
+import br.com.acta.Services.PlanoAcaoService;
+import br.com.acta.Services.TarefaService;
 import br.com.acta.Services.UsuarioCicloService;
 import br.com.acta.Services.UsuarioService;
 
@@ -31,14 +44,19 @@ public class GeralCicloFragment extends Fragment {
     private final UsuarioApi usuarioApi = RetrofitClient.getInstance(tokenProvider).create(UsuarioApi.class);
     private final UsuarioCicloApi usuarioCicloApi = RetrofitClient.getInstance(tokenProvider).create(UsuarioCicloApi.class);
     private final CicloApi cicloApi = RetrofitClient.getInstance(tokenProvider).create(CicloApi.class);
+    private final PlanoAcaoApi planoAcaoApi = RetrofitClient.getInstance(tokenProvider).create(PlanoAcaoApi.class);
+    private final TarefaApi tarefaApi = RetrofitClient.getInstance(tokenProvider).create(TarefaApi.class);
     private final UsuarioService usuarioService = new UsuarioService(usuarioApi);
     private final UsuarioCicloService usuarioCicloService = new UsuarioCicloService(usuarioCicloApi);
     private final CicloService cicloService = new CicloService(cicloApi);
+    private final PlanoAcaoService planoAcaoService = new PlanoAcaoService(planoAcaoApi);
+    private final TarefaService tarefaService = new TarefaService(tarefaApi);
 
     private TextView txtTituloCiclo;
     private TextView txtStatusCiclo;
     private TextView txtDataInicio;
     private TextView txtPrazoFinal;
+    private Long idCicloAtual;
 
     @Nullable
     @Override
@@ -61,9 +79,10 @@ public class GeralCicloFragment extends Fragment {
         txtPrazoFinal = view.findViewById(R.id.txtPrazoFinalGeralCiclo);
 
         if (requireActivity().getIntent() != null && requireActivity().getIntent().hasExtra("idCiclo")) {
-            Long idCiclo = requireActivity().getIntent().getLongExtra("idCiclo", 0L);
-            if (idCiclo != 0L) {
-                buscarCiclo(idCiclo);
+            idCicloAtual = requireActivity().getIntent().getLongExtra("idCiclo", 0L);
+            if (idCicloAtual != 0L) {
+                buscarCiclo(idCicloAtual);
+                buscarPlanosETarefas(idCicloAtual);
             }
         }
     }
@@ -97,6 +116,116 @@ public class GeralCicloFragment extends Fragment {
             public void onError(int code, String message) {
             }
         });
+    }
+
+    private void buscarPlanosETarefas(Long idCiclo) {
+        planoAcaoService.buscarPorCiclo(idCiclo, new RepositoryCallback<List<PlanoAcao>>() {
+            @Override
+            public void onSuccess(List<PlanoAcao> planos) {
+                if (!isAdded() || planos == null || planos.isEmpty()) {
+                    calcularEExibirProgresso(new ArrayList<>());
+                    return;
+                }
+
+                List<Tarefa> todasTarefas = new ArrayList<>();
+                int[] contador = {0};
+
+                for (PlanoAcao plano : planos) {
+                    if (plano.getId() != null) {
+                        tarefaService.buscarPorPlanoAcao(plano.getId(), new RepositoryCallback<List<Tarefa>>() {
+                            @Override
+                            public void onSuccess(List<Tarefa> tarefas) {
+                                if (!isAdded()) return;
+                                if (tarefas != null) {
+                                    todasTarefas.addAll(tarefas);
+                                }
+                                contador[0]++;
+                                if (contador[0] == planos.size()) {
+                                    calcularEExibirProgresso(todasTarefas);
+                                }
+                            }
+
+                            @Override
+                            public void onError(int code, String message) {
+                                contador[0]++;
+                                if (contador[0] == planos.size()) {
+                                    calcularEExibirProgresso(todasTarefas);
+                                }
+                            }
+                        });
+                    } else {
+                        contador[0]++;
+                        if (contador[0] == planos.size()) {
+                            calcularEExibirProgresso(todasTarefas);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onError(int code, String message) {
+            }
+        });
+    }
+
+    private void calcularEExibirProgresso(List<Tarefa> tarefas) {
+        View view = getView();
+        if (view == null) return;
+
+        View cardProgresso = view.findViewById(R.id.cardProgressoInclude);
+        if (cardProgresso == null) return;
+
+        TextView txtTotal = cardProgresso.findViewById(R.id.txtTotalTarefas);
+        TextView txtPorcentagem = cardProgresso.findViewById(R.id.txtPorcentagemProgresso);
+        ProgressBar progressBar = cardProgresso.findViewById(R.id.progressBarCiclo);
+        View btnAbrir = cardProgresso.findViewById(R.id.btnAbrirPlanosAcao);
+
+        int totalValidas = 0;
+        int concluidas = 0;
+
+        if (tarefas != null) {
+            for (Tarefa t : tarefas) {
+                if (t.getStatus() != StatusTarefa.CANCELADA) {
+                    totalValidas++;
+                    if (t.getStatus() == StatusTarefa.CONCLUIDA) {
+                        concluidas++;
+                    }
+                }
+            }
+        }
+
+        int porcentagem = 0;
+        if (totalValidas > 0) {
+            porcentagem = (concluidas * 100) / totalValidas;
+        }
+
+        if (txtTotal != null) {
+            txtTotal.setText("Você tem " + totalValidas + " " + (totalValidas == 1 ? "tarefa" : "tarefas"));
+        }
+        if (txtPorcentagem != null) {
+            txtPorcentagem.setText(porcentagem + "%");
+        }
+        if (progressBar != null) {
+            progressBar.setProgress(porcentagem);
+        }
+
+        if (btnAbrir != null) {
+            btnAbrir.setOnClickListener(v -> {
+                Bundle args = new Bundle();
+                if (idCicloAtual != null) {
+                    args.putLong("idCiclo", idCicloAtual);
+                }
+                try {
+                    Navigation.findNavController(v).navigate(R.id.doCicloFragment, args);
+                } catch (Exception e) {
+                    Intent intent = new Intent(v.getContext(), CicloPdcaActivity.class);
+                    if (idCicloAtual != null) {
+                        intent.putExtra("idCiclo", idCicloAtual);
+                    }
+                    v.getContext().startActivity(intent);
+                }
+            });
+        }
     }
 
     private int obterIndiceStatus(StatusCiclo statusCiclo) {

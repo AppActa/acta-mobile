@@ -11,64 +11,34 @@
     android:elevation="4dp"
     android:padding="20dp">
 
-    <!-- Status do Ciclo "Ciclo em andamento" -->
+    <!-- Subtítulo "Suas tarefas" -->
     <TextView
-        android:id="@+id/txtStatusCicloProgresso"
+        android:id="@+id/txtSuasTarefasHeader"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:fontFamily="@font/plus_jakarta_sans"
-        android:text="Ciclo em andamento"
+        android:text="Suas tarefas"
         android:textColor="#238357"
-        android:textSize="13sp"
+        android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Nome do Ciclo -->
+    <!-- Título Principal "Você tem 12 tarefas" -->
     <TextView
-        android:id="@+id/txtNomeCicloProgresso"
+        android:id="@+id/txtTotalTarefas"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:ellipsize="end"
         android:fontFamily="@font/plus_jakarta_sans"
-        android:maxLines="2"
-        android:text="Organização do estoque"
+        android:text="Você tem 12 tarefas"
         android:textColor="#083248"
         android:textSize="22sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/txtStatusCicloProgresso" />
-
-    <!-- Responsável -->
-    <TextView
-        android:id="@+id/txtResponsavelCicloProgresso"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="6dp"
-        android:fontFamily="@font/plus_jakarta_sans"
-        android:text="Responsável: Catarina Cândido"
-        android:textColor="#616161"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/txtNomeCicloProgresso" />
-
-    <!-- Período de Datas -->
-    <TextView
-        android:id="@+id/txtDatasCicloProgresso"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
-        android:fontFamily="@font/plus_jakarta_sans"
-        android:text="26 mai — 30 out, 2026"
-        android:textColor="#616161"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/txtResponsavelCicloProgresso" />
+        app:layout_constraintTop_toBottomOf="@id/txtSuasTarefasHeader" />
 
     <!-- Rótulo "Progresso das tarefas" -->
     <TextView
@@ -81,7 +51,7 @@
         android:textColor="#757575"
         android:textSize="13sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/txtDatasCicloProgresso" />
+        app:layout_constraintTop_toBottomOf="@id/txtTotalTarefas" />
 
     <!-- Porcentagem "25%" -->
     <TextView
@@ -110,9 +80,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/lblProgressoTarefas" />
 
-    <!-- Botão "Enviar lembrete" -->
+    <!-- Botão "Abrir planos de ação" -->
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btnEnviarLembrete"
+        android:id="@+id/btnAbrirPlanosAcao"
         android:layout_width="0dp"
         android:layout_height="48dp"
         android:layout_marginTop="20dp"
@@ -122,7 +92,7 @@
         android:focusable="true"
         android:fontFamily="@font/plus_jakarta_sans"
         android:foreground="?attr/selectableItemBackground"
-        android:text="Enviar lembrete"
+        android:text="Abrir planos de ação"
         android:textAllCaps="false"
         android:textColor="#FFFFFF"
         android:textSize="15sp"
