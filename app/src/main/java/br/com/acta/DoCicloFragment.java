@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -134,7 +135,15 @@ public class DoCicloFragment extends Fragment {
                     if (txtSemInformacoesDo != null) txtSemInformacoesDo.setVisibility(View.GONE);
                     if (rvPlanosAcaoDo != null) {
                         rvPlanosAcaoDo.setVisibility(View.VISIBLE);
-                        PlanoAcaoAdapter adapter = new PlanoAcaoAdapter(planoAcaoList);
+                        PlanoAcaoAdapter adapter = new PlanoAcaoAdapter(planoAcaoList, plano -> {
+                            Bundle args = new Bundle();
+                            if (plano.getId() != null) {
+                                args.putLong("idPlanoAcao", plano.getId());
+                            }
+                            if (getView() != null) {
+                                Navigation.findNavController(getView()).navigate(R.id.tarefasPlanoAcaoFragment, args);
+                            }
+                        });
                         rvPlanosAcaoDo.setAdapter(adapter);
                     }
                 } else {

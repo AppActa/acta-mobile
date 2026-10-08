@@ -20,10 +20,18 @@ public class TarefaAdapter extends RecyclerView.Adapter<TarefaAdapter.TarefaView
 
     private final List<Tarefa> tarefaList;
     private final List<Tarefa> tarefaListFull;
+    private boolean showButton = true;
 
     public TarefaAdapter(List<Tarefa> tarefaList) {
         this.tarefaList = tarefaList != null ? tarefaList : new ArrayList<>();
         this.tarefaListFull = new ArrayList<>(this.tarefaList);
+        this.showButton = true;
+    }
+
+    public TarefaAdapter(List<Tarefa> tarefaList, boolean showButton) {
+        this.tarefaList = tarefaList != null ? tarefaList : new ArrayList<>();
+        this.tarefaListFull = new ArrayList<>(this.tarefaList);
+        this.showButton = showButton;
     }
 
     @NonNull
@@ -57,13 +65,18 @@ public class TarefaAdapter extends RecyclerView.Adapter<TarefaAdapter.TarefaView
             holder.txtStatus.setText("Status: Em andamento");
         }
 
-        holder.btnAcessarCiclo.setOnClickListener(v -> {
-            Intent intent = new Intent(v.getContext(), CicloPdcaActivity.class);
-            if (tarefa.getIdPlanoAcao() != null) {
-                intent.putExtra("idPlanoAcao", tarefa.getIdPlanoAcao());
-            }
-            v.getContext().startActivity(intent);
-        });
+        if (!showButton) {
+            holder.btnAcessarCiclo.setVisibility(View.GONE);
+        } else {
+            holder.btnAcessarCiclo.setVisibility(View.VISIBLE);
+            holder.btnAcessarCiclo.setOnClickListener(v -> {
+                Intent intent = new Intent(v.getContext(), CicloPdcaActivity.class);
+                if (tarefa.getIdPlanoAcao() != null) {
+                    intent.putExtra("idPlanoAcao", tarefa.getIdPlanoAcao());
+                }
+                v.getContext().startActivity(intent);
+            });
+        }
     }
 
     @Override

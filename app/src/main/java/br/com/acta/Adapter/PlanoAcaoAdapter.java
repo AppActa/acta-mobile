@@ -23,10 +23,21 @@ public class PlanoAcaoAdapter extends RecyclerView.Adapter<PlanoAcaoAdapter.Plan
 
     private final List<PlanoAcao> planoAcaoList;
     private final List<PlanoAcao> planoAcaoListFull;
+    private OnPlanoAcaoClickListener listener;
+
+    public interface OnPlanoAcaoClickListener {
+        void onPlanoAcaoClick(PlanoAcao plano);
+    }
 
     public PlanoAcaoAdapter(List<PlanoAcao> planoAcaoList) {
         this.planoAcaoList = planoAcaoList != null ? planoAcaoList : new ArrayList<>();
         this.planoAcaoListFull = new ArrayList<>(this.planoAcaoList);
+    }
+
+    public PlanoAcaoAdapter(List<PlanoAcao> planoAcaoList, OnPlanoAcaoClickListener listener) {
+        this.planoAcaoList = planoAcaoList != null ? planoAcaoList : new ArrayList<>();
+        this.planoAcaoListFull = new ArrayList<>(this.planoAcaoList);
+        this.listener = listener;
     }
 
     @NonNull
@@ -40,22 +51,26 @@ public class PlanoAcaoAdapter extends RecyclerView.Adapter<PlanoAcaoAdapter.Plan
     public void onBindViewHolder(@NonNull PlanoAcaoViewHolder holder, int position) {
         PlanoAcao plano = planoAcaoList.get(position);
         holder.card.setOnClickListener(v -> {
-            Bundle args = new Bundle();
-            if (plano.getId() != null) {
-                args.putLong("idPlanoAcao", plano.getId());
-            }
-
-            try {
-                Navigation.findNavController(v).navigate(R.id.detalhesPlanoAcaoFragment, args);
-            } catch (Exception e) {
-                Intent intent = new Intent(v.getContext(), CicloPdcaActivity.class);
+            if (listener != null) {
+                listener.onPlanoAcaoClick(plano);
+            } else {
+                Bundle args = new Bundle();
                 if (plano.getId() != null) {
-                    intent.putExtra("idPlanoAcao", plano.getId());
+                    args.putLong("idPlanoAcao", plano.getId());
                 }
-                if (plano.getIdCiclo() != null) {
-                    intent.putExtra("idCiclo", plano.getIdCiclo());
+
+                try {
+                    Navigation.findNavController(v).navigate(R.id.detalhesPlanoAcaoFragment, args);
+                } catch (Exception e) {
+                    Intent intent = new Intent(v.getContext(), CicloPdcaActivity.class);
+                    if (plano.getId() != null) {
+                        intent.putExtra("idPlanoAcao", plano.getId());
+                    }
+                    if (plano.getIdCiclo() != null) {
+                        intent.putExtra("idCiclo", plano.getIdCiclo());
+                    }
+                    v.getContext().startActivity(intent);
                 }
-                v.getContext().startActivity(intent);
             }
         });
 

@@ -35,4 +35,10 @@
         android:label="Do - Execução"
         tools:layout="@layout/fragment_do_ciclo" />
 
+    <fragment
+        android:id="@+id/tarefasPlanoAcaoFragment"
+        android:name="br.com.acta.TarefasPlanoAcaoFragment"
+        android:label="Tarefas do Plano de Ação"
+        tools:layout="@layout/fragment_tarefas_plano_acao" />
+
 </navigation>
