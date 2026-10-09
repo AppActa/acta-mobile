@@ -28,6 +28,7 @@ import br.com.acta.Client.RetrofitClient;
 import br.com.acta.Model.Enum.StatusTarefa;
 import br.com.acta.Model.Tarefa;
 import br.com.acta.Services.TarefaService;
+import br.com.acta.utils.SkeletonLoading;
 
 public class TarefasPlanoAcaoFragment extends Fragment {
 
@@ -80,7 +81,7 @@ public class TarefasPlanoAcaoFragment extends Fragment {
     }
 
     private void buscarTarefasDoPlano(Long idPlanoAcao) {
-        tarefaService.buscarPorPlanoAcao(idPlanoAcao, new RepositoryCallback<List<Tarefa>>() {
+        tarefaService.buscarPorPlanoAcao(idPlanoAcao, SkeletonLoading.wrap(getView(), new RepositoryCallback<List<Tarefa>>() {
             @Override
             public void onSuccess(List<Tarefa> tarefas) {
                 if (!isAdded()) return;
@@ -96,7 +97,7 @@ public class TarefasPlanoAcaoFragment extends Fragment {
             @Override
             public void onError(int code, String message) {
             }
-        });
+        }));
     }
 
     private void calcularEExibirProgresso(List<Tarefa> tarefas) {

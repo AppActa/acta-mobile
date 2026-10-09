@@ -38,6 +38,7 @@ import br.com.acta.Services.PlanoAcaoService;
 import br.com.acta.Services.TarefaService;
 import br.com.acta.Services.UsuarioCicloService;
 import br.com.acta.Services.UsuarioService;
+import br.com.acta.utils.SkeletonLoading;
 
 public class GeralCicloFragment extends Fragment {
     private final TokenProvider tokenProvider = new FirebaseTokenProvider(FirebaseAuth.getInstance());
@@ -88,7 +89,7 @@ public class GeralCicloFragment extends Fragment {
     }
 
     private void buscarCiclo(Long idCiclo) {
-        cicloService.getCiclo(idCiclo, new RepositoryCallback<Ciclo>() {
+        cicloService.getCiclo(idCiclo, SkeletonLoading.wrap(getView(), new RepositoryCallback<Ciclo>() {
             @Override
             public void onSuccess(Ciclo ciclo) {
                 if (!isAdded() || ciclo == null) return;
@@ -115,11 +116,11 @@ public class GeralCicloFragment extends Fragment {
             @Override
             public void onError(int code, String message) {
             }
-        });
+        }));
     }
 
     private void buscarPlanosETarefas(Long idCiclo) {
-        planoAcaoService.buscarPorCiclo(idCiclo, new RepositoryCallback<List<PlanoAcao>>() {
+        planoAcaoService.buscarPorCiclo(idCiclo, SkeletonLoading.wrap(getView(), new RepositoryCallback<List<PlanoAcao>>() {
             @Override
             public void onSuccess(List<PlanoAcao> planos) {
                 if (!isAdded() || planos == null || planos.isEmpty()) {
@@ -132,7 +133,7 @@ public class GeralCicloFragment extends Fragment {
 
                 for (PlanoAcao plano : planos) {
                     if (plano.getId() != null) {
-                        tarefaService.buscarPorPlanoAcao(plano.getId(), new RepositoryCallback<List<Tarefa>>() {
+                        tarefaService.buscarPorPlanoAcao(plano.getId(), SkeletonLoading.wrap(getView(), new RepositoryCallback<List<Tarefa>>() {
                             @Override
                             public void onSuccess(List<Tarefa> tarefas) {
                                 if (!isAdded()) return;
@@ -152,7 +153,7 @@ public class GeralCicloFragment extends Fragment {
                                     calcularEExibirProgresso(todasTarefas);
                                 }
                             }
-                        });
+                        }));
                     } else {
                         contador[0]++;
                         if (contador[0] == planos.size()) {
@@ -165,7 +166,7 @@ public class GeralCicloFragment extends Fragment {
             @Override
             public void onError(int code, String message) {
             }
-        });
+        }));
     }
 
     private void calcularEExibirProgresso(List<Tarefa> tarefas) {

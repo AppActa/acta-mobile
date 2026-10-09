@@ -30,6 +30,7 @@ import br.com.acta.Model.Enum.StatusCiclo;
 import br.com.acta.Model.PlanoAcao;
 import br.com.acta.Services.CicloService;
 import br.com.acta.Services.PlanoAcaoService;
+import br.com.acta.utils.SkeletonLoading;
 
 public class DoCicloFragment extends Fragment {
     private final TokenProvider tokenProvider = new FirebaseTokenProvider(FirebaseAuth.getInstance());
@@ -84,7 +85,7 @@ public class DoCicloFragment extends Fragment {
     }
 
     private void buscarCiclo(Long idCiclo) {
-        cicloService.getCiclo(idCiclo, new RepositoryCallback<Ciclo>() {
+        cicloService.getCiclo(idCiclo, SkeletonLoading.wrap(getView(), new RepositoryCallback<Ciclo>() {
             @Override
             public void onSuccess(Ciclo ciclo) {
                 if (!isAdded() || ciclo == null) return;
@@ -122,11 +123,11 @@ public class DoCicloFragment extends Fragment {
             @Override
             public void onError(int code, String message) {
             }
-        });
+        }));
     }
 
     private void buscarPlanoAcao(Long idCiclo) {
-        planoAcaoService.buscarPorCiclo(idCiclo, new RepositoryCallback<List<PlanoAcao>>() {
+        planoAcaoService.buscarPorCiclo(idCiclo, SkeletonLoading.wrap(getView(), new RepositoryCallback<List<PlanoAcao>>() {
             @Override
             public void onSuccess(List<PlanoAcao> planoAcaoList) {
                 if (!isAdded()) return;
@@ -158,6 +159,6 @@ public class DoCicloFragment extends Fragment {
                 if (rvPlanosAcaoDo != null) rvPlanosAcaoDo.setVisibility(View.GONE);
                 if (txtSemInformacoesDo != null) txtSemInformacoesDo.setVisibility(View.VISIBLE);
             }
-        });
+        }));
     }
 }

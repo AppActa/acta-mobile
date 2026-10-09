@@ -21,6 +21,7 @@ import br.com.acta.Client.RepositoryCallback;
 import br.com.acta.Client.RetrofitClient;
 import br.com.acta.Model.Plano5W2H;
 import br.com.acta.Services.Plano5W2HService;
+import br.com.acta.utils.SkeletonLoading;
 
 public class Detalhes5W2HFragment extends Fragment {
 
@@ -72,7 +73,7 @@ public class Detalhes5W2HFragment extends Fragment {
     }
 
     private void buscar5W2H(Long idPlanoAcao) {
-        plano5W2HService.buscarPorPlanoAcao(idPlanoAcao, new RepositoryCallback<Plano5W2H>() {
+        plano5W2HService.buscarPorPlanoAcao(idPlanoAcao, SkeletonLoading.wrap(getView(), new RepositoryCallback<Plano5W2H>() {
             @Override
             public void onSuccess(Plano5W2H plano) {
                 if (!isAdded() || plano == null) return;
@@ -109,6 +110,6 @@ public class Detalhes5W2HFragment extends Fragment {
             @Override
             public void onError(int code, String message) {
             }
-        });
+        }));
     }
 }

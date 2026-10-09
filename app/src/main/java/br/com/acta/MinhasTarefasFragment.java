@@ -29,6 +29,7 @@ import br.com.acta.Client.RetrofitClient;
 import br.com.acta.DAO.AppDatabase;
 import br.com.acta.Model.Tarefa;
 import br.com.acta.Services.TarefaService;
+import br.com.acta.utils.SkeletonLoading;
 
 public class MinhasTarefasFragment extends Fragment {
 
@@ -93,7 +94,7 @@ public class MinhasTarefasFragment extends Fragment {
     }
 
     private void carregarTarefasApi() {
-        tarefaService.buscarMinhas(new RepositoryCallback<List<Tarefa>>() {
+        tarefaService.buscarMinhas(SkeletonLoading.wrap(getView(), new RepositoryCallback<List<Tarefa>>() {
             @Override
             public void onSuccess(List<Tarefa> tarefas) {
                 if (!isAdded() || tarefas == null) return;
@@ -113,6 +114,6 @@ public class MinhasTarefasFragment extends Fragment {
             @Override
             public void onError(int code, String message) {
             }
-        });
+        }));
     }
 }
