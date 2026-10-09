@@ -47,10 +47,10 @@ public class TarefaAdapter extends RecyclerView.Adapter<TarefaAdapter.TarefaView
 
         holder.txtTitulo.setText(tarefa.getStatus() != null ? "Tarefa: " + tarefa.getStatus().name() : "Revisar permissões de acesso");
 
-        if (tarefa.getPlanoAcao() != null && tarefa.getPlanoAcao().getNome() != null) {
-            holder.txtCiclo.setText("Plano: " + tarefa.getPlanoAcao().getNome());
+        if (tarefa.getPrioridade() != null) {
+            holder.txtCiclo.setText("Prioridade: " + tarefa.getPrioridade().name());
         } else {
-            holder.txtCiclo.setText("Plano: Proteção de dados e acessos");
+            holder.txtCiclo.setText("Prioridade: MEDIA");
         }
 
         if (tarefa.getDataFimPrevista() != null) {
@@ -98,7 +98,7 @@ public class TarefaAdapter extends RecyclerView.Adapter<TarefaAdapter.TarefaView
                 if (tarefa.getDataFimPrevista() != null && tarefa.getDataFimPrevista().toLowerCase().contains(filtro)) {
                     match = true;
                 }
-                if (tarefa.getPlanoAcao() != null && tarefa.getPlanoAcao().getNome() != null && tarefa.getPlanoAcao().getNome().toLowerCase().contains(filtro)) {
+                if (tarefa.getPrioridade() != null && tarefa.getPrioridade().name().toLowerCase().contains(filtro)) {
                     match = true;
                 }
                 if (match) {
