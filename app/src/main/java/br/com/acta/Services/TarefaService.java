@@ -5,6 +5,7 @@ import java.util.List;
 import br.com.acta.Api.TarefaApi;
 import br.com.acta.Client.RepositoryCallback;
 import br.com.acta.Model.Tarefa;
+import br.com.acta.Model.TarefaStatusUpdateRequest;
 
 public class TarefaService {
     private final TarefaApi tarefaApi;
@@ -23,5 +24,9 @@ public class TarefaService {
 
     public void buscarPorId(Long id, RepositoryCallback<Tarefa> callback) {
         Enqueue.enqueue(tarefaApi.buscarPorId(id), callback);
+    }
+
+    public void patchStatus(Long id, TarefaStatusUpdateRequest request, RepositoryCallback<Tarefa> callback) {
+        Enqueue.enqueue(tarefaApi.patchStatus(id, request), callback);
     }
 }
