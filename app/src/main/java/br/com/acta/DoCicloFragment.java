@@ -84,6 +84,30 @@ public class DoCicloFragment extends Fragment {
         }
     }
 
+    private int obterIndiceStatus(StatusCiclo statusCiclo) {
+        if (statusCiclo == null) return 0;
+        String statusStr = statusCiclo.name().toUpperCase();
+        switch (statusStr) {
+            case "EXECUCAO":
+            case "DO":
+            case "DOING":
+                return 1;
+            case "VERIFICACAO":
+            case "CHECK":
+            case "ACOMPANHAR":
+                return 2;
+            case "PADRONIZACAO":
+            case "ACT":
+            case "CONCLUIDO":
+            case "DONE":
+                return 3;
+            case "PLANEJAMENTO":
+            case "PLAN":
+            default:
+                return 0;
+        }
+    }
+
     private void buscarCiclo(Long idCiclo) {
         cicloService.getCiclo(idCiclo, SkeletonLoading.wrap(getView(), new RepositoryCallback<Ciclo>() {
             @Override
@@ -106,11 +130,11 @@ public class DoCicloFragment extends Fragment {
                     txtPrazoFinal.setText("Prazo final: " + ciclo.getDataEstimadaFim());
                 }
 
-                // Validação: Só pode ver os planos de ação do Do se o status do ciclo for EXECUCAO ou DO
-                StatusCiclo status = ciclo.getStatus();
-                boolean isDo = status != null && (status == StatusCiclo.EXECUCAO || status.name().equalsIgnoreCase("DO") || status.name().equalsIgnoreCase("EXECUCAO"));
+                // Validação Acumulativa: FASE DO (índice 1). Qualquer status com índice >= 1 pode visualizar o DO.
+                int statusIndex = obterIndiceStatus(ciclo.getStatus());
+                boolean podeAcessarDo = statusIndex >= 1;
 
-                if (isDo) {
+                if (podeAcessarDo) {
                     if (txtSemInformacoesDo != null) txtSemInformacoesDo.setVisibility(View.GONE);
                     if (rvPlanosAcaoDo != null) rvPlanosAcaoDo.setVisibility(View.VISIBLE);
                     buscarPlanoAcao(idCiclo);

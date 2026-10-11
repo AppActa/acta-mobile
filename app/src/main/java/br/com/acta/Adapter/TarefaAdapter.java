@@ -8,18 +8,33 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseAuth;
+
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.com.acta.Api.TarefaApi;
+import br.com.acta.Auth.FirebaseTokenProvider;
+import br.com.acta.Auth.TokenProvider;
+import br.com.acta.Client.RepositoryCallback;
+import br.com.acta.Client.RetrofitClient;
 import br.com.acta.Model.Enum.StatusTarefa;
 import br.com.acta.Model.Tarefa;
+import br.com.acta.Model.TarefaStatusUpdateRequest;
 import br.com.acta.R;
+import br.com.acta.Services.TarefaService;
 
 public class TarefaAdapter extends RecyclerView.Adapter<TarefaAdapter.TarefaViewHolder> {
+
+    private final TokenProvider tokenProvider = new FirebaseTokenProvider(FirebaseAuth.getInstance());
+    private final TarefaApi tarefaApi = RetrofitClient.getInstance(tokenProvider).create(TarefaApi.class);
+    private final TarefaService tarefaService = new TarefaService(tarefaApi);
 
     private final List<Tarefa> tarefaList;
     private final List<Tarefa> tarefaListFull;
@@ -89,6 +104,37 @@ public class TarefaAdapter extends RecyclerView.Adapter<TarefaAdapter.TarefaView
             holder.btnConcluirAction.setText("Concluída");
             holder.btnConcluirAction.setTextColor(Color.parseColor("#00A7B5"));
             holder.btnConcluirAction.setBackgroundResource(R.drawable.bg_card_white);
+
+            holder.btnConcluirAction.setOnClickListener(v -> {
+                if (tarefa.getId() == null) return;
+
+                String hoje = LocalDate.now().toString();
+                String dataInicio = tarefa.getDataInicioReal() != null && !tarefa.getDataInicioReal().trim().isEmpty()
+                        ? tarefa.getDataInicioReal()
+                        : hoje;
+
+                TarefaStatusUpdateRequest request = new TarefaStatusUpdateRequest(dataInicio, hoje, StatusTarefa.CONCLUIDA);
+
+                holder.btnConcluirAction.setEnabled(false);
+
+                tarefaService.patchStatus(tarefa.getId(), request, new RepositoryCallback<Tarefa>() {
+                    @Override
+                    public void onSuccess(Tarefa tarefaAtualizada) {
+                        tarefa.setStatus(StatusTarefa.CONCLUIDA);
+                        int pos = holder.getAdapterPosition();
+                        if (pos != RecyclerView.NO_POSITION) {
+                            notifyItemChanged(pos);
+                        }
+                        Toast.makeText(v.getContext(), "Tarefa concluída!", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onError(int code, String message) {
+                        holder.btnConcluirAction.setEnabled(true);
+                        Toast.makeText(v.getContext(), "Erro ao concluir tarefa: " + message, Toast.LENGTH_SHORT).show();
+                    }
+                });
+            });
         }
 
         // Reseta visibilidade ao reciclar
