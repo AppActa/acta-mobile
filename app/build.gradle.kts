@@ -1,8 +1,16 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.google.gms.google.services)
 }
 
+val localProperties = Properties().apply {
+    val file = rootProject.file("local.properties")
+    if (file.exists()) {
+        file.inputStream().use { load(it) }
+    }
+}
 android {
     namespace = "br.com.acta"
     compileSdk {
@@ -20,14 +28,15 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        // Sintaxe nativa do Gradle baseada em Providers integrada perfeitamente no Kotlin DSL
-        val cloudName = providers.gradleProperty("CLOUDINARY_CLOUD_NAME").getOrElse("")
-        val apiKey = providers.gradleProperty("CLOUDINARY_API_KEY").getOrElse("")
-        val apiSecret = providers.gradleProperty("CLOUDINARY_API_SECRET").getOrElse("")
+        val cloudName = localProperties.getProperty("CLOUDINARY_CLOUD_NAME")?.removeSurrounding("\"") ?: "kcypohk3"
+        val apiKey = localProperties.getProperty("CLOUDINARY_API_KEY")?.removeSurrounding("\"") ?: "177726823288273"
+        val apiSecret = localProperties.getProperty("CLOUDINARY_API_SECRET")?.removeSurrounding("\"") ?: "UtVQEqnavvY3-CByaYkpbGUMXE4"
+        val urlPg = localProperties.getProperty("PG_API_URL")?.removeSurrounding("\"") ?: "https://pg-api.52-70-103-116.sslip.io/api/v1/"
 
-        buildConfigField("String", "CLOUDINARY_CLOUD_NAME", cloudName)
-        buildConfigField("String", "CLOUDINARY_API_KEY", apiKey)
-        buildConfigField("String", "CLOUDINARY_API_SECRET", apiSecret)
+        buildConfigField("String", "CLOUDINARY_CLOUD_NAME", "\"$cloudName\"")
+        buildConfigField("String", "CLOUDINARY_API_KEY", "\"$apiKey\"")
+        buildConfigField("String", "CLOUDINARY_API_SECRET", "\"$apiSecret\"")
+        buildConfigField("String", "API_BASE_URL_PG", "\"$urlPg\"")
     }
 
     buildFeatures {

@@ -23,6 +23,9 @@ public final class SkeletonLoading {
     private SkeletonLoading() {}
 
     public static <T> RepositoryCallback<T> wrap(View root, RepositoryCallback<T> callback) {
+        if (root == null || !root.isAttachedToWindow()) {
+            return callback;
+        }
         Placeholder placeholder = null;
         if (root instanceof ViewGroup) {
             placeholder = ACTIVE.get(root);

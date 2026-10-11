@@ -1,9 +1,12 @@
 package br.com.acta.Adapter;
 
-import android.content.Intent;
+import android.graphics.Color;
+import android.transition.AutoTransition;
+import android.transition.TransitionManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -12,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.acta.CicloPdcaActivity;
+import br.com.acta.Model.Enum.StatusTarefa;
 import br.com.acta.Model.Tarefa;
 import br.com.acta.R;
 
@@ -45,7 +48,8 @@ public class TarefaAdapter extends RecyclerView.Adapter<TarefaAdapter.TarefaView
     public void onBindViewHolder(@NonNull TarefaViewHolder holder, int position) {
         Tarefa tarefa = tarefaList.get(position);
 
-        holder.txtTitulo.setText(tarefa.getStatus() != null ? "Tarefa: " + tarefa.getStatus().name() : "Revisar permissões de acesso");
+        holder.txtTitulo.setText(tarefa.getTitulo() != null ? tarefa.getTitulo() : "Organizar materiais");
+        holder.txtObjetivo.setText(tarefa.getDescricao() != null ? tarefa.getDescricao() : "Separar materiais por categoria e atualizar o inventário.");
 
         if (tarefa.getPrioridade() != null) {
             holder.txtCiclo.setText("Prioridade: " + tarefa.getPrioridade().name());
@@ -65,18 +69,55 @@ public class TarefaAdapter extends RecyclerView.Adapter<TarefaAdapter.TarefaView
             holder.txtStatus.setText("Status: Em andamento");
         }
 
-        if (!showButton) {
-            holder.btnAcessarCiclo.setVisibility(View.GONE);
+        boolean isConcluida = tarefa.getStatus() == StatusTarefa.CONCLUIDA;
+
+        if (isConcluida) {
+            holder.txtStatusPill.setText("Concluída");
+            holder.txtStatusPill.setBackgroundResource(R.drawable.bg_status_pill_dark);
+
+            holder.btnConcluirAction.setEnabled(false);
+            holder.btnConcluirAction.setClickable(false);
+            holder.btnConcluirAction.setText("Concluída");
+            holder.btnConcluirAction.setTextColor(Color.parseColor("#757575"));
+            holder.btnConcluirAction.setBackgroundColor(Color.parseColor("#D6D6D6"));
         } else {
-            holder.btnAcessarCiclo.setVisibility(View.VISIBLE);
-            holder.btnAcessarCiclo.setOnClickListener(v -> {
-                Intent intent = new Intent(v.getContext(), CicloPdcaActivity.class);
-                if (tarefa.getIdPlanoAcao() != null) {
-                    intent.putExtra("idPlanoAcao", tarefa.getIdPlanoAcao());
-                }
-                v.getContext().startActivity(intent);
-            });
+            holder.txtStatusPill.setText("Em andamento");
+            holder.txtStatusPill.setBackgroundResource(R.drawable.bg_status_pill);
+
+            holder.btnConcluirAction.setEnabled(true);
+            holder.btnConcluirAction.setClickable(true);
+            holder.btnConcluirAction.setText("Concluída");
+            holder.btnConcluirAction.setTextColor(Color.parseColor("#00A7B5"));
+            holder.btnConcluirAction.setBackgroundResource(R.drawable.bg_card_white);
         }
+
+        // Reseta visibilidade ao reciclar
+        holder.containerActionConcluir.setVisibility(View.GONE);
+        holder.txtSetinhaExpand.setText("«");
+        holder.txtCiclo.setVisibility(View.VISIBLE);
+        holder.txtPrazo.setVisibility(View.VISIBLE);
+        holder.txtStatus.setVisibility(View.VISIBLE);
+
+        holder.btnToggleExpand.setOnClickListener(v -> {
+            TransitionManager.beginDelayedTransition((ViewGroup) holder.itemView, new AutoTransition());
+            if (holder.containerActionConcluir.getVisibility() == View.VISIBLE) {
+                // FECHAR PAINEL
+                holder.containerActionConcluir.setVisibility(View.GONE);
+                holder.txtSetinhaExpand.setText("«");
+
+                holder.txtCiclo.setVisibility(View.VISIBLE);
+                holder.txtPrazo.setVisibility(View.VISIBLE);
+                holder.txtStatus.setVisibility(View.VISIBLE);
+            } else {
+                // ABRIR PAINEL (Oculta prioridade, prazo e status para manter altura do card)
+                holder.containerActionConcluir.setVisibility(View.VISIBLE);
+                holder.txtSetinhaExpand.setText("»");
+
+                holder.txtCiclo.setVisibility(View.GONE);
+                holder.txtPrazo.setVisibility(View.GONE);
+                holder.txtStatus.setVisibility(View.GONE);
+            }
+        });
     }
 
     @Override
@@ -92,13 +133,13 @@ public class TarefaAdapter extends RecyclerView.Adapter<TarefaAdapter.TarefaView
             String filtro = texto.toLowerCase().trim();
             for (Tarefa tarefa : tarefaListFull) {
                 boolean match = false;
+                if (tarefa.getTitulo() != null && tarefa.getTitulo().toLowerCase().contains(filtro)) {
+                    match = true;
+                }
+                if (tarefa.getDescricao() != null && tarefa.getDescricao().toLowerCase().contains(filtro)) {
+                    match = true;
+                }
                 if (tarefa.getStatus() != null && tarefa.getStatus().name().toLowerCase().contains(filtro)) {
-                    match = true;
-                }
-                if (tarefa.getDataFimPrevista() != null && tarefa.getDataFimPrevista().toLowerCase().contains(filtro)) {
-                    match = true;
-                }
-                if (tarefa.getPrioridade() != null && tarefa.getPrioridade().name().toLowerCase().contains(filtro)) {
                     match = true;
                 }
                 if (match) {
@@ -114,7 +155,12 @@ public class TarefaAdapter extends RecyclerView.Adapter<TarefaAdapter.TarefaView
         TextView txtCiclo;
         TextView txtPrazo;
         TextView txtStatus;
-        View btnAcessarCiclo;
+        TextView txtStatusPill;
+        TextView txtObjetivo;
+        View containerActionConcluir;
+        View btnToggleExpand;
+        TextView txtSetinhaExpand;
+        Button btnConcluirAction;
 
         public TarefaViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -122,7 +168,12 @@ public class TarefaAdapter extends RecyclerView.Adapter<TarefaAdapter.TarefaView
             txtCiclo = itemView.findViewById(R.id.txtCicloTarefa);
             txtPrazo = itemView.findViewById(R.id.txtPrazoTarefa);
             txtStatus = itemView.findViewById(R.id.txtStatusTarefa);
-            btnAcessarCiclo = itemView.findViewById(R.id.btnAcessarCicloTarefa);
+            txtStatusPill = itemView.findViewById(R.id.txtStatusPillTarefa);
+            txtObjetivo = itemView.findViewById(R.id.txtObjetivoTarefa);
+            containerActionConcluir = itemView.findViewById(R.id.containerActionConcluir);
+            btnToggleExpand = itemView.findViewById(R.id.btnToggleExpand);
+            txtSetinhaExpand = itemView.findViewById(R.id.txtSetinhaExpand);
+            btnConcluirAction = itemView.findViewById(R.id.btnConcluirTarefaAction);
         }
     }
 }

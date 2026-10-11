@@ -1,5 +1,7 @@
 package br.com.acta.Client;
 
+import android.os.Build;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -7,6 +9,7 @@ import java.util.concurrent.TimeUnit;
 
 import br.com.acta.Auth.AuthInterceptor;
 import br.com.acta.Auth.TokenProvider;
+import br.com.acta.BuildConfig;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
