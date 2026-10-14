@@ -186,7 +186,14 @@ public class CheckCicloFragment extends Fragment {
 
                     if (btnVerEfeitos != null) {
                         btnVerEfeitos.setOnClickListener(v -> {
-                            // Ação ao clicar em "Ver efeitos secundários"
+                            Bundle args = new Bundle();
+                            if (resultado.getId() != null) {
+                                args.putLong("idResultado", resultado.getId());
+                            }
+                            args.putLong("idCiclo", idCiclo);
+                            if (getView() != null) {
+                                Navigation.findNavController(getView()).navigate(R.id.efeitosSecundariosFragment, args);
+                            }
                         });
                     }
                 }

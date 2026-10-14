@@ -47,4 +47,10 @@
         android:label="Check - Checagem"
         tools:layout="@layout/fragment_check_ciclo" />
 
+    <fragment
+        android:id="@+id/efeitosSecundariosFragment"
+        android:name="br.com.acta.EfeitosSecundariosFragment"
+        android:label="Efeitos Secundários"
+        tools:layout="@layout/fragment_efeitos_secundarios" />
+
 </navigation>
