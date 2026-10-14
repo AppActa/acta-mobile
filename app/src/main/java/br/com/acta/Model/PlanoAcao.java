@@ -6,6 +6,8 @@ import androidx.room.PrimaryKey;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 import br.com.acta.Model.Enum.OrigemRegistro;
 import br.com.acta.Model.Enum.Prioridade;
 import br.com.acta.Model.Enum.StatusPlanoAcao;
@@ -60,4 +62,8 @@ public class PlanoAcao {
     @Ignore
     @SerializedName("plano5W2H")
     private Plano5W2H plano5W2H;
+
+    @Ignore
+    @SerializedName("metas")
+    private List<Meta> metas;
 }

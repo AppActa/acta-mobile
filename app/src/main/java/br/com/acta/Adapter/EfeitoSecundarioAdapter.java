@@ -8,7 +8,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,12 +51,11 @@ public class EfeitoSecundarioAdapter extends RecyclerView.Adapter<EfeitoSecundar
         holder.txtImpacto.setText(efeito.getImpactoEstimado() != null ? efeito.getImpactoEstimado() : "");
 
         if (efeito.getPeso() != null) {
-            BigDecimal peso = efeito.getPeso();
-            // Se o peso vier como fração 0.20, converte para 20%
-            if (peso.compareTo(BigDecimal.ONE) <= 0 && peso.compareTo(BigDecimal.ZERO) > 0) {
-                peso = peso.multiply(new BigDecimal("100"));
+            double pesoVal = efeito.getPeso();
+            if (pesoVal <= 1.0 && pesoVal > 0) {
+                pesoVal = pesoVal * 100;
             }
-            holder.txtPeso.setText("Peso registrado: " + peso.intValue() + "%");
+            holder.txtPeso.setText("Peso registrado: " + (int) pesoVal + "%");
         } else {
             holder.txtPeso.setText("Peso registrado: 0%");
         }

@@ -20,7 +20,7 @@ import br.com.acta.Model.Usuario;
 import br.com.acta.Model.UsuarioCiclo;
 import br.com.acta.Model.VerificacaoResultado;
 
-@Database(entities = {Usuario.class, Ciclo.class, Me.class, Meta.class, Colaborador.class, Empresa.class, UsuarioCiclo.class, PlanoAcao.class, Tarefa.class, EfeitoSecundario.class, VerificacaoResultado.class}, version = 7, exportSchema = false)
+@Database(entities = {Usuario.class, Ciclo.class, Me.class, Meta.class, Colaborador.class, Empresa.class, UsuarioCiclo.class, PlanoAcao.class, Tarefa.class, EfeitoSecundario.class, VerificacaoResultado.class}, version = 8, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
     public abstract UsuarioDao usuarioDao();
     public abstract MeDao meDao();
