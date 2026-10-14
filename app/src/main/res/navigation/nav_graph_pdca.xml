@@ -41,4 +41,10 @@
         android:label="Tarefas do Plano de Ação"
         tools:layout="@layout/fragment_tarefas_plano_acao" />
 
+    <fragment
+        android:id="@+id/checkCicloFragment"
+        android:name="br.com.acta.CheckCicloFragment"
+        android:label="Check - Checagem"
+        tools:layout="@layout/fragment_check_ciclo" />
+
 </navigation>
