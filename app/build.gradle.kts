@@ -28,10 +28,10 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        val cloudName = localProperties.getProperty("CLOUDINARY_CLOUD_NAME")?.removeSurrounding("\"") ?: "kcypohk3"
-        val apiKey = localProperties.getProperty("CLOUDINARY_API_KEY")?.removeSurrounding("\"") ?: "177726823288273"
-        val apiSecret = localProperties.getProperty("CLOUDINARY_API_SECRET")?.removeSurrounding("\"") ?: "UtVQEqnavvY3-CByaYkpbGUMXE4"
-        val urlPg = localProperties.getProperty("PG_API_URL")?.removeSurrounding("\"") ?: "https://pg-api.52-70-103-116.sslip.io/api/v1/"
+        val cloudName = localProperties.getProperty("CLOUDINARY_CLOUD_NAME")
+        val apiKey = localProperties.getProperty("CLOUDINARY_API_KEY")
+        val apiSecret = localProperties.getProperty("CLOUDINARY_API_SECRET")
+        val urlPg = localProperties.getProperty("PG_API_URL")
 
         buildConfigField("String", "CLOUDINARY_CLOUD_NAME", "\"$cloudName\"")
         buildConfigField("String", "CLOUDINARY_API_KEY", "\"$apiKey\"")
