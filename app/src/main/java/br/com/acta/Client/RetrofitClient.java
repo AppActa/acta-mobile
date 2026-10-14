@@ -17,7 +17,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public final class RetrofitClient {
 
-    private static final String BASE_URL = "https://acta-pg-api.onrender.com/api/v1/";
+    private static final String BASE_URL = BuildConfig.API_BASE_URL_PG;
     private static Retrofit retrofit;
 
     private RetrofitClient() {

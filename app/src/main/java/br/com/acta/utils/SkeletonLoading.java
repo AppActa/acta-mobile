@@ -16,7 +16,7 @@ import java.util.WeakHashMap;
 
 import br.com.acta.Client.RepositoryCallback;
 
-/** Temporary placeholders shared by requests belonging to the same screen. */
+
 public final class SkeletonLoading {
     private static final WeakHashMap<View, Placeholder> ACTIVE = new WeakHashMap<>();
 
