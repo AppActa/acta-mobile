@@ -18,8 +18,9 @@ import br.com.acta.Model.PlanoAcao;
 import br.com.acta.Model.Tarefa;
 import br.com.acta.Model.Usuario;
 import br.com.acta.Model.UsuarioCiclo;
+import br.com.acta.Model.VerificacaoResultado;
 
-@Database(entities = {Usuario.class, Ciclo.class, Me.class, Meta.class, Colaborador.class, Empresa.class, UsuarioCiclo.class, PlanoAcao.class, Tarefa.class, EfeitoSecundario.class}, version = 6, exportSchema = false)
+@Database(entities = {Usuario.class, Ciclo.class, Me.class, Meta.class, Colaborador.class, Empresa.class, UsuarioCiclo.class, PlanoAcao.class, Tarefa.class, EfeitoSecundario.class, VerificacaoResultado.class}, version = 7, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
     public abstract UsuarioDao usuarioDao();
     public abstract MeDao meDao();
@@ -29,6 +30,7 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract PlanoAcaoDao planoAcaoDao();
     public abstract TarefaDao tarefaDao();
     public abstract EfeitoSecundarioDao efeitoSecundarioDao();
+    public abstract VerificacaoResultadoDao verificacaoResultadoDao();
 
     private static final Migration MIGRATION_5_6 = new Migration(5, 6) {
         @Override
@@ -36,6 +38,15 @@ public abstract class AppDatabase extends RoomDatabase {
             database.execSQL("CREATE TABLE IF NOT EXISTS tb_efeito_secundario ("
                     + "id INTEGER, descricao TEXT, peso TEXT, impactoEstimado TEXT, "
                     + "idVerificacaoResultado INTEGER, tipo TEXT, PRIMARY KEY(id))");
+        }
+    };
+
+    private static final Migration MIGRATION_6_7 = new Migration(6, 7) {
+        @Override
+        public void migrate(SupportSQLiteDatabase database) {
+            database.execSQL("CREATE TABLE IF NOT EXISTS tb_verificacao_resultado ("
+                    + "id INTEGER, status TEXT, resumo TEXT, observacao TEXT, "
+                    + "idCriadoPor INTEGER, idCiclo INTEGER, criadoEm TEXT, PRIMARY KEY(id))");
         }
     };
 
@@ -48,7 +59,7 @@ public abstract class AppDatabase extends RoomDatabase {
                     AppDatabase.class,
                     "acta_local_db"
             )
-            .addMigrations(MIGRATION_5_6)
+            .addMigrations(MIGRATION_5_6, MIGRATION_6_7)
             .fallbackToDestructiveMigration()
             .allowMainThreadQueries()
             .build();
