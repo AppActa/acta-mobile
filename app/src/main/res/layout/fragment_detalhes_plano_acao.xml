@@ -64,9 +64,10 @@
             android:paddingBottom="40dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/headerDetalhesPlanoAcao"
-            app:layout_constraintVertical_bias="0.0">
+            app:layout_constraintVertical_bias="1.0">
 
             <!-- Prioridade e Status Badge -->
             <TextView
@@ -127,18 +128,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/txtObjetivoPlanoAcaoDetalhe" />
 
-            <!-- Cartão 1: Análise de causas -->
-            <include
-                android:id="@+id/cardAnaliseCausasInclude"
-                layout="@layout/item_card_analise_causas"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/lblPlanejamentoPlanoAcao" />
-
-            <!-- Cartão 2: Plano 5W2H -->
+            <!-- Cartão: Plano 5W2H -->
             <include
                 android:id="@+id/cardPlano5W2HInclude"
                 layout="@layout/item_card_plano_5w2h"
@@ -147,7 +137,7 @@
                 android:layout_marginTop="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/cardAnaliseCausasInclude" />
+                app:layout_constraintTop_toBottomOf="@id/lblPlanejamentoPlanoAcao" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

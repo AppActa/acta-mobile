@@ -18,6 +18,12 @@
         tools:layout="@layout/fragment_meus_ciclos" />
 
     <fragment
+        android:id="@+id/minhasTarefasFragment"
+        android:name="br.com.acta.MinhasTarefasFragment"
+        android:label="Minhas Tarefas"
+        tools:layout="@layout/fragment_minhas_tarefas" />
+
+    <fragment
         android:id="@+id/detalhesCicloFragment"
         android:name="br.com.acta.DetalhesCicloFragment"
         android:label="Detalhes do Ciclo"

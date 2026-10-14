@@ -21,6 +21,7 @@ import br.com.acta.Client.RepositoryCallback;
 import br.com.acta.Client.RetrofitClient;
 import br.com.acta.Model.PlanoAcao;
 import br.com.acta.Services.PlanoAcaoService;
+import br.com.acta.utils.SkeletonLoading;
 
 public class DetalhesPlanoAcaoFragment extends Fragment {
 
@@ -54,6 +55,13 @@ public class DetalhesPlanoAcaoFragment extends Fragment {
             });
         }
 
+        View card5W2H = view.findViewById(R.id.cardPlano5W2HInclude);
+        if (card5W2H != null) {
+            card5W2H.setOnClickListener(v -> {
+                Navigation.findNavController(v).navigate(R.id.detalhes5W2HFragment);
+            });
+        }
+
         txtNomePlano = view.findViewById(R.id.txtNomePlanoAcaoDetalhe);
         txtPrioridade = view.findViewById(R.id.txtPrioridadePlanoAcaoDetalhe);
         txtStatus = view.findViewById(R.id.txtStatusPlanoAcaoDetalhe);
@@ -72,10 +80,15 @@ public class DetalhesPlanoAcaoFragment extends Fragment {
     }
 
     private void buscarPlanoAcao(Long idPlanoAcao) {
-        planoAcaoService.buscarPorId(idPlanoAcao, new RepositoryCallback<PlanoAcao>() {
+        planoAcaoService.buscarPorId(idPlanoAcao, SkeletonLoading.wrap(getView(), new RepositoryCallback<PlanoAcao>() {
             @Override
             public void onSuccess(PlanoAcao plano) {
                 if (!isAdded() || plano == null) return;
+
+                // Salva o idCiclo na Intent da Activity para que ao voltar o GeralCicloFragment funcione perfeitamente
+                if (plano.getIdCiclo() != null && requireActivity().getIntent() != null) {
+                    requireActivity().getIntent().putExtra("idCiclo", plano.getIdCiclo());
+                }
 
                 if (txtNomePlano != null && plano.getNome() != null) {
                     txtNomePlano.setText(plano.getNome());
@@ -97,6 +110,6 @@ public class DetalhesPlanoAcaoFragment extends Fragment {
             @Override
             public void onError(int code, String message) {
             }
-        });
+        }));
     }
 }

@@ -55,6 +55,7 @@ import br.com.acta.Model.Usuario;
 import br.com.acta.Services.ColaboradorService;
 import br.com.acta.Services.MeService;
 import br.com.acta.Services.UsuarioService;
+import br.com.acta.utils.SkeletonLoading;
 
 public class Perfil extends AppCompatActivity {
 
@@ -220,7 +221,7 @@ public class Perfil extends AppCompatActivity {
         editor.apply();
     }
     public void carregarMe(){
-        meService.getMe(new RepositoryCallback<Me>(){
+        meService.getMe(SkeletonLoading.wrap(findViewById(android.R.id.content), new RepositoryCallback<Me>(){
             @Override
             public void onSuccess(Me me) {
                 nome.setText(me.getNome());
@@ -234,10 +235,10 @@ public class Perfil extends AppCompatActivity {
             public void onError(int code, String message) {
                 Toast.makeText(Perfil.this, "Erro " + code + ": " + message, Toast.LENGTH_LONG).show();
             }
-        });
+        }));
     }
     public void carregarColaborador(Long idUsuario){
-        colaboradorService.getColaborador(idUsuario,new RepositoryCallback<Colaborador>(){
+        colaboradorService.getColaborador(idUsuario,SkeletonLoading.wrap(findViewById(android.R.id.content), new RepositoryCallback<Colaborador>(){
             @Override
             public void onSuccess(Colaborador colaborador) {
                 cargo.setText(colaborador.getCargo());
@@ -247,7 +248,7 @@ public class Perfil extends AppCompatActivity {
             public void onError(int code, String message) {
                 Toast.makeText(Perfil.this, "Erro " + code + ": " + message, Toast.LENGTH_LONG).show();
             }
-        });
+        }));
     }
     private void salvarCloudinary(Uri fotoTirada){
         MediaManager.get()
@@ -296,7 +297,7 @@ public class Perfil extends AppCompatActivity {
                 .dispatch();
     }
     private void salvarUrlBanco(Long idUsuario,Map<String, Object>camposAtualizados) {
-        usuarioService.patchUsuario(idUsuario, camposAtualizados, new RepositoryCallback<Usuario>() {
+        usuarioService.patchUsuario(idUsuario, camposAtualizados, SkeletonLoading.wrap(findViewById(android.R.id.content), new RepositoryCallback<Usuario>() {
             @Override
             public void onSuccess(Usuario resposta) {
                 Toast.makeText(Perfil.this, "Foto atualizada com sucesso!", Toast.LENGTH_SHORT).show();
@@ -307,10 +308,10 @@ public class Perfil extends AppCompatActivity {
             public void onError(int code, String message) {
                 Toast.makeText(Perfil.this, "Erro: " + message, Toast.LENGTH_LONG).show();
             }
-        });
+        }));
     }
     private void buscarFotoDoBanco(Long idUsuario){
-        usuarioService.buscarUsuario(idUsuario, new RepositoryCallback<Usuario>() {
+        usuarioService.buscarUsuario(idUsuario, SkeletonLoading.wrap(findViewById(android.R.id.content), new RepositoryCallback<Usuario>() {
             @Override
             public void onSuccess(Usuario usuario) {
                 imgFotoPerfil = findViewById(R.id.imgFotoPerfil);
@@ -335,7 +336,7 @@ public class Perfil extends AppCompatActivity {
                 imgFotoPerfil.setImageResource(R.drawable.ic_arrow_forward);
                     Toast.makeText(Perfil.this, "Erro foto (" + statusCode + "): " + message, Toast.LENGTH_LONG).show();
             }
-        });
+        }));
     }
     private void tirarFoto(){
         File arquivo = new File(getExternalFilesDir(null), "foto_"+System.currentTimeMillis()+".jpg");

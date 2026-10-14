@@ -32,6 +32,7 @@ import br.com.acta.Services.CicloService;
 import br.com.acta.Services.PlanoAcaoService;
 import br.com.acta.Services.UsuarioCicloService;
 import br.com.acta.Services.UsuarioService;
+import br.com.acta.utils.SkeletonLoading;
 
 public class DetalhesCicloFragment extends Fragment {
     private final TokenProvider tokenProvider = new FirebaseTokenProvider(FirebaseAuth.getInstance());
@@ -82,7 +83,7 @@ public class DetalhesCicloFragment extends Fragment {
     }
 
     private void buscarCiclo(Long idCiclo, View view) {
-        cicloService.getCiclo(idCiclo, new RepositoryCallback<Ciclo>() {
+        cicloService.getCiclo(idCiclo, SkeletonLoading.wrap(getView(), new RepositoryCallback<Ciclo>() {
             @Override
             public void onSuccess(Ciclo ciclo) {
                 if (!isAdded() || ciclo == null) return;
@@ -111,11 +112,11 @@ public class DetalhesCicloFragment extends Fragment {
             @Override
             public void onError(int code, String message) {
             }
-        });
+        }));
     }
 
     private void buscarPlanoAcao(Long idCiclo) {
-        planoAcaoService.buscarPorCiclo(idCiclo, new RepositoryCallback<List<PlanoAcao>>() {
+        planoAcaoService.buscarPorCiclo(idCiclo, SkeletonLoading.wrap(getView(), new RepositoryCallback<List<PlanoAcao>>() {
             @Override
             public void onSuccess(List<PlanoAcao> planoAcaoList) {
                 if (!isAdded()) return;
@@ -140,6 +141,6 @@ public class DetalhesCicloFragment extends Fragment {
             @Override
             public void onError(int code, String message) {
             }
-        });
+        }));
     }
 }

@@ -17,6 +17,9 @@ public interface CicloDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void salvarTodos(List<Ciclo> ciclos);
 
+    @Query("DELETE FROM tb_ciclo")
+    void limparTabela();
+
     @Query("SELECT * FROM tb_ciclo WHERE id = :id LIMIT 1")
     Ciclo buscarPorId(Long id);
 

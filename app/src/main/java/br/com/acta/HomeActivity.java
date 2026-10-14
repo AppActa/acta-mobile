@@ -1,6 +1,8 @@
 package br.com.acta;
 
 import android.os.Bundle;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,6 +24,14 @@ public class HomeActivity extends AppCompatActivity {
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.mainHome), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+
+            View menu = findViewById(R.id.menuInferior);
+            if (menu != null) {
+                ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) menu.getLayoutParams();
+                params.bottomMargin = systemBars.bottom;
+                menu.setLayoutParams(params);
+            }
+
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, 0);
             return insets;
         });

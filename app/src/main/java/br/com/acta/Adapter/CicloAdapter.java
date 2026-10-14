@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -24,7 +23,6 @@ import br.com.acta.Auth.TokenProvider;
 import br.com.acta.CicloPdcaActivity;
 import br.com.acta.Client.RetrofitClient;
 import br.com.acta.Model.Ciclo;
-import br.com.acta.Model.Enum.StatusCiclo;
 import br.com.acta.R;
 
 public class CicloAdapter extends RecyclerView.Adapter<CicloAdapter.CardViewHolder> {
@@ -61,13 +59,9 @@ public class CicloAdapter extends RecyclerView.Adapter<CicloAdapter.CardViewHold
         holder.titulo.setText(ciclo.getTitulo());
         holder.status.setText("Status:" + ciclo.getStatus());
         holder.card.setOnClickListener(v -> {
-            if (ciclo.getStatus() == StatusCiclo.PLANEJAMENTO) {
-                Intent intent = new Intent(v.getContext(), CicloPdcaActivity.class);
-                intent.putExtra("idCiclo", ciclo.getId());
-                v.getContext().startActivity(intent);
-            } else {
-                Toast.makeText(v.getContext(), "Redirecionamento disponível apenas para ciclos em Planejamento", Toast.LENGTH_SHORT).show();
-            }
+            Intent intent = new Intent(v.getContext(), CicloPdcaActivity.class);
+            intent.putExtra("idCiclo", ciclo.getId());
+            v.getContext().startActivity(intent);
         });
     }
 

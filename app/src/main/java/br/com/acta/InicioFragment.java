@@ -52,6 +52,7 @@ import br.com.acta.Services.MeService;
 import br.com.acta.Services.TarefaService;
 import br.com.acta.Services.UsuarioCicloService;
 import br.com.acta.Services.UsuarioService;
+import br.com.acta.utils.SkeletonLoading;
 
 public class InicioFragment extends Fragment {
     private final TokenProvider tokenProvider = new FirebaseTokenProvider(FirebaseAuth.getInstance());
@@ -111,6 +112,13 @@ public class InicioFragment extends Fragment {
                 androidx.navigation.Navigation.findNavController(v).navigate(R.id.meusCiclosFragment);
             });
         }
+
+        View btnVerTodasTarefas = view.findViewById(R.id.btnVerTodasTarefas);
+        if (btnVerTodasTarefas != null) {
+            btnVerTodasTarefas.setOnClickListener(v -> {
+                androidx.navigation.Navigation.findNavController(v).navigate(R.id.minhasTarefasFragment);
+            });
+        }
     }
 
     private void carregarDadosSQLiteLocal(ShapeableImageView imgPerfilHeader, RecyclerView recyclerView) {
@@ -151,7 +159,7 @@ public class InicioFragment extends Fragment {
     }
 
     private void carregarMinhasTarefasAPI() {
-        tarefaService.buscarMinhas(new RepositoryCallback<List<Tarefa>>() {
+        tarefaService.buscarMinhas(SkeletonLoading.wrap(getView(), new RepositoryCallback<List<Tarefa>>() {
             @Override
             public void onSuccess(List<Tarefa> tarefas) {
                 if (!isAdded() || tarefas == null) return;
@@ -169,7 +177,7 @@ public class InicioFragment extends Fragment {
             @Override
             public void onError(int code, String message) {
             }
-        });
+        }));
     }
 
     private void exibirTarefasAte2Dias(List<Tarefa> tarefas) {
@@ -230,7 +238,7 @@ public class InicioFragment extends Fragment {
         if (!isAdded()) return;
 
         // 1. Busca foto do usuário na API e salva no SQLite
-        usuarioService.buscarUsuario(idUsuario, new RepositoryCallback<Usuario>() {
+        usuarioService.buscarUsuario(idUsuario, SkeletonLoading.wrap(getView(), new RepositoryCallback<Usuario>() {
             @Override
             public void onSuccess(Usuario usuario) {
                 if (!isAdded()) return;
@@ -258,10 +266,10 @@ public class InicioFragment extends Fragment {
             @Override
             public void onError(int statusCode, String message) {
             }
-        });
+        }));
 
         // 2. Busca lista de UsuarioCiclo no endpoint GET usuario/ciclos-usuario/{idUsuario}
-        usuarioService.buscarCiclosUsuario(idUsuario, new RepositoryCallback<List<UsuarioCiclo>>() {
+        usuarioService.buscarCiclosUsuario(idUsuario, SkeletonLoading.wrap(getView(), new RepositoryCallback<List<UsuarioCiclo>>() {
             @Override
             public void onSuccess(List<UsuarioCiclo> listaUsuarioCiclos) {
                 if (!isAdded()) return;
@@ -278,7 +286,7 @@ public class InicioFragment extends Fragment {
                 if (!isAdded()) return;
                 Toast.makeText(requireContext(), "Erro ao buscar ciclos: " + message, Toast.LENGTH_LONG).show();
             }
-        });
+        }));
     }
 
     private void buscarEDesalvarCadaCiclo(List<UsuarioCiclo> listaUsuarioCiclos, RecyclerView rvMeusCiclos) {
@@ -293,7 +301,7 @@ public class InicioFragment extends Fragment {
 
             if (idCiclo != null) {
                 // Busca os detalhes completos do Ciclo pelo idCiclo na rota GET ciclo/{id}
-                cicloService.getCiclo(idCiclo, new RepositoryCallback<Ciclo>() {
+                cicloService.getCiclo(idCiclo, SkeletonLoading.wrap(getView(), new RepositoryCallback<Ciclo>() {
                     @Override
                     public void onSuccess(Ciclo ciclo) {
                         if (!isAdded()) return;
@@ -310,6 +318,13 @@ public class InicioFragment extends Fragment {
 
                         contador[0]++;
                         if (contador[0] == totalCiclos) {
+                            try {
+                                CicloDao cicloDao = AppDatabase.getInstance(requireContext()).cicloDao();
+                                cicloDao.limparTabela();
+                                cicloDao.salvarTodos(listaCiclosCompleta);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
                             exibirCiclosNaTela(listaCiclosCompleta, rvMeusCiclos);
                         }
                     }
@@ -320,13 +335,27 @@ public class InicioFragment extends Fragment {
 
                         contador[0]++;
                         if (contador[0] == totalCiclos) {
+                            try {
+                                CicloDao cicloDao = AppDatabase.getInstance(requireContext()).cicloDao();
+                                cicloDao.limparTabela();
+                                cicloDao.salvarTodos(listaCiclosCompleta);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
                             exibirCiclosNaTela(listaCiclosCompleta, rvMeusCiclos);
                         }
                     }
-                });
+                }));
             } else {
                 contador[0]++;
                 if (contador[0] == totalCiclos) {
+                    try {
+                        CicloDao cicloDao = AppDatabase.getInstance(requireContext()).cicloDao();
+                        cicloDao.limparTabela();
+                        cicloDao.salvarTodos(listaCiclosCompleta);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                     exibirCiclosNaTela(listaCiclosCompleta, rvMeusCiclos);
                 }
             }
@@ -346,7 +375,7 @@ public class InicioFragment extends Fragment {
     }
 
     public void carregarMe(ImageView imgPerfilHeader, RecyclerView rvMeusCiclos) {
-        meService.getMe(new RepositoryCallback<Me>() {
+        meService.getMe(SkeletonLoading.wrap(getView(), new RepositoryCallback<Me>() {
             @Override
             public void onSuccess(Me me) {
                 if (!isAdded()) return;
@@ -374,6 +403,6 @@ public class InicioFragment extends Fragment {
                 if (!isAdded()) return;
                 Toast.makeText(requireContext(), "Erro " + code + ": " + message, Toast.LENGTH_LONG).show();
             }
-        });
+        }));
     }
 }

@@ -24,6 +24,12 @@ public class Tarefa {
     @SerializedName("id")
     private Long id;
 
+    @SerializedName("titulo")
+    private String titulo;
+
+    @SerializedName("descricao")
+    private String descricao;
+
     @SerializedName("prioridade")
     private Prioridade prioridade;
 
