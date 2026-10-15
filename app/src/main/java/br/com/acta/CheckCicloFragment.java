@@ -214,7 +214,15 @@ public class CheckCicloFragment extends Fragment {
                 if (planoAcaoList != null && !planoAcaoList.isEmpty()) {
                     if (rvPlanosAcaoCheck != null) {
                         rvPlanosAcaoCheck.setVisibility(View.VISIBLE);
-                        PlanoAcaoAdapter adapter = new PlanoAcaoAdapter(planoAcaoList);
+                        PlanoAcaoAdapter adapter = new PlanoAcaoAdapter(planoAcaoList, plano -> {
+                            Bundle args = new Bundle();
+                            if (plano.getId() != null) {
+                                args.putLong("idPlanoAcao", plano.getId());
+                            }
+                            if (getView() != null) {
+                                Navigation.findNavController(getView()).navigate(R.id.metasPlanoAcaoFragment, args);
+                            }
+                        });
                         rvPlanosAcaoCheck.setAdapter(adapter);
                     }
                 } else {

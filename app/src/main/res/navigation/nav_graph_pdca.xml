@@ -53,4 +53,10 @@
         android:label="Efeitos Secundários"
         tools:layout="@layout/fragment_efeitos_secundarios" />
 
+    <fragment
+        android:id="@+id/metasPlanoAcaoFragment"
+        android:name="br.com.acta.MetasPlanoAcaoFragment"
+        android:label="Metas do Plano de Ação"
+        tools:layout="@layout/fragment_metas_plano_acao" />
+
 </navigation>

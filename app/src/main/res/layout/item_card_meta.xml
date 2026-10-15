@@ -65,31 +65,10 @@
         android:fontFamily="@font/plus_jakarta_sans"
         android:textColor="#616161"
         android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/txtValoresBaseEAlvo"
         tools:text="• Prazo: 30/10/2026" />
-
-    <!-- Botão "Detalhes da verificação" -->
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btnDetalhesVerificacao"
-        android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/bg_btn_enviar_resposta"
-        android:clickable="true"
-        android:elevation="3dp"
-        android:focusable="true"
-        android:fontFamily="@font/plus_jakarta_sans"
-        android:foreground="?attr/selectableItemBackground"
-        android:text="Detalhes da verificação"
-        android:textAllCaps="false"
-        android:textColor="#FFFFFF"
-        android:textSize="15sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/txtResponsavelMeta" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

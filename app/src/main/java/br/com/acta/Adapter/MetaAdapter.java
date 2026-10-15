@@ -17,19 +17,9 @@ import br.com.acta.R;
 public class MetaAdapter extends RecyclerView.Adapter<MetaAdapter.MetaViewHolder> {
 
     private final List<Meta> metaList;
-    private OnMetaClickListener listener;
-
-    public interface OnMetaClickListener {
-        void onMetaClick(Meta meta);
-    }
 
     public MetaAdapter(List<Meta> metaList) {
         this.metaList = metaList != null ? metaList : new ArrayList<>();
-    }
-
-    public MetaAdapter(List<Meta> metaList, OnMetaClickListener listener) {
-        this.metaList = metaList != null ? metaList : new ArrayList<>();
-        this.listener = listener;
     }
 
     @NonNull
@@ -53,14 +43,6 @@ public class MetaAdapter extends RecyclerView.Adapter<MetaAdapter.MetaViewHolder
 
         String prazoStr = meta.getPrazo() != null && !meta.getPrazo().trim().isEmpty() ? meta.getPrazo() : "30/10/2026";
         holder.txtResponsavel.setText("• Prazo: " + prazoStr);
-
-        if (holder.btnDetalhes != null) {
-            holder.btnDetalhes.setOnClickListener(v -> {
-                if (listener != null) {
-                    listener.onMetaClick(meta);
-                }
-            });
-        }
     }
 
     @Override
@@ -72,14 +54,12 @@ public class MetaAdapter extends RecyclerView.Adapter<MetaAdapter.MetaViewHolder
         TextView txtObjetivo;
         TextView txtValores;
         TextView txtResponsavel;
-        View btnDetalhes;
 
         public MetaViewHolder(@NonNull View itemView) {
             super(itemView);
             txtObjetivo = itemView.findViewById(R.id.txtObjetivoMeta);
             txtValores = itemView.findViewById(R.id.txtValoresBaseEAlvo);
             txtResponsavel = itemView.findViewById(R.id.txtResponsavelMeta);
-            btnDetalhes = itemView.findViewById(R.id.btnDetalhesVerificacao);
         }
     }
 }
