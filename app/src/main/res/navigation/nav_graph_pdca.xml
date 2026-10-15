@@ -65,4 +65,10 @@
         android:label="Lições Aprendidas"
         tools:layout="@layout/fragment_licoes_aprendidas" />
 
+    <fragment
+        android:id="@+id/registrarAprendizadoFragment"
+        android:name="br.com.acta.RegistrarAprendizadoFragment"
+        android:label="Registrar Aprendizado"
+        tools:layout="@layout/fragment_registrar_aprendizado" />
+
 </navigation>

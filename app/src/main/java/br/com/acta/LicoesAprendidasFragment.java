@@ -41,7 +41,6 @@ public class LicoesAprendidasFragment extends Fragment {
     private RecyclerView rvLicoes;
     private TextView txtQtdAprendizados;
     private EditText edtBuscar;
-    private View btnAdicionarNovo;
 
     private List<LicaoAprendida> listaCompletaLicoes = new ArrayList<>();
 
@@ -67,11 +66,15 @@ public class LicoesAprendidasFragment extends Fragment {
 
         txtQtdAprendizados = view.findViewById(R.id.txtQtdAprendizados);
         edtBuscar = view.findViewById(R.id.edtBuscarAprendizados);
-        btnAdicionarNovo = view.findViewById(R.id.btnAdicionarNovoAprendizado);
+        View btnAdicionarNovo = view.findViewById(R.id.btnAdicionarNovoAprendizado);
 
         if (btnAdicionarNovo != null) {
             btnAdicionarNovo.setOnClickListener(v -> {
-                // Ação ao clicar em Adicionar Novo Aprendizado
+                Bundle args = new Bundle();
+                if (getArguments() != null && getArguments().containsKey("idCiclo")) {
+                    args.putLong("idCiclo", getArguments().getLong("idCiclo", 0L));
+                }
+                Navigation.findNavController(v).navigate(R.id.registrarAprendizadoFragment, args);
             });
         }
 
@@ -119,7 +122,7 @@ public class LicoesAprendidasFragment extends Fragment {
     }
 
     private void atualizarInterface(List<LicaoAprendida> licoes) {
-        int qtd = licoes != null ? licoes.size() : 0;
+        int qtd = licoes.size();
         if (txtQtdAprendizados != null) {
             txtQtdAprendizados.setText("Você tem " + qtd + " aprendizado" + (qtd == 1 ? "" : "s"));
         }

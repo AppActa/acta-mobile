@@ -16,4 +16,8 @@ public class LicaoAprendidaService {
     public void buscarPorCiclo(Long idCiclo, RepositoryCallback<List<LicaoAprendida>> callback) {
         Enqueue.enqueue(api.buscarPorCiclo(idCiclo), callback);
     }
+
+    public void salvarPorCiclo(Long idCiclo, LicaoAprendida licao, RepositoryCallback<LicaoAprendida> callback) {
+        Enqueue.enqueue(api.salvarPorCiclo(idCiclo, licao), callback);
+    }
 }
