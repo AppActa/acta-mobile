@@ -59,4 +59,10 @@
         android:label="Metas do Plano de Ação"
         tools:layout="@layout/fragment_metas_plano_acao" />
 
+    <fragment
+        android:id="@+id/licoesAprendidasFragment"
+        android:name="br.com.acta.LicoesAprendidasFragment"
+        android:label="Lições Aprendidas"
+        tools:layout="@layout/fragment_licoes_aprendidas" />
+
 </navigation>
