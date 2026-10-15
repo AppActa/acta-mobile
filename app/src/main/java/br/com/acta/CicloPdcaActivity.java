@@ -90,12 +90,24 @@ public class CicloPdcaActivity extends AppCompatActivity {
                 }
             });
         }
+
+        View btnMenuCheck = findViewById(R.id.btnMenuCheck);
+        if (btnMenuCheck != null) {
+            btnMenuCheck.setOnClickListener(v -> {
+                if (navController != null && navController.getCurrentDestination() != null) {
+                    if (navController.getCurrentDestination().getId() != R.id.checkCicloFragment) {
+                        navController.navigate(R.id.checkCicloFragment);
+                    }
+                }
+            });
+        }
     }
 
     private void atualizarMenuAtivo(int destinationId) {
         View containerGeral = findViewById(R.id.containerGeral);
         View containerPlan = findViewById(R.id.containerPlan);
         View containerDo = findViewById(R.id.containerDo);
+        View containerCheck = findViewById(R.id.containerCheck);
 
         ImageView imgGeral = findViewById(R.id.imgGeral);
         TextView txtGeral = findViewById(R.id.txtGeral);
@@ -103,11 +115,14 @@ public class CicloPdcaActivity extends AppCompatActivity {
         TextView txtPlan = findViewById(R.id.txtPlan);
         ImageView imgDo = findViewById(R.id.imgDo);
         TextView txtDo = findViewById(R.id.txtDo);
+        ImageView imgCheck = findViewById(R.id.imgCheck);
+        TextView txtCheck = findViewById(R.id.txtCheck);
 
         // Reset all backgrounds and tints
         if (containerGeral != null) containerGeral.setBackground(null);
         if (containerPlan != null) containerPlan.setBackground(null);
         if (containerDo != null) containerDo.setBackground(null);
+        if (containerCheck != null) containerCheck.setBackground(null);
 
         if (imgGeral != null) imgGeral.setColorFilter(Color.parseColor("#212121"));
         if (txtGeral != null) txtGeral.setTextColor(Color.parseColor("#212121"));
@@ -115,6 +130,8 @@ public class CicloPdcaActivity extends AppCompatActivity {
         if (txtPlan != null) txtPlan.setTextColor(Color.parseColor("#212121"));
         if (imgDo != null) imgDo.setColorFilter(Color.parseColor("#00A7B5"));
         if (txtDo != null) txtDo.setTextColor(Color.parseColor("#00A7B5"));
+        if (imgCheck != null) imgCheck.setColorFilter(Color.parseColor("#238357"));
+        if (txtCheck != null) txtCheck.setTextColor(Color.parseColor("#238357"));
 
         if (destinationId == R.id.geralCicloFragment) {
             if (containerGeral != null) containerGeral.setBackgroundResource(R.drawable.bg_menu_active_circle);
@@ -128,6 +145,10 @@ public class CicloPdcaActivity extends AppCompatActivity {
             if (containerDo != null) containerDo.setBackgroundResource(R.drawable.bg_circle_do);
             if (imgDo != null) imgDo.setColorFilter(Color.parseColor("#083248"));
             if (txtDo != null) txtDo.setTextColor(Color.parseColor("#083248"));
+        } else if (destinationId == R.id.checkCicloFragment) {
+            if (containerCheck != null) containerCheck.setBackgroundResource(R.drawable.bg_circle_green);
+            if (imgCheck != null) imgCheck.setColorFilter(Color.parseColor("#FFFFFF"));
+            if (txtCheck != null) txtCheck.setTextColor(Color.parseColor("#FFFFFF"));
         }
     }
 }
