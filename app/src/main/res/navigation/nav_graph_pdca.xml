@@ -71,4 +71,10 @@
         android:label="Registrar Aprendizado"
         tools:layout="@layout/fragment_registrar_aprendizado" />
 
+    <fragment
+        android:id="@+id/actCicloFragment"
+        android:name="br.com.acta.ActCicloFragment"
+        android:label="Act - Padronização"
+        tools:layout="@layout/fragment_act_ciclo" />
+
 </navigation>

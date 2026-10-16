@@ -258,6 +258,74 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/lblTagsForm" />
 
+            <!-- Linha Sutil: Fase de origem + Severidade lado a lado -->
+            <LinearLayout
+                android:id="@+id/containerOpcoesSutis"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:baselineAligned="false"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/edtTagsForm">
+
+                <!-- 1. Fase de origem -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/plus_jakarta_sans"
+                        android:text="Fase de origem"
+                        android:textColor="#616161"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+                    <Spinner
+                        android:id="@+id/spnFaseOrigemForm"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="4dp"
+                        android:background="@drawable/bg_card_white"
+                        android:elevation="1dp"
+                        android:paddingHorizontal="8dp" />
+                </LinearLayout>
+
+                <!-- 2. Severidade -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/plus_jakarta_sans"
+                        android:text="Severidade"
+                        android:textColor="#616161"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+                    <Spinner
+                        android:id="@+id/spnSeveridadeForm"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="4dp"
+                        android:background="@drawable/bg_card_white"
+                        android:elevation="1dp"
+                        android:paddingHorizontal="8dp" />
+                </LinearLayout>
+
+            </LinearLayout>
+
             <!-- Botão "Registrar aprendizado" / Salvar -->
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnSalvarAprendizadoForm"
@@ -278,7 +346,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/edtTagsForm" />
+                app:layout_constraintTop_toBottomOf="@id/containerOpcoesSutis" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

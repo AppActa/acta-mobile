@@ -35,12 +35,9 @@ public class LicaoAprendidaAdapter extends RecyclerView.Adapter<LicaoAprendidaAd
 
         holder.txtTitulo.setText(licao.getTitulo() != null ? licao.getTitulo() : "Conferência dupla de pedidos");
 
-        if (licao.getLicao() != null && !licao.getLicao().trim().isEmpty()) {
-            holder.txtConteudo.setText(licao.getLicao());
-            holder.txtConteudo.setVisibility(View.VISIBLE);
-        } else {
-            holder.txtConteudo.setVisibility(View.GONE);
-        }
+        String fase = licao.getFaseOrigem() != null ? licao.getFaseOrigem() : "ACT";
+        String severidade = licao.getSeveridade() != null ? licao.getSeveridade() : "MEDIA";
+        holder.txtFaseOrigemESeveridade.setText("FASE: " + fase.toUpperCase() + "  •  SEVERIDADE: " + severidade.toUpperCase());
 
         String resultadoStr = licao.getResultado() != null ? "Resultado: " + licao.getResultado() : "Resultado: identificação mais rápida";
         String areaStr = licao.getArea() != null ? " • Área: " + licao.getArea() : " • Área: Estoque";
@@ -54,14 +51,14 @@ public class LicaoAprendidaAdapter extends RecyclerView.Adapter<LicaoAprendidaAd
     }
 
     public static class LicaoViewHolder extends RecyclerView.ViewHolder {
+        TextView txtFaseOrigemESeveridade;
         TextView txtTitulo;
-        TextView txtConteudo;
         TextView txtRodape;
 
         public LicaoViewHolder(@NonNull View itemView) {
             super(itemView);
+            txtFaseOrigemESeveridade = itemView.findViewById(R.id.txtFaseOrigemESeveridade);
             txtTitulo = itemView.findViewById(R.id.txtTituloLicao);
-            txtConteudo = itemView.findViewById(R.id.txtConteudoLicao);
             txtRodape = itemView.findViewById(R.id.txtRodapeLicao);
         }
     }

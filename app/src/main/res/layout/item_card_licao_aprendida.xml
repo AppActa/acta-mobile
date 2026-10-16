@@ -32,51 +32,53 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:padding="20dp">
+            android:paddingHorizontal="20dp"
+            android:paddingVertical="16dp">
+
+            <!-- Linha Sutil de Metadados: Fase de Origem e Severidade -->
+            <TextView
+                android:id="@+id/txtFaseOrigemESeveridade"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:textColor="#006775"
+                android:textSize="11sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="FASE: ACT  •  SEVERIDADE: MEDIA" />
 
             <!-- Título da Lição (ex: Conferência dupla de pedidos) -->
             <TextView
                 android:id="@+id/txtTituloLicao"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
                 android:ellipsize="end"
                 android:fontFamily="@font/plus_jakarta_sans"
                 android:maxLines="2"
                 android:textColor="#111111"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txtFaseOrigemESeveridade"
                 tools:text="Conferência dupla de pedidos" />
-
-            <!-- Conteúdo da Lição Aprendida -->
-            <TextView
-                android:id="@+id/txtConteudoLicao"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
-                android:fontFamily="@font/plus_jakarta_sans"
-                android:textColor="#424242"
-                android:textSize="14sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/txtTituloLicao"
-                tools:text="A conferência dupla de itens antes do envio reduziu drasticamente os erros de expedição." />
 
             <!-- Rodapé: Resultado e Área (ex: Resultado: identificação mais rápida • Área: Estoque) -->
             <TextView
                 android:id="@+id/txtRodapeLicao"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="4dp"
                 android:fontFamily="@font/plus_jakarta_sans"
                 android:textColor="#757575"
                 android:textSize="13sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/txtConteudoLicao"
+                app:layout_constraintTop_toBottomOf="@id/txtTituloLicao"
                 tools:text="Resultado: identificação mais rápida • Área: Estoque" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

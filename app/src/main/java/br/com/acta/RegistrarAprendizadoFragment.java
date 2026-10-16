@@ -5,8 +5,10 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -40,6 +42,8 @@ public class RegistrarAprendizadoFragment extends Fragment {
     private EditText edtResultado;
     private EditText edtArea;
     private EditText edtTags;
+    private Spinner spnFaseOrigem;
+    private Spinner spnSeveridade;
 
     private Long idCiclo = 0L;
 
@@ -53,6 +57,8 @@ public class RegistrarAprendizadoFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        KeyboardInsets.apply(view, false);
+
         ImageButton btnVoltar = view.findViewById(R.id.btnVoltarRegistrarAprendizado);
         if (btnVoltar != null) {
             btnVoltar.setOnClickListener(v -> Navigation.findNavController(v).navigateUp());
@@ -63,7 +69,26 @@ public class RegistrarAprendizadoFragment extends Fragment {
         edtResultado = view.findViewById(R.id.edtResultadoForm);
         edtArea = view.findViewById(R.id.edtAreaForm);
         edtTags = view.findViewById(R.id.edtTagsForm);
+        spnFaseOrigem = view.findViewById(R.id.spnFaseOrigemForm);
+        spnSeveridade = view.findViewById(R.id.spnSeveridadeForm);
+
         View btnSalvar = view.findViewById(R.id.btnSalvarAprendizadoForm);
+
+        // Preencher Spinner de Fase de Origem
+        String[] opcoesFase = new String[]{"PLAN", "DO", "CHECK", "ACT"};
+        ArrayAdapter<String> adapterFase = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_dropdown_item, opcoesFase);
+        if (spnFaseOrigem != null) {
+            spnFaseOrigem.setAdapter(adapterFase);
+            spnFaseOrigem.setSelection(3); // ACT por padrão
+        }
+
+        // Preencher Spinner de Severidade
+        String[] opcoesSeveridade = new String[]{"BAIXA", "MEDIA", "ALTA"};
+        ArrayAdapter<String> adapterSeveridade = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_dropdown_item, opcoesSeveridade);
+        if (spnSeveridade != null) {
+            spnSeveridade.setAdapter(adapterSeveridade);
+            spnSeveridade.setSelection(1); // MEDIA por padrão
+        }
 
         if (getArguments() != null && getArguments().containsKey("idCiclo")) {
             idCiclo = getArguments().getLong("idCiclo", 0L);
@@ -93,6 +118,19 @@ public class RegistrarAprendizadoFragment extends Fragment {
         novaLicao.setLicao(licao);
         novaLicao.setResultado(resultado);
         novaLicao.setArea(area);
+
+        if (spnFaseOrigem != null && spnFaseOrigem.getSelectedItem() != null) {
+            novaLicao.setFaseOrigem(spnFaseOrigem.getSelectedItem().toString());
+        } else {
+            novaLicao.setFaseOrigem("ACT");
+        }
+
+        if (spnSeveridade != null && spnSeveridade.getSelectedItem() != null) {
+            novaLicao.setSeveridade(spnSeveridade.getSelectedItem().toString());
+        } else {
+            novaLicao.setSeveridade("MEDIA");
+        }
+
         if (idCiclo != 0L) {
             novaLicao.setIdCiclo(idCiclo);
         }
@@ -100,9 +138,13 @@ public class RegistrarAprendizadoFragment extends Fragment {
         if (!tagsStr.isEmpty()) {
             List<String> tagsList = new ArrayList<>(Arrays.asList(tagsStr.split("[,\\s]+")));
             novaLicao.setTags(tagsList);
+        } else {
+            novaLicao.setTags(new ArrayList<>());
         }
 
-        licaoService.salvarPorCiclo(idCiclo, novaLicao, SkeletonLoading.wrap(getView(), new RepositoryCallback<LicaoAprendida>() {
+        Long cicloIdParaEnvio = idCiclo != 0L ? idCiclo : 1L;
+
+        licaoService.salvarPorCiclo(cicloIdParaEnvio, novaLicao, SkeletonLoading.wrap(getView(), new RepositoryCallback<LicaoAprendida>() {
             @Override
             public void onSuccess(LicaoAprendida result) {
                 if (!isAdded()) return;
@@ -113,8 +155,7 @@ public class RegistrarAprendizadoFragment extends Fragment {
             @Override
             public void onError(int code, String message) {
                 if (!isAdded()) return;
-                Toast.makeText(requireContext(), "Sucesso ao registrar aprendizado", Toast.LENGTH_SHORT).show();
-                Navigation.findNavController(requireView()).navigateUp();
+                Toast.makeText(requireContext(), "Erro ao salvar (" + code + "): " + message, Toast.LENGTH_LONG).show();
             }
         }));
     }
