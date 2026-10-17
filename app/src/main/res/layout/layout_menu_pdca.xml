@@ -175,34 +175,43 @@
     </FrameLayout>
 
     <!-- 5. Act -->
-    <LinearLayout
+    <FrameLayout
         android:id="@+id/btnMenuAct"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:clickable="true"
         android:focusable="true"
-        android:foreground="?attr/selectableItemBackground"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:paddingVertical="4dp">
+        android:foreground="?attr/selectableItemBackground">
 
-        <ImageView
-            android:layout_width="28dp"
-            android:layout_height="28dp"
-            android:contentDescription="Act"
-            android:scaleType="fitCenter"
-            android:src="@drawable/act" />
+        <LinearLayout
+            android:id="@+id/containerAct"
+            android:layout_width="68dp"
+            android:layout_height="68dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
-            android:fontFamily="@font/plus_jakarta_sans"
-            android:text="Act"
-            android:textColor="#006775"
-            android:textSize="12sp"
-            android:textStyle="bold" />
-    </LinearLayout>
+            <ImageView
+                android:id="@+id/imgAct"
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:contentDescription="Act"
+                android:scaleType="fitCenter"
+                android:src="@drawable/act"
+                app:tint="#006775" />
+
+            <TextView
+                android:id="@+id/txtAct"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:text="Act"
+                android:textColor="#006775"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </FrameLayout>
 
 </LinearLayout>

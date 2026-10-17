@@ -59,4 +59,22 @@
         android:label="Metas do Plano de Ação"
         tools:layout="@layout/fragment_metas_plano_acao" />
 
+    <fragment
+        android:id="@+id/licoesAprendidasFragment"
+        android:name="br.com.acta.LicoesAprendidasFragment"
+        android:label="Lições Aprendidas"
+        tools:layout="@layout/fragment_licoes_aprendidas" />
+
+    <fragment
+        android:id="@+id/registrarAprendizadoFragment"
+        android:name="br.com.acta.RegistrarAprendizadoFragment"
+        android:label="Registrar Aprendizado"
+        tools:layout="@layout/fragment_registrar_aprendizado" />
+
+    <fragment
+        android:id="@+id/actCicloFragment"
+        android:name="br.com.acta.ActCicloFragment"
+        android:label="Act - Padronização"
+        tools:layout="@layout/fragment_act_ciclo" />
+
 </navigation>
