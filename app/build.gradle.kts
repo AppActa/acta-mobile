@@ -32,11 +32,13 @@ android {
         val apiKey = localProperties.getProperty("CLOUDINARY_API_KEY")?.trim()?.removeSurrounding("\"")
         val apiSecret = localProperties.getProperty("CLOUDINARY_API_SECRET")?.trim()?.removeSurrounding("\"")
         val urlPg = localProperties.getProperty("PG_API_URL")?.trim()?.removeSurrounding("\"")
+        val urlMongo = localProperties.getProperty("MONGO_API_URL")?.trim()?.removeSurrounding("\"")
 
         buildConfigField("String", "CLOUDINARY_CLOUD_NAME", "\"$cloudName\"")
         buildConfigField("String", "CLOUDINARY_API_KEY", "\"$apiKey\"")
         buildConfigField("String", "CLOUDINARY_API_SECRET", "\"$apiSecret\"")
         buildConfigField("String", "API_BASE_URL_PG", "\"$urlPg\"")
+        buildConfigField("String", "API_BASE_URL_MONGO", "\"$urlMongo\"")
     }
 
     buildFeatures {
