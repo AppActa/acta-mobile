@@ -226,6 +226,42 @@
                     android:checked="true" />
             </LinearLayout>
 
+            <TextView
+                android:id="@+id/btnConfigurarAvisos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="48dp"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center_vertical"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:text="Som e avisos na tela"
+                android:textColor="@color/turquesa_dark_center"
+                android:textSize="14sp"
+                app:drawableEndCompat="@drawable/ic_arrow_forward"
+                app:drawableTint="@color/turquesa_dark_center" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:labelFor="@id/selectFormatoData"
+                android:text="Formato de data e hora"
+                android:textColor="#424242"
+                android:textSize="14sp" />
+
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/selectFormatoData"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:minHeight="48dp"
+                android:background="@drawable/bg_select_formato_data"
+                android:spinnerMode="dropdown"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
             <!-- Sair -->
             <LinearLayout
                 android:id="@+id/btnSair"
