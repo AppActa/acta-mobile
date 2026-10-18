@@ -5,7 +5,6 @@ import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.net.Uri;
-import android.os.Build;
 
 import com.cloudinary.android.preprocess.Preprocess;
 import com.cloudinary.android.preprocess.PreprocessException;
@@ -27,14 +26,7 @@ public class AutoRotation implements Preprocess<Bitmap> {
             if (inputStream == null){
                 return 0;
             }
-            ExifInterface exifInterface;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                exifInterface = new ExifInterface(inputStream);
-            } else {
-                String path = imageUri.getPath();
-                if (path == null) return 0;
-                exifInterface = new ExifInterface(path);
-            }
+            ExifInterface exifInterface = new ExifInterface(inputStream);
 
             int orientation = exifInterface.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
             switch (orientation) {

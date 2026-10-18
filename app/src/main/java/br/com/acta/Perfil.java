@@ -1,14 +1,21 @@
 package br.com.acta;
 
+import static android.R.id.content;
+
+import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -27,6 +34,7 @@ import androidx.core.content.FileProvider;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -40,6 +48,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Consumer;
 
 import br.com.acta.Api.ColaboradorApi;
 import br.com.acta.Api.MeApi;
@@ -48,20 +58,28 @@ import br.com.acta.Auth.FirebaseTokenProvider;
 import br.com.acta.Auth.TokenProvider;
 import br.com.acta.Client.RepositoryCallback;
 import br.com.acta.Client.RetrofitClient;
+import br.com.acta.Client.RetrofitClientFcm;
 import br.com.acta.DAO.AppDatabase;
 import br.com.acta.Model.Colaborador;
 import br.com.acta.Model.Me;
 import br.com.acta.Model.Usuario;
 import br.com.acta.Services.ColaboradorService;
+import br.com.acta.Services.DispositivoService;
 import br.com.acta.Services.MeService;
 import br.com.acta.Services.UsuarioService;
 import br.com.acta.utils.SkeletonLoading;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class Perfil extends AppCompatActivity {
 
-    private SwitchMaterial switchModoClaro;
+    private boolean ajustandoNotificacoes;
+    private final ActivityResultLauncher<String> permissaoNotificacoes = registerForActivityResult(
+        new ActivityResultContracts.RequestPermission(), permitida -> {
+            if (!permitida) Toast.makeText(this, "Push não autorizado. A central continua disponível.", Toast.LENGTH_LONG).show();
+        });
     private SharedPreferences preferences;
-    private LinearLayout btnEditarPerfil;
     TokenProvider tokenProvider = new FirebaseTokenProvider(FirebaseAuth.getInstance());
     private final MeApi meApi = RetrofitClient.getInstance(tokenProvider).create(MeApi.class);
     private final ColaboradorApi colaboradorApi = RetrofitClient.getInstance(tokenProvider).create(ColaboradorApi.class);
@@ -77,7 +95,7 @@ public class Perfil extends AppCompatActivity {
     private ImageView editarImg;
     private Uri fotoUri;
     ShapeableImageView imgFotoPerfil;
-    private ActivityResultLauncher<Uri> cameraLigar =
+    private final ActivityResultLauncher<Uri> cameraLigar =
             registerForActivityResult(new ActivityResultContracts.TakePicture(), tirou -> {
                 if (tirou) {
                     imgFotoPerfil.post(() -> {
@@ -91,7 +109,7 @@ public class Perfil extends AppCompatActivity {
                     }, 7000);
                 }
             });
-    private ActivityResultLauncher<Intent> galeriaAbrir =
+    private final ActivityResultLauncher<Intent> galeriaAbrir =
             registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
                 @Override
                 public void onActivityResult(ActivityResult o) {
@@ -116,29 +134,25 @@ public class Perfil extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_perfil);
         KeyboardInsets.apply(findViewById(R.id.perfil), false);
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
-            getWindow().setStatusBarColor(android.graphics.Color.TRANSPARENT);
-            androidx.core.view.WindowInsetsControllerCompat controller =
-                    new androidx.core.view.WindowInsetsControllerCompat(getWindow(), getWindow().getDecorView());
-            controller.setAppearanceLightStatusBars(false); // 'false' deixa o relógio e bateria brancos
-        }
+        getWindow().setStatusBarColor(Color.TRANSPARENT);
+        WindowInsetsControllerCompat controller = new WindowInsetsControllerCompat(getWindow(), getWindow().getDecorView());
+        controller.setAppearanceLightStatusBars(false); // 'false' deixa o relógio e bateria brancos
         // O cabeçalho continua sob a barra de status; a utilidade aplica apenas o inset inferior no perfil.
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.btnVoltar), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            android.view.ViewGroup.MarginLayoutParams params =
-                    (android.view.ViewGroup.MarginLayoutParams) v.getLayoutParams();
+            ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) v.getLayoutParams();
             params.topMargin = systemBars.top + 16;
             v.setLayoutParams(params);
             return insets;
         });
 
         try {
-            java.util.Map<String, String> config = new java.util.HashMap<>();
-            config.put("cloud_name", br.com.acta.BuildConfig.CLOUDINARY_CLOUD_NAME);
-            config.put("api_key", br.com.acta.BuildConfig.CLOUDINARY_API_KEY);
-            config.put("api_secret", br.com.acta.BuildConfig.CLOUDINARY_API_SECRET);
+            Map<String, String> config = new HashMap<>();
+            config.put("cloud_name", BuildConfig.CLOUDINARY_CLOUD_NAME);
+            config.put("api_key", BuildConfig.CLOUDINARY_API_KEY);
+            config.put("api_secret", BuildConfig.CLOUDINARY_API_SECRET);
 
-            com.cloudinary.android.MediaManager.init(this, config);
+            MediaManager.init(this, config);
         } catch (IllegalStateException e) {
             // Evita crash caso inicialize duas vezes
         }
@@ -151,7 +165,7 @@ public class Perfil extends AppCompatActivity {
         nome = findViewById(R.id.txtNome);
         email = findViewById(R.id.txtEmail);
         cargo = findViewById(R.id.txtCargo);
-        switchModoClaro = findViewById(R.id.switchModoClaro);
+        SwitchMaterial switchModoClaro = findViewById(R.id.switchModoClaro);
         preferences = getSharedPreferences("config_app", MODE_PRIVATE);
         editarImg = findViewById(R.id.btnAlterarFotoPerfil);
         imgFotoPerfil = findViewById(R.id.imgFotoPerfil);
@@ -159,14 +173,62 @@ public class Perfil extends AppCompatActivity {
         carregarMe();
         LinearLayout sair = findViewById(R.id.btnSair);
         sair.setOnClickListener(view -> {
-            new Thread(() -> {
-                AppDatabase.getInstance(Perfil.this).clearAllTables();
-            }).start();
-            FirebaseAuth.getInstance().signOut();
-            Intent intent = new Intent(Perfil.this, TelaLogin.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
-            finish();
+            DispositivoService.prepararLogout();
+            sair.setEnabled(false);
+            findViewById(R.id.switchNotificacoes).setEnabled(false);
+            AtomicBoolean encerrado = new AtomicBoolean();
+            Handler handler = new Handler(Looper.getMainLooper());
+
+            Consumer<Boolean> concluir = ok -> {
+                if (!encerrado.compareAndSet(false, true)) return;
+                if (!ok) Toast.makeText(this, "Não foi possível revogar o dispositivo. A sessão será encerrada.", Toast.LENGTH_LONG).show();
+                new Thread(() -> AppDatabase.getInstance(Perfil.this).clearAllTables()).start();
+                FirebaseAuth.getInstance().signOut();
+
+                Intent intent = new Intent(Perfil.this, TelaLogin.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+                startActivity(intent);
+                finish();
+            };
+
+            Call<Void> revogacao = RetrofitClientFcm.api().revogar();
+            handler.postDelayed(() -> {
+                revogacao.cancel();
+                concluir.accept(false);
+            }, 5000);
+
+            revogacao.enqueue(new Callback<Void>() {
+                public void onResponse(Call<Void> c, Response<Void> response) {concluir.accept(response.isSuccessful());}
+                public void onFailure(Call<Void> c, Throwable t) {concluir.accept(false);}
+            });
+        });
+
+        SwitchMaterial notificacoes = findViewById(R.id.switchNotificacoes);
+        notificacoes.setChecked(DispositivoService.habilitado(this));
+        notificacoes.setOnCheckedChangeListener((button, ativo) -> {
+            if (ajustandoNotificacoes) return;
+            notificacoes.setEnabled(false);
+            sair.setEnabled(false);
+
+            DispositivoService.sincronizar(ativo, ok -> {
+                if (ok) DispositivoService.salvar(this, ativo);
+                if (isFinishing() || isDestroyed()) return;
+
+                notificacoes.setEnabled(true);
+                sair.setEnabled(true);
+
+                if (ok) {
+                    if (ativo && checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                        permissaoNotificacoes.launch(Manifest.permission.POST_NOTIFICATIONS);
+                    }
+                } else {
+                    ajustandoNotificacoes = true;
+                    notificacoes.setChecked(!ativo);
+                    ajustandoNotificacoes = false;
+                    Toast.makeText(this, "Não foi possível atualizar a preferência. Tente novamente.", Toast.LENGTH_LONG).show();
+                }
+            });
         });
         editarImg.setOnClickListener(v -> {
             // 1. Infla o layout SEMPRE dentro do clique para criar uma nova instância de view
@@ -221,7 +283,7 @@ public class Perfil extends AppCompatActivity {
         editor.apply();
     }
     public void carregarMe(){
-        meService.getMe(SkeletonLoading.wrap(findViewById(android.R.id.content), new RepositoryCallback<Me>(){
+        meService.getMe(SkeletonLoading.wrap(findViewById(content), new RepositoryCallback<Me>(){
             @Override
             public void onSuccess(Me me) {
                 nome.setText(me.getNome());
@@ -238,7 +300,7 @@ public class Perfil extends AppCompatActivity {
         }));
     }
     public void carregarColaborador(Long idUsuario){
-        colaboradorService.getColaborador(idUsuario,SkeletonLoading.wrap(findViewById(android.R.id.content), new RepositoryCallback<Colaborador>(){
+        colaboradorService.getColaborador(idUsuario,SkeletonLoading.wrap(findViewById(content), new RepositoryCallback<Colaborador>(){
             @Override
             public void onSuccess(Colaborador colaborador) {
                 cargo.setText(colaborador.getCargo());
@@ -255,14 +317,6 @@ public class Perfil extends AppCompatActivity {
                 .upload(fotoTirada)
                 .option("folder", "fotos")
                 .unsigned("novoteste")
-//                .preprocess(new ImagePreprocessChain()
-//                                .loadWith(new BitmapDecoder(1000, 1000))
-//                                .addStep(new Limit(1000, 1000))
-//                                .addStep(new DimensionsValidator(10, 10, 1000, 1000))
-//                        .addStep(new Rotate(90))
-//                                .addStep(new AutoRotation(getApplicationContext(), fotoTirada))
-//                                .saveWith(new BitmapEncoder(BitmapEncoder.Format.WEBP, 80))
-//                )
                 .callback(new UploadCallback() {
                     @Override
                     public void onStart(String requestId) {
@@ -297,7 +351,7 @@ public class Perfil extends AppCompatActivity {
                 .dispatch();
     }
     private void salvarUrlBanco(Long idUsuario,Map<String, Object>camposAtualizados) {
-        usuarioService.patchUsuario(idUsuario, camposAtualizados, SkeletonLoading.wrap(findViewById(android.R.id.content), new RepositoryCallback<Usuario>() {
+        usuarioService.patchUsuario(idUsuario, camposAtualizados, SkeletonLoading.wrap(findViewById(content), new RepositoryCallback<Usuario>() {
             @Override
             public void onSuccess(Usuario resposta) {
                 Toast.makeText(Perfil.this, "Foto atualizada com sucesso!", Toast.LENGTH_SHORT).show();
@@ -311,7 +365,7 @@ public class Perfil extends AppCompatActivity {
         }));
     }
     private void buscarFotoDoBanco(Long idUsuario){
-        usuarioService.buscarUsuario(idUsuario, SkeletonLoading.wrap(findViewById(android.R.id.content), new RepositoryCallback<Usuario>() {
+        usuarioService.buscarUsuario(idUsuario, SkeletonLoading.wrap(findViewById(content), new RepositoryCallback<Usuario>() {
             @Override
             public void onSuccess(Usuario usuario) {
                 imgFotoPerfil = findViewById(R.id.imgFotoPerfil);
