@@ -3,23 +3,22 @@ package br.com.acta;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
-
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.google.firebase.auth.FirebaseAuth;
-
+import java.util.Collections;
 import java.util.List;
-
 import br.com.acta.Adapter.TarefaAdapter;
 import br.com.acta.Api.TarefaApi;
 import br.com.acta.Auth.FirebaseTokenProvider;
@@ -30,8 +29,12 @@ import br.com.acta.DAO.AppDatabase;
 import br.com.acta.Model.Tarefa;
 import br.com.acta.Services.TarefaService;
 import br.com.acta.utils.SkeletonLoading;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MinhasTarefasFragment extends Fragment {
+    private static final String TAG = "MinhasTarefasFragment";
 
     private final TokenProvider tokenProvider = new FirebaseTokenProvider(FirebaseAuth.getInstance());
     private final TarefaApi tarefaApi = RetrofitClient.getInstance(tokenProvider).create(TarefaApi.class);
@@ -78,6 +81,22 @@ public class MinhasTarefasFragment extends Fragment {
             });
         }
 
+        if (getArguments() != null && getArguments().containsKey("idTarefa")) {
+            tarefaApi.buscarPorId(getArguments().getLong("idTarefa")).enqueue(new Callback<Tarefa>() {
+                public void onResponse(Call<Tarefa> c, Response<Tarefa> response) {
+                    if (getView() == null) return;
+                    if (response.isSuccessful() && response.body() != null) {
+                        tarefaAdapter = new TarefaAdapter(Collections.singletonList(response.body()));
+                        rvTodasTarefas.setAdapter(tarefaAdapter);
+                    } else Toast.makeText(requireContext(), "Tarefa indisponível ou sem acesso.", Toast.LENGTH_LONG).show();
+                }
+                public void onFailure(Call<Tarefa> c, Throwable t) {
+                    if (getView() != null) Toast.makeText(requireContext(), "Não foi possível carregar a tarefa.", Toast.LENGTH_LONG).show();
+                }
+            });
+            return;
+        }
+
         // 1. Carregar do SQLite local
         try {
             List<Tarefa> tarefasLocais = AppDatabase.getInstance(requireContext()).tarefaDao().listarTodas();
@@ -86,7 +105,7 @@ public class MinhasTarefasFragment extends Fragment {
                 rvTodasTarefas.setAdapter(tarefaAdapter);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(TAG, "Erro ao carregar tarefas locais", e);
         }
 
         // 2. Buscar da API em segundo plano
@@ -102,7 +121,7 @@ public class MinhasTarefasFragment extends Fragment {
                 try {
                     AppDatabase.getInstance(requireContext()).tarefaDao().salvarTodos(tarefas);
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    Log.e(TAG, "Erro ao salvar tarefas locais", e);
                 }
 
                 if (rvTodasTarefas != null) {

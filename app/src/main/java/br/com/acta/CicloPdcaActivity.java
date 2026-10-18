@@ -47,9 +47,16 @@ public class CicloPdcaActivity extends AppCompatActivity {
                 atualizarMenuAtivo(destination.getId());
             });
 
+            if (savedInstanceState == null && getIntent().hasExtra("idLicao")) {
+                Bundle argumentos = new Bundle();
+                argumentos.putLong("idCiclo", getIntent().getLongExtra("idCiclo", 0L));
+                argumentos.putString("idLicao", getIntent().getStringExtra("idLicao"));
+                navController.navigate(R.id.licoesAprendidasFragment, argumentos);
+            }
+
             // Se veio um idPlanoAcao na Intent, navega direto para os detalhes do plano de ação
             if (getIntent() != null && getIntent().hasExtra("idPlanoAcao")) {
-                Long idPlanoAcao = getIntent().getLongExtra("idPlanoAcao", 0L);
+                long idPlanoAcao = getIntent().getLongExtra("idPlanoAcao", 0L);
                 if (idPlanoAcao != 0L) {
                     Bundle args = new Bundle();
                     args.putLong("idPlanoAcao", idPlanoAcao);
