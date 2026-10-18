@@ -3,11 +3,13 @@ package br.com.acta;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.constraintlayout.motion.widget.MotionLayout;
+import com.cloudinary.android.MediaManager;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainActvity extends AppCompatActivity {
     private MotionLayout btnComecar;
@@ -15,13 +17,26 @@ public class MainActvity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        try {
-            java.util.Map<String, String> config = new java.util.HashMap<>();
-            config.put("cloud_name", br.com.acta.BuildConfig.CLOUDINARY_CLOUD_NAME);
-            config.put("api_key", br.com.acta.BuildConfig.CLOUDINARY_API_KEY);
-            config.put("api_secret", br.com.acta.BuildConfig.CLOUDINARY_API_SECRET);
 
-            com.cloudinary.android.MediaManager.init(this, config);
+        String idNotificacao = getIntent().getStringExtra("idNotificacao");
+        if (idNotificacao != null || (Intent.ACTION_VIEW.equals(getIntent().getAction()) && getIntent().getData() != null)) {
+            Intent intent = new Intent(this, HomeActivity.class);
+            intent.setData(getIntent().getData());
+            intent.putExtra("idNotificacao", idNotificacao);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+
+            startActivity(intent);
+            finish();
+            return;
+        }
+
+        try {
+            Map<String, String> config = new HashMap<>();
+            config.put("cloud_name", BuildConfig.CLOUDINARY_CLOUD_NAME);
+            config.put("api_key", BuildConfig.CLOUDINARY_API_KEY);
+            config.put("api_secret", BuildConfig.CLOUDINARY_API_SECRET);
+
+            MediaManager.init(this, config);
         } catch (IllegalStateException e) {
             // Evita crash caso inicialize duas vezes
         }
@@ -32,8 +47,6 @@ public class MainActvity extends AppCompatActivity {
         SharedPreferences preferences = getSharedPreferences("config_app", MODE_PRIVATE);
         boolean isModoClaro = preferences.getBoolean("is_modo_claro",true);
         AppCompatDelegate.setDefaultNightMode(isModoClaro ? AppCompatDelegate.MODE_NIGHT_NO : AppCompatDelegate.MODE_NIGHT_YES);
-
-
 
         MotionLayout motionLayoutButton = findViewById(R.id.btnComecar);
         motionLayoutButton.setTransitionListener(new MotionLayout.TransitionListener() {
@@ -61,7 +74,7 @@ public class MainActvity extends AppCompatActivity {
         super.onStart();
 
         if (motionLayoutButton != null) {
-            motionLayoutButton.setProgress(0f);      // Reseta o progresso da animação para o início'
+            motionLayoutButton.setProgress(0f);      // Reseta o progresso da animação para o início
             motionLayoutButton.jumpToState(R.id.start); // Força a transição de volta para o estado inicial imediatamente
         }
     }

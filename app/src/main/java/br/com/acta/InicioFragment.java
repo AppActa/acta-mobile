@@ -12,6 +12,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -31,7 +32,6 @@ import br.com.acta.Api.CicloApi;
 import br.com.acta.Api.MeApi;
 import br.com.acta.Api.TarefaApi;
 import br.com.acta.Api.UsuarioApi;
-import br.com.acta.Api.UsuarioCicloApi;
 import br.com.acta.Auth.FirebaseTokenProvider;
 import br.com.acta.Auth.TokenProvider;
 import br.com.acta.Client.RepositoryCallback;
@@ -50,24 +50,20 @@ import br.com.acta.Model.UsuarioCiclo;
 import br.com.acta.Services.CicloService;
 import br.com.acta.Services.MeService;
 import br.com.acta.Services.TarefaService;
-import br.com.acta.Services.UsuarioCicloService;
 import br.com.acta.Services.UsuarioService;
 import br.com.acta.utils.SkeletonLoading;
 
 public class InicioFragment extends Fragment {
     private final TokenProvider tokenProvider = new FirebaseTokenProvider(FirebaseAuth.getInstance());
     private final UsuarioApi usuarioApi = RetrofitClient.getInstance(tokenProvider).create(UsuarioApi.class);
-    private final UsuarioCicloApi usuarioCicloApi = RetrofitClient.getInstance(tokenProvider).create(UsuarioCicloApi.class);
     private final CicloApi cicloApi = RetrofitClient.getInstance(tokenProvider).create(CicloApi.class);
     private final TarefaApi tarefaApi = RetrofitClient.getInstance(tokenProvider).create(TarefaApi.class);
     private final UsuarioService usuarioService = new UsuarioService(usuarioApi);
-    private final UsuarioCicloService usuarioCicloService = new UsuarioCicloService(usuarioCicloApi);
     private final CicloService cicloService = new CicloService(cicloApi);
     private final TarefaService tarefaService = new TarefaService(tarefaApi);
     private final MeApi meApi = RetrofitClient.getInstance(tokenProvider).create(MeApi.class);
     private final MeService meService = new MeService(meApi);
 
-    private Long id;
     private TextView txtSaudacao;
     private TextView txtResumoTarefas;
     private RecyclerView rvMinhasTarefas;
@@ -106,17 +102,18 @@ public class InicioFragment extends Fragment {
                 startActivity(intent);
             });
         }
+        view.findViewById(R.id.btnSinoHeader).setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.notificacoesFragment));
         View btnVerTodos = view.findViewById(R.id.btnVerTodos);
         if (btnVerTodos != null) {
             btnVerTodos.setOnClickListener(v -> {
-                androidx.navigation.Navigation.findNavController(v).navigate(R.id.meusCiclosFragment);
+                Navigation.findNavController(v).navigate(R.id.meusCiclosFragment);
             });
         }
 
         View btnVerTodasTarefas = view.findViewById(R.id.btnVerTodasTarefas);
         if (btnVerTodasTarefas != null) {
             btnVerTodasTarefas.setOnClickListener(v -> {
-                androidx.navigation.Navigation.findNavController(v).navigate(R.id.minhasTarefasFragment);
+                Navigation.findNavController(v).navigate(R.id.minhasTarefasFragment);
             });
         }
     }
@@ -388,7 +385,7 @@ public class InicioFragment extends Fragment {
                         e.printStackTrace();
                     }
 
-                    id = me.getIdUsuario();
+                    Long id = me.getIdUsuario();
 
                     if (txtSaudacao != null && me.getNome() != null && !me.getNome().isEmpty()) {
                         txtSaudacao.setText("Bom dia, " + me.getNome() + "!");

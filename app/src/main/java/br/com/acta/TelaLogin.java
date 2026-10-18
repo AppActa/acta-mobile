@@ -10,6 +10,7 @@ import android.text.Spanned;
 import android.text.style.StyleSpan;
 import android.graphics.Typeface;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -259,7 +260,12 @@ public class TelaLogin extends AppCompatActivity {
     }
 
     private void abrirPerfil() {
-        startActivity(new Intent(this, HomeActivity.class));
+        Intent intent = new Intent(this, HomeActivity.class);
+        intent.setData(getIntent().getData());
+        intent.putExtra("idNotificacao", getIntent().getStringExtra("idNotificacao"));
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+
+        startActivity(intent);
         finish();
     }
 
@@ -276,7 +282,7 @@ public class TelaLogin extends AppCompatActivity {
 
         if (dialog.getWindow() != null) {
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            dialog.getWindow().setSoftInputMode(android.view.WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+            dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         }
 
         EditText emailRecuperacao = dialogView.findViewById(R.id.edtEmailRecuperacao);

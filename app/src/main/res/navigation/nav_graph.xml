@@ -29,4 +29,5 @@
         android:label="Detalhes do Ciclo"
         tools:layout="@layout/fragment_detalhes_ciclo" />
 
+    <fragment android:id="@+id/notificacoesFragment" android:name="br.com.acta.NotificacoesFragment" android:label="Notificações" />
 </navigation>
