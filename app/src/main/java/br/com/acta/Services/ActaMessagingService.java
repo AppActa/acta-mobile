@@ -13,6 +13,7 @@ import android.os.Looper;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.core.content.ContextCompat;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -21,11 +22,25 @@ import br.com.acta.HomeActivity;
 import br.com.acta.R;
 
 public class ActaMessagingService extends FirebaseMessagingService {
-    public static final String CHANNEL = "acta_notificacoes";
+    public static final String CHANNEL = "acta_alertas";
+    private static final String CHANNEL_ANTERIOR = "acta_notificacoes";
 
     public static void criarCanal(Context context) {
-        NotificationChannel canal = new NotificationChannel(CHANNEL, "Notificações ACTA", NotificationManager.IMPORTANCE_DEFAULT);
-        context.getSystemService(NotificationManager.class).createNotificationChannel(canal);
+        NotificationManager gerenciador = context.getSystemService(NotificationManager.class);
+        if (gerenciador.getNotificationChannel(CHANNEL) != null) return;
+
+        // a importância do canal antigo não pode ser aumentada pelo app
+        NotificationChannel canal = new NotificationChannel(CHANNEL, "Avisos ACTA", NotificationManager.IMPORTANCE_HIGH);
+        canal.setDescription("Avisos sobre suas atividades no ACTA.");
+        NotificationChannel anterior = gerenciador.getNotificationChannel(CHANNEL_ANTERIOR);
+        if (anterior != null) {
+            if (anterior.hasUserSetImportance()) canal.setImportance(anterior.getImportance());
+            canal.setSound(anterior.getSound(), anterior.getAudioAttributes());
+            canal.setVibrationPattern(anterior.getVibrationPattern());
+            canal.enableVibration(anterior.shouldVibrate());
+            canal.setShowBadge(anterior.canShowBadge());
+        }
+        gerenciador.createNotificationChannel(canal);
     }
 
     @Override
@@ -38,6 +53,7 @@ public class ActaMessagingService extends FirebaseMessagingService {
         if (!DispositivoService.habilitado(this)) return;
 
         String idNotificacao = mensagem.getData().get("idNotificacao");
+        if (idNotificacao == null) idNotificacao = mensagem.getData().get("notificationId");
         if (idNotificacao == null) return;
 
         criarCanal(this);
@@ -58,7 +74,8 @@ public class ActaMessagingService extends FirebaseMessagingService {
         RemoteMessage.Notification notificacao = mensagem.getNotification();
 
         NotificationCompat.Builder notificacaoAndroid = new NotificationCompat.Builder(this, CHANNEL);
-        notificacaoAndroid.setSmallIcon(R.drawable.sino);
+        notificacaoAndroid.setSmallIcon(R.drawable.ic_notificacao_acta);
+        notificacaoAndroid.setColor(ContextCompat.getColor(this, R.color.turquesa_dark_center));
         notificacaoAndroid.setContentTitle("ACTA");
         notificacaoAndroid.setContentText(notificacao != null && notificacao.getBody() != null ? notificacao.getBody() : "Uma nova notificação está disponível.");
         notificacaoAndroid.setContentIntent(abrirCentral);
