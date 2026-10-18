@@ -13,6 +13,7 @@ import java.util.List;
 
 import br.com.acta.Model.Meta;
 import br.com.acta.R;
+import br.com.acta.utils.FormatoData;
 
 public class MetaAdapter extends RecyclerView.Adapter<MetaAdapter.MetaViewHolder> {
 
@@ -41,7 +42,7 @@ public class MetaAdapter extends RecyclerView.Adapter<MetaAdapter.MetaViewHolder
 
         holder.txtValores.setText("• Base: " + baseStr + "  →  Alvo: " + alvoStr);
 
-        String prazoStr = meta.getPrazo() != null && !meta.getPrazo().trim().isEmpty() ? meta.getPrazo() : "30/10/2026";
+        String prazoStr = FormatoData.formatar(holder.itemView.getContext(), meta.getPrazo());
         holder.txtResponsavel.setText("• Prazo: " + prazoStr);
     }
 

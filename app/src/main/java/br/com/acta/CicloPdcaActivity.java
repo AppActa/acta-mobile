@@ -15,13 +15,25 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
+import br.com.acta.utils.FormatoData;
+
 public class CicloPdcaActivity extends AppCompatActivity {
 
+    private FormatoData.Formato formatoData;
     private NavController navController;
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (formatoData != FormatoData.obterFormato(this)) {
+            recreate();
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        formatoData = FormatoData.obterFormato(this);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_ciclo_pdca);
 
@@ -139,7 +151,6 @@ public class CicloPdcaActivity extends AppCompatActivity {
         ImageView imgAct = findViewById(R.id.imgAct);
         TextView txtAct = findViewById(R.id.txtAct);
 
-        // Reset all backgrounds and tints
         if (containerGeral != null) containerGeral.setBackground(null);
         if (containerPlan != null) containerPlan.setBackground(null);
         if (containerDo != null) containerDo.setBackground(null);

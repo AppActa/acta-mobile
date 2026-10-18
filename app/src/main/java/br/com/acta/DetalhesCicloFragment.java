@@ -33,6 +33,7 @@ import br.com.acta.Services.PlanoAcaoService;
 import br.com.acta.Services.UsuarioCicloService;
 import br.com.acta.Services.UsuarioService;
 import br.com.acta.utils.SkeletonLoading;
+import br.com.acta.utils.FormatoData;
 
 public class DetalhesCicloFragment extends Fragment {
     private final TokenProvider tokenProvider = new FirebaseTokenProvider(FirebaseAuth.getInstance());
@@ -90,12 +91,12 @@ public class DetalhesCicloFragment extends Fragment {
 
                 dataFinal = view.findViewById(R.id.txtPrazoFinalCiclo);
                 if (dataFinal != null && ciclo.getDataEstimadaFim() != null) {
-                    dataFinal.setText("Prazo final: " + ciclo.getDataEstimadaFim());
+                    dataFinal.setText("Prazo final: " + FormatoData.formatar(requireContext(), ciclo.getDataEstimadaFim()));
                 }
 
                 dataInicio = view.findViewById(R.id.txtDataInicioCiclo);
                 if (dataInicio != null && ciclo.getDataInicio() != null) {
-                    dataInicio.setText("Iniciado em: " + ciclo.getDataInicio());
+                    dataInicio.setText("Iniciado em: " + FormatoData.formatar(requireContext(), ciclo.getDataInicio()));
                 }
 
                 titulo = view.findViewById(R.id.txtTituloCicloDetalhe);

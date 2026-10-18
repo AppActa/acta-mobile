@@ -28,15 +28,25 @@ import br.com.acta.Client.RetrofitClientMongo;
 import br.com.acta.Services.ActaMessagingService;
 import br.com.acta.Services.DispositivoService;
 import br.com.acta.utils.DeepLink;
+import br.com.acta.utils.FormatoData;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class HomeActivity extends AppCompatActivity {
 
+    private FormatoData.Formato formatoData;
     private NavController navController;
     private Call<?> chamadaDestino;
     private boolean entradaConsumida;
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (formatoData != FormatoData.obterFormato(this)) {
+            recreate();
+        }
+    }
 
     @Override
     protected void onNewIntent(Intent intent) {
@@ -222,6 +232,7 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        formatoData = FormatoData.obterFormato(this);
         if (savedInstanceState != null && savedInstanceState.getBoolean("entradaConsumida")) limparEntrada();
         if (FirebaseAuth.getInstance().getCurrentUser() == null) {
             abrirLogin();

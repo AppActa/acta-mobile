@@ -22,6 +22,7 @@ import br.com.acta.Client.RetrofitClient;
 import br.com.acta.Model.Plano5W2H;
 import br.com.acta.Services.Plano5W2HService;
 import br.com.acta.utils.SkeletonLoading;
+import br.com.acta.utils.FormatoData;
 
 public class Detalhes5W2HFragment extends Fragment {
 
@@ -88,8 +89,8 @@ public class Detalhes5W2HFragment extends Fragment {
                     txtWhere.setText(plano.getWhereLocal());
                 }
                 if (txtWhen != null) {
-                    String inicio = plano.getWhenInicio() != null ? plano.getWhenInicio() : "-";
-                    String fim = plano.getWhenFim() != null ? plano.getWhenFim() : "-";
+                    String inicio = FormatoData.formatar(requireContext(), plano.getWhenInicio());
+                    String fim = FormatoData.formatar(requireContext(), plano.getWhenFim());
                     txtWhen.setText("Início: " + inicio + " - Fim: " + fim);
                 }
                 if (txtWho != null) {

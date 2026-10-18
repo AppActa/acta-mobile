@@ -13,12 +13,16 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -64,9 +68,11 @@ import br.com.acta.Model.Colaborador;
 import br.com.acta.Model.Me;
 import br.com.acta.Model.Usuario;
 import br.com.acta.Services.ColaboradorService;
+import br.com.acta.Services.ActaMessagingService;
 import br.com.acta.Services.DispositivoService;
 import br.com.acta.Services.MeService;
 import br.com.acta.Services.UsuarioService;
+import br.com.acta.utils.FormatoData;
 import br.com.acta.utils.SkeletonLoading;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -167,6 +173,27 @@ public class Perfil extends AppCompatActivity {
         cargo = findViewById(R.id.txtCargo);
         SwitchMaterial switchModoClaro = findViewById(R.id.switchModoClaro);
         preferences = getSharedPreferences("config_app", MODE_PRIVATE);
+        Spinner formatoData = findViewById(R.id.selectFormatoData);
+        FormatoData.Formato[] formatos = FormatoData.Formato.values();
+        String[] opcoes = new String[formatos.length];
+        for (int i = 0; i < formatos.length; i++) {
+            opcoes[i] = formatos[i].getPadrao();
+        }
+        ArrayAdapter<String> adapterFormatos = new ArrayAdapter<>(this, R.layout.item_formato_data, opcoes);
+        adapterFormatos.setDropDownViewResource(R.layout.item_formato_data);
+        formatoData.setAdapter(adapterFormatos);
+        formatoData.setSelection(FormatoData.obterFormato(this).ordinal());
+        formatoData.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int posicao, long idItem) {
+                FormatoData.salvarFormato(Perfil.this, formatos[posicao]);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // a seleção atual continua salva
+            }
+        });
         editarImg = findViewById(R.id.btnAlterarFotoPerfil);
         imgFotoPerfil = findViewById(R.id.imgFotoPerfil);
         ImageView volta = findViewById(R.id.btnVoltar);
@@ -205,13 +232,19 @@ public class Perfil extends AppCompatActivity {
         });
 
         SwitchMaterial notificacoes = findViewById(R.id.switchNotificacoes);
+        findViewById(R.id.btnConfigurarAvisos).setOnClickListener(view -> {
+            Intent intent = new Intent(Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS);
+            intent.putExtra(Settings.EXTRA_APP_PACKAGE, getPackageName());
+            intent.putExtra(Settings.EXTRA_CHANNEL_ID, ActaMessagingService.CHANNEL);
+            startActivity(intent);
+        });
         notificacoes.setChecked(DispositivoService.habilitado(this));
         notificacoes.setOnCheckedChangeListener((button, ativo) -> {
             if (ajustandoNotificacoes) return;
             notificacoes.setEnabled(false);
             sair.setEnabled(false);
 
-            DispositivoService.sincronizar(ativo, ok -> {
+            DispositivoService.sincronizar(ativo, (ok, mensagem) -> {
                 if (ok) DispositivoService.salvar(this, ativo);
                 if (isFinishing() || isDestroyed()) return;
 
@@ -226,7 +259,7 @@ public class Perfil extends AppCompatActivity {
                     ajustandoNotificacoes = true;
                     notificacoes.setChecked(!ativo);
                     ajustandoNotificacoes = false;
-                    Toast.makeText(this, "Não foi possível atualizar a preferência. Tente novamente.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, mensagem, Toast.LENGTH_LONG).show();
                 }
             });
         });

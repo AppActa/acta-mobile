@@ -28,6 +28,7 @@ import br.com.acta.Model.Enum.StatusTarefa;
 import br.com.acta.Model.Tarefa;
 import br.com.acta.Model.TarefaStatusUpdateRequest;
 import br.com.acta.R;
+import br.com.acta.utils.FormatoData;
 import br.com.acta.Services.TarefaService;
 
 public class TarefaAdapter extends RecyclerView.Adapter<TarefaAdapter.TarefaViewHolder> {
@@ -73,9 +74,9 @@ public class TarefaAdapter extends RecyclerView.Adapter<TarefaAdapter.TarefaView
         }
 
         if (tarefa.getDataFimPrevista() != null) {
-            holder.txtPrazo.setText("Prazo: " + tarefa.getDataFimPrevista());
+            holder.txtPrazo.setText("Prazo: " + FormatoData.formatar(holder.itemView.getContext(), tarefa.getDataFimPrevista()));
         } else {
-            holder.txtPrazo.setText("Prazo: Amanhã");
+            holder.txtPrazo.setText("Prazo: —");
         }
 
         if (tarefa.getStatus() != null) {
