@@ -244,7 +244,8 @@ public class Perfil extends AppCompatActivity {
             notificacoes.setEnabled(false);
             sair.setEnabled(false);
 
-            DispositivoService.sincronizar(ativo, (ok, mensagem) -> {
+            DispositivoService.sincronizar(ativo, mensagem -> {
+                boolean ok = mensagem == null;
                 if (ok) DispositivoService.salvar(this, ativo);
                 if (isFinishing() || isDestroyed()) return;
 

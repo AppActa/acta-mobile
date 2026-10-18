@@ -242,7 +242,7 @@ public class HomeActivity extends AppCompatActivity {
         DispositivoService.iniciarSessao();
         ActaMessagingService.criarCanal(this);
 
-        if (DispositivoService.habilitado(this)) DispositivoService.sincronizar(true, ok -> {});
+        if (DispositivoService.habilitado(this)) DispositivoService.sincronizar(true, mensagemErro -> {});
 
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_home);

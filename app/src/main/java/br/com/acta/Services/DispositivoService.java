@@ -3,6 +3,7 @@ package br.com.acta.Services;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
@@ -20,6 +21,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public final class DispositivoService {
+    private static final String TAG = "DispositivoService";
     private static int geracaoCadastro;
     private static Call<Void> cadastroPendente;
     private static boolean encerrandoSessao;
@@ -38,7 +40,7 @@ public final class DispositivoService {
         if (encerrandoSessao || sincronizando || !habilitado(contexto) || FirebaseAuth.getInstance().getCurrentUser() == null) return;
         cadastroPendente = RetrofitClientFcm.api().registrar(new NotificacaoApi.Dispositivo(fidRegistrado));
         // se falhar, o próximo acesso tenta sincronizar de novo
-        enviar(cadastroPendente, sucesso -> {});
+        enviar(cadastroPendente, mensagemErro -> {});
     }
 
     // o cadastro é atualizado na thread principal
@@ -62,9 +64,10 @@ public final class DispositivoService {
         contexto.getSharedPreferences("config_app", Context.MODE_PRIVATE).edit().putBoolean(chave(), ativo).apply();
     }
 
-    public static void sincronizar(boolean ativo, Consumer<Boolean> aoConcluir) {
+    // null indica sucesso, uma mensagem indica falha
+    public static void sincronizar(boolean ativo, Consumer<String> aoConcluir) {
         if (encerrandoSessao || FirebaseAuth.getInstance().getCurrentUser() == null) {
-            aoConcluir.accept(false);
+            aoConcluir.accept("Sua sessão expirou. Entre novamente.");
             return;
         }
 
@@ -75,22 +78,23 @@ public final class DispositivoService {
         AtomicBoolean terminou = new AtomicBoolean();
         AtomicReference<Call<Void>> chamada = new AtomicReference<>();
 
-        Consumer<Boolean> concluir = ok -> {
+        Consumer<String> concluir = mensagemErro -> {
             if (terminou.compareAndSet(false, true)) {
                 if (geracaoAtual == geracaoCadastro) sincronizando = false;
-                aoConcluir.accept(ok);
+                aoConcluir.accept(mensagemErro);
             }
         };
 
         Runnable timeout = () -> {
+            Log.w(TAG, "Tempo limite ao sincronizar dispositivo");
             if (chamada.get() != null) chamada.get().cancel();
-            concluir.accept(false);
+            concluir.accept("A atualização demorou demais. Tente novamente.");
         };
 
         handler.postDelayed(timeout, 12000);
-        Consumer<Boolean> resposta = ok -> {
+        Consumer<String> resposta = mensagemErro -> {
             handler.removeCallbacks(timeout);
-            concluir.accept(ok);
+            concluir.accept(mensagemErro);
         };
 
         if (!ativo) {
@@ -101,6 +105,7 @@ public final class DispositivoService {
 
         String uidSessao = FirebaseAuth.getInstance().getUid();
         // um fid existente pode não estar registrado
+        Log.d(TAG, "Iniciando registro de notificações no Firebase");
         FirebaseMessaging.getInstance().register()
             .continueWithTask(task -> {
                 if (!task.isSuccessful()) throw task.getException();
@@ -109,27 +114,41 @@ public final class DispositivoService {
             .addOnCompleteListener(task -> {
                 if (terminou.get()) return;
                 if (encerrandoSessao || geracaoAtual != geracaoCadastro || !task.isSuccessful() || !uidSessao.equals(FirebaseAuth.getInstance().getUid())) {
-                    resposta.accept(false);
+                    if (!task.isSuccessful()) {
+                        Exception erro = task.getException();
+                        Log.w(TAG, "Falha no registro Firebase: " + (erro == null ? "sem detalhe" : erro.getClass().getSimpleName()));
+                    }
+                    resposta.accept("Não foi possível registrar este aparelho. Tente novamente.");
                     return;
                 }
 
+                Log.d(TAG, "Enviando cadastro do dispositivo");
                 cadastroPendente = RetrofitClientFcm.api().registrar(new NotificacaoApi.Dispositivo(task.getResult()));
                 chamada.set(cadastroPendente);
                 enviar(chamada.get(), resposta);
             });
     }
 
-    private static void enviar(Call<Void> chamada, Consumer<Boolean> aoConcluir) {
+    private static void enviar(Call<Void> chamada, Consumer<String> aoConcluir) {
         chamada.enqueue(new Callback<>() {
             @Override
             public void onResponse(Call<Void> chamadaRetornada, Response<Void> resposta) {
-                aoConcluir.accept(resposta.isSuccessful());
+                Log.d(TAG, "Sincronização do dispositivo: HTTP " + resposta.code());
+                aoConcluir.accept(resposta.isSuccessful() ? null : mensagemErro(resposta.code()));
             }
 
             @Override
             public void onFailure(Call<Void> chamadaRetornada, Throwable falha) {
-                aoConcluir.accept(false);
+                if (!chamadaRetornada.isCanceled()) Log.w(TAG, "Falha de conexão ao sincronizar dispositivo: " + falha.getClass().getSimpleName());
+                aoConcluir.accept("Não foi possível conectar. Verifique sua conexão e tente novamente.");
             }
         });
+    }
+
+    private static String mensagemErro(int status) {
+        if (status == 401) return "Sua sessão expirou. Entre novamente.";
+        if (status == 403) return "Sua conta não tem permissão para atualizar as notificações.";
+        if (status == 400 || status == 422) return "Não foi possível cadastrar este aparelho. Tente novamente mais tarde.";
+        return "O serviço de notificações está indisponível. Tente novamente mais tarde.";
     }
 }

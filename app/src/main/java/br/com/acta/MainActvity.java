@@ -19,6 +19,7 @@ public class MainActvity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         String idNotificacao = getIntent().getStringExtra("idNotificacao");
+        if (idNotificacao == null) idNotificacao = getIntent().getStringExtra("notificationId");
         if (idNotificacao != null || (Intent.ACTION_VIEW.equals(getIntent().getAction()) && getIntent().getData() != null)) {
             Intent intent = new Intent(this, HomeActivity.class);
             intent.setData(getIntent().getData());
