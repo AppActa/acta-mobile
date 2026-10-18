@@ -297,10 +297,10 @@ public class NotificacoesFragment extends Fragment {
         DeepLink link = DeepLink.parse(notificacao.deepLink);
         if (link == null || !link.corresponde(notificacao.tipoEntidade, notificacao.idEntidade)) {
             mostrarErro("O endereço deste item não está disponível.");
+            return;
         }
         if (!((HomeActivity) requireActivity()).abrirDeepLink(link.toString())) {
             criarDialog("Item indisponível", null, "Este item ainda não tem destino disponível no aplicativo. A notificação permanece nesta central.");
-            return;
         }
     }
 
