@@ -4,17 +4,16 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.os.SystemClock;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.recyclerview.widget.RecyclerView;
-
 import java.util.WeakHashMap;
-
 import br.com.acta.Client.RepositoryCallback;
+import static android.R.attr.colorBackground;
 
 
 public final class SkeletonLoading {
@@ -37,7 +36,7 @@ public final class SkeletonLoading {
             placeholder.pending++;
         }
         final Placeholder loading = placeholder;
-        return new RepositoryCallback<T>() {
+        return new RepositoryCallback<>() {
             private boolean finished;
 
             private void finish() {
@@ -82,7 +81,7 @@ public final class SkeletonLoading {
             this.root = root;
             density = getResources().getDisplayMetrics().density;
             TypedValue color = new TypedValue();
-            getContext().getTheme().resolveAttribute(android.R.attr.colorBackground, color, true);
+            getContext().getTheme().resolveAttribute(colorBackground, color, true);
             background = color.type >= TypedValue.TYPE_FIRST_COLOR_INT
                     && color.type <= TypedValue.TYPE_LAST_COLOR_INT ? color.data : Color.WHITE;
             setImportantForAccessibility(IMPORTANT_FOR_ACCESSIBILITY_NO);
@@ -107,7 +106,7 @@ public final class SkeletonLoading {
         @Override
         protected void onDraw(Canvas canvas) {
             canvas.drawColor(background);
-            float pulse = (float) (0.5 + 0.5 * Math.sin(android.os.SystemClock.uptimeMillis() / 240.0));
+            float pulse = (float) (0.5 + 0.5 * Math.sin(SystemClock.uptimeMillis() / 240.0));
             boolean dark = Color.red(background) + Color.green(background) + Color.blue(background) < 384;
             int shade = dark ? (int) (55 + 20 * pulse) : (int) (220 + 15 * pulse);
             paint.setColor(Color.rgb(shade, shade, shade));
