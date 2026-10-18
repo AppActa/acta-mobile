@@ -31,6 +31,7 @@ import br.com.acta.Model.PlanoAcao;
 import br.com.acta.Services.CicloService;
 import br.com.acta.Services.PlanoAcaoService;
 import br.com.acta.utils.SkeletonLoading;
+import br.com.acta.utils.FormatoData;
 
 public class DoCicloFragment extends Fragment {
     private final TokenProvider tokenProvider = new FirebaseTokenProvider(FirebaseAuth.getInstance());
@@ -123,11 +124,11 @@ public class DoCicloFragment extends Fragment {
                 }
 
                 if (txtDataInicio != null && ciclo.getDataInicio() != null) {
-                    txtDataInicio.setText("Iniciado em: " + ciclo.getDataInicio());
+                    txtDataInicio.setText("Iniciado em: " + FormatoData.formatar(requireContext(), ciclo.getDataInicio()));
                 }
 
                 if (txtPrazoFinal != null && ciclo.getDataEstimadaFim() != null) {
-                    txtPrazoFinal.setText("Prazo final: " + ciclo.getDataEstimadaFim());
+                    txtPrazoFinal.setText("Prazo final: " + FormatoData.formatar(requireContext(), ciclo.getDataEstimadaFim()));
                 }
 
                 // Validação Acumulativa: FASE DO (índice 1). Qualquer status com índice >= 1 pode visualizar o DO.

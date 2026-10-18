@@ -34,6 +34,7 @@ import br.com.acta.Services.CicloService;
 import br.com.acta.Services.PlanoAcaoService;
 import br.com.acta.Services.VerificacaoResultadoService;
 import br.com.acta.utils.SkeletonLoading;
+import br.com.acta.utils.FormatoData;
 
 public class CheckCicloFragment extends Fragment {
 
@@ -136,11 +137,11 @@ public class CheckCicloFragment extends Fragment {
                 }
 
                 if (txtDataInicioCheck != null && ciclo.getDataInicio() != null) {
-                    txtDataInicioCheck.setText("Iniciado em: " + ciclo.getDataInicio());
+                    txtDataInicioCheck.setText("Iniciado em: " + FormatoData.formatar(requireContext(), ciclo.getDataInicio()));
                 }
 
                 if (txtPrazoFinalCheck != null && ciclo.getDataEstimadaFim() != null) {
-                    txtPrazoFinalCheck.setText("Prazo final: " + ciclo.getDataEstimadaFim());
+                    txtPrazoFinalCheck.setText("Prazo final: " + FormatoData.formatar(requireContext(), ciclo.getDataEstimadaFim()));
                 }
 
                 // Validação Acumulativa: FASE CHECK (índice 2). Qualquer status com índice >= 2 pode visualizar o CHECK.

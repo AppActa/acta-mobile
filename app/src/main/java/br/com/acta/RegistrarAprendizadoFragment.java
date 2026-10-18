@@ -21,7 +21,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
+import static android.R.layout.simple_spinner_dropdown_item;
 import br.com.acta.Api.LicaoAprendidaApi;
 import br.com.acta.Auth.FirebaseTokenProvider;
 import br.com.acta.Auth.TokenProvider;
@@ -76,7 +76,7 @@ public class RegistrarAprendizadoFragment extends Fragment {
 
         // Preencher Spinner de Fase de Origem
         String[] opcoesFase = new String[]{"PLAN", "DO", "CHECK", "ACT"};
-        ArrayAdapter<String> adapterFase = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_dropdown_item, opcoesFase);
+        ArrayAdapter<String> adapterFase = new ArrayAdapter<>(requireContext(), simple_spinner_dropdown_item, opcoesFase);
         if (spnFaseOrigem != null) {
             spnFaseOrigem.setAdapter(adapterFase);
             spnFaseOrigem.setSelection(3); // ACT por padrão
@@ -84,7 +84,7 @@ public class RegistrarAprendizadoFragment extends Fragment {
 
         // Preencher Spinner de Severidade
         String[] opcoesSeveridade = new String[]{"BAIXA", "MEDIA", "ALTA"};
-        ArrayAdapter<String> adapterSeveridade = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_dropdown_item, opcoesSeveridade);
+        ArrayAdapter<String> adapterSeveridade = new ArrayAdapter<>(requireContext(), simple_spinner_dropdown_item, opcoesSeveridade);
         if (spnSeveridade != null) {
             spnSeveridade.setAdapter(adapterSeveridade);
             spnSeveridade.setSelection(1); // MEDIA por padrão

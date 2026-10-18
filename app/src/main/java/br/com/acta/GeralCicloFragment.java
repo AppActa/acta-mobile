@@ -39,6 +39,7 @@ import br.com.acta.Services.TarefaService;
 import br.com.acta.Services.UsuarioCicloService;
 import br.com.acta.Services.UsuarioService;
 import br.com.acta.utils.SkeletonLoading;
+import br.com.acta.utils.FormatoData;
 
 public class GeralCicloFragment extends Fragment {
     private final TokenProvider tokenProvider = new FirebaseTokenProvider(FirebaseAuth.getInstance());
@@ -103,11 +104,11 @@ public class GeralCicloFragment extends Fragment {
                 }
 
                 if (txtDataInicio != null && ciclo.getDataInicio() != null) {
-                    txtDataInicio.setText("Iniciado em: " + ciclo.getDataInicio());
+                    txtDataInicio.setText("Iniciado em: " + FormatoData.formatar(requireContext(), ciclo.getDataInicio()));
                 }
 
                 if (txtPrazoFinal != null && ciclo.getDataEstimadaFim() != null) {
-                    txtPrazoFinal.setText("Prazo final: " + ciclo.getDataEstimadaFim());
+                    txtPrazoFinal.setText("Prazo final: " + FormatoData.formatar(requireContext(), ciclo.getDataEstimadaFim()));
                 }
 
                 atualizarStatusPdca(ciclo.getStatus());

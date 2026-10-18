@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -40,7 +41,6 @@ public class LicoesAprendidasFragment extends Fragment {
 
     private RecyclerView rvLicoes;
     private TextView txtQtdAprendizados;
-    private EditText edtBuscar;
 
     private List<LicaoAprendida> listaCompletaLicoes = new ArrayList<>();
 
@@ -65,7 +65,7 @@ public class LicoesAprendidasFragment extends Fragment {
         }
 
         txtQtdAprendizados = view.findViewById(R.id.txtQtdAprendizados);
-        edtBuscar = view.findViewById(R.id.edtBuscarAprendizados);
+        EditText edtBuscar = view.findViewById(R.id.edtBuscarAprendizados);
         View btnAdicionarNovo = view.findViewById(R.id.btnAdicionarNovoAprendizado);
 
         if (btnAdicionarNovo != null) {
@@ -93,7 +93,7 @@ public class LicoesAprendidasFragment extends Fragment {
             });
         }
 
-        Long idCiclo = 0L;
+        long idCiclo = 0L;
         if (getArguments() != null && getArguments().containsKey("idCiclo")) {
             idCiclo = getArguments().getLong("idCiclo", 0L);
         } else if (requireActivity().getIntent() != null && requireActivity().getIntent().hasExtra("idCiclo")) {
@@ -109,14 +109,20 @@ public class LicoesAprendidasFragment extends Fragment {
         licaoService.buscarPorCiclo(idCiclo, SkeletonLoading.wrap(getView(), new RepositoryCallback<List<LicaoAprendida>>() {
             @Override
             public void onSuccess(List<LicaoAprendida> licoes) {
-                if (!isAdded()) return;
+                if (getView() == null) return;
 
-                listaCompletaLicoes = licoes != null ? licoes : new ArrayList<>();
+                listaCompletaLicoes = licoes != null ? new ArrayList<>(licoes) : new ArrayList<>();
+                String idLicao = getArguments() == null ? null : getArguments().getString("idLicao");
+                if (idLicao != null) {
+                    listaCompletaLicoes.removeIf(licao -> !idLicao.equalsIgnoreCase(licao.getId()));
+                    if (listaCompletaLicoes.isEmpty()) Toast.makeText(requireContext(), "Esta lição não está disponível neste ciclo.", Toast.LENGTH_LONG).show();
+                }
                 atualizarInterface(listaCompletaLicoes);
             }
 
             @Override
             public void onError(int code, String message) {
+                if (getView() != null) Toast.makeText(requireContext(), "Não foi possível carregar as lições. Tente novamente.", Toast.LENGTH_LONG).show();
             }
         }));
     }

@@ -23,6 +23,7 @@ import br.com.acta.Model.Ciclo;
 import br.com.acta.Model.Enum.StatusCiclo;
 import br.com.acta.Services.CicloService;
 import br.com.acta.utils.SkeletonLoading;
+import br.com.acta.utils.FormatoData;
 
 public class ActCicloFragment extends Fragment {
 
@@ -33,7 +34,6 @@ public class ActCicloFragment extends Fragment {
     private TextView txtSemInformacoesAct;
     private TextView txtTituloAct;
     private TextView txtStatusAct;
-    private TextView txtResponsavelAct;
     private TextView txtDataInicioAct;
     private TextView txtPrazoFinalAct;
     private View cardAprendizadosInclude;
@@ -58,7 +58,6 @@ public class ActCicloFragment extends Fragment {
         txtSemInformacoesAct = view.findViewById(R.id.txtSemInformacoesAct);
         txtTituloAct = view.findViewById(R.id.txtTituloActCiclo);
         txtStatusAct = view.findViewById(R.id.txtStatusActCiclo);
-        txtResponsavelAct = view.findViewById(R.id.txtResponsavelAct);
         txtDataInicioAct = view.findViewById(R.id.txtDataInicioAct);
         txtPrazoFinalAct = view.findViewById(R.id.txtPrazoFinalAct);
         cardAprendizadosInclude = view.findViewById(R.id.cardAprendizadosCicloInclude);
@@ -114,7 +113,7 @@ public class ActCicloFragment extends Fragment {
     }
 
     private void buscarCiclo(Long idCiclo) {
-        cicloService.getCiclo(idCiclo, SkeletonLoading.wrap(getView(), new RepositoryCallback<Ciclo>() {
+        cicloService.getCiclo(idCiclo, SkeletonLoading.wrap(getView(), new RepositoryCallback<>() {
             @Override
             public void onSuccess(Ciclo ciclo) {
                 if (!isAdded() || ciclo == null) return;
@@ -128,11 +127,11 @@ public class ActCicloFragment extends Fragment {
                 }
 
                 if (txtDataInicioAct != null && ciclo.getDataInicio() != null) {
-                    txtDataInicioAct.setText("Iniciado em: " + ciclo.getDataInicio());
+                    txtDataInicioAct.setText("Iniciado em: " + FormatoData.formatar(requireContext(), ciclo.getDataInicio()));
                 }
 
                 if (txtPrazoFinalAct != null && ciclo.getDataEstimadaFim() != null) {
-                    txtPrazoFinalAct.setText("Prazo final: " + ciclo.getDataEstimadaFim());
+                    txtPrazoFinalAct.setText("Prazo final: " + FormatoData.formatar(requireContext(), ciclo.getDataEstimadaFim()));
                 }
 
                 // Validação Acumulativa: FASE ACT (índice 3). Qualquer status com índice >= 3 pode visualizar o ACT.

@@ -15,13 +15,25 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
+import br.com.acta.utils.FormatoData;
+
 public class CicloPdcaActivity extends AppCompatActivity {
 
+    private FormatoData.Formato formatoData;
     private NavController navController;
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (formatoData != FormatoData.obterFormato(this)) {
+            recreate();
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        formatoData = FormatoData.obterFormato(this);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_ciclo_pdca);
 
@@ -47,9 +59,16 @@ public class CicloPdcaActivity extends AppCompatActivity {
                 atualizarMenuAtivo(destination.getId());
             });
 
+            if (savedInstanceState == null && getIntent().hasExtra("idLicao")) {
+                Bundle argumentos = new Bundle();
+                argumentos.putLong("idCiclo", getIntent().getLongExtra("idCiclo", 0L));
+                argumentos.putString("idLicao", getIntent().getStringExtra("idLicao"));
+                navController.navigate(R.id.licoesAprendidasFragment, argumentos);
+            }
+
             // Se veio um idPlanoAcao na Intent, navega direto para os detalhes do plano de ação
             if (getIntent() != null && getIntent().hasExtra("idPlanoAcao")) {
-                Long idPlanoAcao = getIntent().getLongExtra("idPlanoAcao", 0L);
+                long idPlanoAcao = getIntent().getLongExtra("idPlanoAcao", 0L);
                 if (idPlanoAcao != 0L) {
                     Bundle args = new Bundle();
                     args.putLong("idPlanoAcao", idPlanoAcao);
@@ -132,7 +151,6 @@ public class CicloPdcaActivity extends AppCompatActivity {
         ImageView imgAct = findViewById(R.id.imgAct);
         TextView txtAct = findViewById(R.id.txtAct);
 
-        // Reset all backgrounds and tints
         if (containerGeral != null) containerGeral.setBackground(null);
         if (containerPlan != null) containerPlan.setBackground(null);
         if (containerDo != null) containerDo.setBackground(null);

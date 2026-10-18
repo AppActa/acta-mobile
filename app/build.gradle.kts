@@ -21,7 +21,7 @@ android {
 
     defaultConfig {
         applicationId = "br.com.acta"
-        minSdk = 29
+        minSdk = 33
         targetSdk = 36
         versionCode = 1
         versionName = "1.0"
@@ -32,13 +32,16 @@ android {
         val apiKey = localProperties.getProperty("CLOUDINARY_API_KEY")?.trim()?.removeSurrounding("\"")
         val apiSecret = localProperties.getProperty("CLOUDINARY_API_SECRET")?.trim()?.removeSurrounding("\"")
         val urlPg = localProperties.getProperty("PG_API_URL")?.trim()?.removeSurrounding("\"")
+        val urlFcm = localProperties.getProperty("FCM_API_BASE_URL")?.trim()?.removeSurrounding("\"")
         val urlMongo = localProperties.getProperty("MONGO_API_URL")?.trim()?.removeSurrounding("\"")
 
         buildConfigField("String", "CLOUDINARY_CLOUD_NAME", "\"$cloudName\"")
         buildConfigField("String", "CLOUDINARY_API_KEY", "\"$apiKey\"")
         buildConfigField("String", "CLOUDINARY_API_SECRET", "\"$apiSecret\"")
+
         buildConfigField("String", "API_BASE_URL_PG", "\"$urlPg\"")
         buildConfigField("String", "API_BASE_URL_MONGO", "\"$urlMongo\"")
+        buildConfigField("String", "FCM_API_BASE_URL", "\"$urlFcm\"")
     }
 
     buildFeatures {
@@ -75,9 +78,11 @@ dependencies {
     implementation("com.google.android.gms:play-services-auth:21.2.0")
 
     // Firebase (Usando a versão unificada via BoM)
-    implementation(platform("com.google.firebase:firebase-bom:33.1.2"))
+    implementation(platform("com.google.firebase:firebase-bom:34.19.0"))
     implementation("com.google.firebase:firebase-auth")
     implementation("com.google.firebase:firebase-analytics")
+    implementation("com.google.firebase:firebase-messaging")
+    implementation("com.google.firebase:firebase-installations")
 
     // Testes
     testImplementation(libs.junit)
