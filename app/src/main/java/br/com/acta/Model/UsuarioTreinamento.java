@@ -1,5 +1,7 @@
 package br.com.acta.Model;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.time.OffsetDateTime;
 
 import br.com.acta.Model.Enum.StatusTreinamento;
@@ -13,13 +15,21 @@ import lombok.Setter;
 @Getter
 @Setter
 public class UsuarioTreinamento {
+    @SerializedName("idUsuario")
     private Long idUsuario;
 
+    @SerializedName("idTreinamento")
+    private Long idTreinamento;
+
+    @SerializedName("nomeUsuario")
     private String nomeUsuario;
 
+    @SerializedName("status")
     private StatusTreinamento status;
 
+    @SerializedName("obrigatorio")
     private Boolean obrigatorio;
 
+    @SerializedName("terminadoEm")
     private OffsetDateTime terminadoEm;
 }
