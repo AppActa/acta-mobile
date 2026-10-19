@@ -1,19 +1,28 @@
 package br.com.acta.Model;
 
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
+
 import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
+import br.com.acta.Model.Enum.Prioridade;
+import br.com.acta.Model.Enum.StatusMeta;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@Entity(tableName = "tb_meta")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 public class Meta {
 
+    @PrimaryKey
     @SerializedName("id")
     private Long id;
 
@@ -33,10 +42,10 @@ public class Meta {
     private String prazo;
 
     @SerializedName("status")
-    private String status;
+    private StatusMeta status;
 
     @SerializedName("prioridade")
-    private String prioridade;
+    private Prioridade prioridade;
 
     @SerializedName("area")
     private String area;
@@ -50,7 +59,7 @@ public class Meta {
     @SerializedName("idPlanoAcao")
     private Long idPlanoAcao;
 
+    @Ignore
     @SerializedName("responsaveis")
     private List<Usuario> responsaveis;
-
 }

@@ -1,7 +1,5 @@
 package br.com.acta.Auth;
 
-import android.util.Log;
-
 import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -11,8 +9,6 @@ import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 
 public class FirebaseTokenProvider implements TokenProvider{
-    private static final String FIREBASE_TOKEN_TAG = "FIREBASE_TOKEN";
-
     private final FirebaseAuth firebaseAuth;
 
     public FirebaseTokenProvider(FirebaseAuth firebaseAuth) {
@@ -28,9 +24,7 @@ public class FirebaseTokenProvider implements TokenProvider{
 
         try {
             GetTokenResult result = Tasks.await(user.getIdToken(forceRefresh));
-            String idToken = result.getToken();
-            Log.d(FIREBASE_TOKEN_TAG, idToken);
-            return idToken;
+            return result.getToken();
         } catch (ExecutionException e) {
             throw new IOException("Não foi possível obter o ID Token do Firebase.", e.getCause());
         } catch (InterruptedException e) {

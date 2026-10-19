@@ -3,34 +3,51 @@ package br.com.acta;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.constraintlayout.motion.widget.MotionLayout;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+import com.cloudinary.android.MediaManager;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainActvity extends AppCompatActivity {
     private MotionLayout btnComecar;
-    private SharedPreferences preferences;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        String idNotificacao = getIntent().getStringExtra("idNotificacao");
+        if (idNotificacao == null) idNotificacao = getIntent().getStringExtra("notificationId");
+        if (idNotificacao != null || (Intent.ACTION_VIEW.equals(getIntent().getAction()) && getIntent().getData() != null)) {
+            Intent intent = new Intent(this, HomeActivity.class);
+            intent.setData(getIntent().getData());
+            intent.putExtra("idNotificacao", idNotificacao);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+
+            startActivity(intent);
+            finish();
+            return;
+        }
+
+        try {
+            Map<String, String> config = new HashMap<>();
+            config.put("cloud_name", BuildConfig.CLOUDINARY_CLOUD_NAME);
+            config.put("api_key", BuildConfig.CLOUDINARY_API_KEY);
+            config.put("api_secret", BuildConfig.CLOUDINARY_API_SECRET);
+
+            MediaManager.init(this, config);
+        } catch (IllegalStateException e) {
+            // Evita crash caso inicialize duas vezes
+        }
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+        KeyboardInsets.apply(findViewById(R.id.main));
 
-        preferences = getSharedPreferences("config_app", MODE_PRIVATE);
+        SharedPreferences preferences = getSharedPreferences("config_app", MODE_PRIVATE);
         boolean isModoClaro = preferences.getBoolean("is_modo_claro",true);
         AppCompatDelegate.setDefaultNightMode(isModoClaro ? AppCompatDelegate.MODE_NIGHT_NO : AppCompatDelegate.MODE_NIGHT_YES);
-
-
 
         MotionLayout motionLayoutButton = findViewById(R.id.btnComecar);
         motionLayoutButton.setTransitionListener(new MotionLayout.TransitionListener() {
@@ -57,7 +74,6 @@ public class MainActvity extends AppCompatActivity {
         MotionLayout motionLayoutButton = findViewById(R.id.btnComecar);
         super.onStart();
 
-        // Toda vez que a tela ficar visível novamente, reinicia a animação
         if (motionLayoutButton != null) {
             motionLayoutButton.setProgress(0f);      // Reseta o progresso da animação para o início
             motionLayoutButton.jumpToState(R.id.start); // Força a transição de volta para o estado inicial imediatamente

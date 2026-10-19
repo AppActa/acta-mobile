@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/imagemFundoBoasVindas"
+    android:fillViewport="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- 1. Topo Verde-Água (Cabeçalho com botão voltar, título e status Act) -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/headerActCiclo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="24dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <!-- Botão Voltar -->
+            <ImageButton
+                android:id="@+id/btnVoltarActCiclo"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="Voltar"
+                android:scaleType="fitCenter"
+                android:src="@drawable/voltar"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <!-- Ícone Quadrado Ciano do Act -->
+            <FrameLayout
+                android:id="@+id/containerIconeAct"
+                android:layout_width="104dp"
+                android:layout_height="104dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/bg_circle_green"
+                android:elevation="4dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/btnVoltarActCiclo">
+
+                <ImageView
+                    android:id="@+id/imgIconeAct"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:layout_gravity="center"
+                    android:contentDescription="Ícone Act"
+                    android:src="@drawable/act"
+                    app:tint="#FFFFFF" />
+            </FrameLayout>
+
+            <!-- Título do Ciclo (Ao lado do ícone) -->
+            <TextView
+                android:id="@+id/txtTituloActCiclo"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:text="Organização do estoque"
+                android:textColor="#111111"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/containerIconeAct"
+                app:layout_constraintTop_toTopOf="@id/containerIconeAct" />
+
+            <!-- Badge Status "Status: Act" -->
+            <TextView
+                android:id="@+id/txtStatusActCiclo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/bg_status_pill"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="4dp"
+                android:text="Status: Act"
+                android:textColor="#FFFFFF"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@id/txtTituloActCiclo"
+                app:layout_constraintTop_toBottomOf="@id/txtTituloActCiclo" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- 2. Cartão Branco que ocupa todo o resto da tela -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/containerActBranco"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/bg_cartao_topo_arredondado"
+            android:minHeight="600dp"
+            android:paddingHorizontal="20dp"
+            android:paddingTop="28dp"
+            android:paddingBottom="40dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/headerActCiclo"
+            app:layout_constraintVertical_bias="0.0">
+
+            <!-- Responsável, Datas -->
+            <TextView
+                android:id="@+id/txtResponsavelAct"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:text="Responsável pelo ciclo: Catarina Cândido"
+                android:textColor="#616161"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/txtDataInicioAct"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:text="Iniciado em: —"
+                android:textColor="#616161"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txtResponsavelAct" />
+
+            <TextView
+                android:id="@+id/txtPrazoFinalAct"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:text="Prazo final: —"
+                android:textColor="#616161"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txtDataInicioAct" />
+
+            <!-- Título de Seção "Act – Aprendizados" -->
+            <TextView
+                android:id="@+id/lblActAprendizados"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="28dp"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:text="Act – Aprendizados"
+                android:textColor="#083248"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txtPrazoFinalAct" />
+
+            <!-- Mensagem quando não houver permissão / informações -->
+            <TextView
+                android:id="@+id/txtSemInformacoesAct"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:gravity="center"
+                android:text="Não existe informações nessa tela ainda"
+                android:textColor="#757575"
+                android:textSize="16sp"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/lblActAprendizados" />
+
+            <!-- Card de Aprendizados de Ciclo (Include) -->
+            <include
+                android:id="@+id/cardAprendizadosCicloInclude"
+                layout="@layout/item_card_aprendizado_ciclo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/lblActAprendizados" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>

@@ -1,5 +1,7 @@
 package br.com.acta.Client;
 
+import android.os.Build;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -7,6 +9,7 @@ import java.util.concurrent.TimeUnit;
 
 import br.com.acta.Auth.AuthInterceptor;
 import br.com.acta.Auth.TokenProvider;
+import br.com.acta.BuildConfig;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -14,7 +17,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public final class RetrofitClient {
 
-    private static final String BASE_URL = "https://acta-pg-api.onrender.com/";
+    private static final String BASE_URL = BuildConfig.API_BASE_URL_PG;
     private static Retrofit retrofit;
 
     private RetrofitClient() {
@@ -25,7 +28,8 @@ public final class RetrofitClient {
 
             // Configurar logging para debug
             HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-            logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+            // Evita registrar códigos de convite enviados nos corpos das requisições.
+            logging.setLevel(HttpLoggingInterceptor.Level.BASIC);
 
             // Configurando OkHttpClient
             OkHttpClient client = new OkHttpClient.Builder()

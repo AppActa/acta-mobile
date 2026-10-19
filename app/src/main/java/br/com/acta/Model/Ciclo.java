@@ -1,7 +1,9 @@
 package br.com.acta.Model;
 
-import java.time.LocalDate;
-import java.time.OffsetDateTime;
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
+
 import java.util.List;
 
 import br.com.acta.Model.Enum.StatusCiclo;
@@ -10,11 +12,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@Entity(tableName = "tb_ciclo")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 public class Ciclo {
+    @PrimaryKey
     private Long id;
 
     private String titulo;
@@ -23,18 +27,22 @@ public class Ciclo {
 
     private StatusCiclo status;
 
-    private LocalDate dataInicio;
+    private String dataInicio;
 
-    private LocalDate dataEstimadaFim;
-    private LocalDate dataFimReal;
+    private String dataEstimadaFim;
+
+    private String dataFimReal;
 
     private Long idEmpresa;
 
     private Long idGestor;
 
+    @Ignore
     private List<UsuarioCiclo> colaboradores;
 
-    private OffsetDateTime criadoEm;
-    private OffsetDateTime atualizadoEm;
+    private String criadoEm;
 
+    private String atualizadoEm;
+
+    private String iconeUrl;
 }

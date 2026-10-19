@@ -9,6 +9,7 @@
 
     <color name="turquesa_dark_start">#63A4B4</color>
     <color name="turquesa_dark_center">#0B4E6B</color>
+    <color name="favicon_background">#081524</color>
     <color name="bg_dark_end">#121212</color>
     <color name="capsula_dark">#731A1A1A</color>
     <color name="text_light">#FFFFFF</color>
@@ -19,5 +20,5 @@
     <color name="login_text_muted">#4A5560</color>
     <color name="login_edit_text_hint">#8C969E</color>
     <color name="login_edit_text_line">#2C3E50</color>
-    <color name="login_btn_bg">#A3CCD3</color>
+    <color name="login_btn_bg">#48B3C6</color>
 </resources>

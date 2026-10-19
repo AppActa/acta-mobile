@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_dialog_arredondado"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:padding="28dp">
+
+    <TextView
+        android:id="@+id/txtTituloDialogFoto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/plus_jakarta_sans"
+        android:gravity="center"
+        android:text="Alterar Foto\nde Perfil"
+        android:textColor="#000000"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/txtSubtituloDialogFoto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/plus_jakarta_sans"
+        android:gravity="center"
+        android:text="Escolha de onde deseja selecionar\nsua nova foto"
+        android:textColor="#9E9E9E"
+        android:textSize="14sp" />
+
+    <!-- Botão Câmera -->
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnOpcaoCamera"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/bg_btn_principal"
+        android:clickable="true"
+        android:focusable="true"
+        android:fontFamily="@font/plus_jakarta_sans"
+        android:foreground="?attr/selectableItemBackground"
+        android:text="Tirar Foto com a Câmera"
+        android:textAllCaps="false"
+        android:textColor="#FFFFFF"
+        android:textSize="15sp"
+        android:textStyle="bold" />
+
+    <!-- Botão Galeria -->
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnOpcaoGaleria"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/bg_campo_texto"
+        android:clickable="true"
+        android:focusable="true"
+        android:fontFamily="@font/plus_jakarta_sans"
+        android:foreground="?attr/selectableItemBackground"
+        android:text="Escolher da Galeria"
+        android:textAllCaps="false"
+        android:textColor="#000000"
+        android:textSize="15sp"
+        android:textStyle="bold" />
+
+    <!-- Botão Cancelar -->
+    <TextView
+        android:id="@+id/btnCancelarDialogFoto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
+        android:focusable="true"
+        android:fontFamily="@font/plus_jakarta_sans"
+        android:padding="8dp"
+        android:text="Cancelar"
+        android:textColor="#9E9E9E"
+        android:textSize="14sp"
+        android:textStyle="bold" />
+
+</LinearLayout>

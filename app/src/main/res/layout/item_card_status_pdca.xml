@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cardStatusPdcaItem"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="16dp"
+    android:layout_marginVertical="6dp"
+    android:background="@drawable/bg_card_white"
+    android:elevation="2dp"
+    android:padding="16dp">
+
+    <!-- Círculo do Ícone -->
+    <FrameLayout
+        android:id="@+id/containerIconePdca"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="@drawable/bg_circle_green"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/imgIconePdca"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center"
+            android:contentDescription="Ícone Fase PDCA"
+            android:src="@drawable/plan"
+            app:tint="#FFFFFF" />
+    </FrameLayout>
+
+    <!-- Título da Fase (Ex: Plan, Do, Check, Act) -->
+    <TextView
+        android:id="@+id/txtTituloFasePdca"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:fontFamily="@font/plus_jakarta_sans"
+        android:textColor="#083248"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/containerIconePdca"
+        app:layout_constraintTop_toTopOf="@id/containerIconePdca"
+        tools:text="Plan" />
+
+    <!-- Subtítulo / Descrição (Ex: Plano e causas respondidos) -->
+    <TextView
+        android:id="@+id/txtDescricaoFasePdca"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="2dp"
+        android:fontFamily="@font/plus_jakarta_sans"
+        android:textColor="#006775"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/containerIconePdca"
+        app:layout_constraintTop_toBottomOf="@id/txtTituloFasePdca"
+        tools:text="Plano e causas respondidos" />
+
+    <!-- Estado / Status (Ex: Concluído, Em andamento) -->
+    <TextView
+        android:id="@+id/txtEstadoFasePdca"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="2dp"
+        android:fontFamily="@font/plus_jakarta_sans"
+        android:textColor="#616161"
+        android:textSize="13sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/containerIconePdca"
+        app:layout_constraintTop_toBottomOf="@id/txtDescricaoFasePdca"
+        tools:text="Concluído" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

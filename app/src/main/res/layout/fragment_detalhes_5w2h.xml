@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/imagemFundoBoasVindas"
+    android:fillViewport="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- 1. Cabeçalho Superior com Botão Voltar -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/headerDetalhes5W2H"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="24dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageButton
+                android:id="@+id/btnVoltarDetalhes5W2H"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="Voltar"
+                android:scaleType="fitCenter"
+                android:src="@drawable/voltar"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- 2. Cartão Branco que ocupa todo o resto da tela -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/containerDetalhes5W2HBranco"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/bg_cartao_topo_arredondado"
+            android:minHeight="700dp"
+            android:paddingHorizontal="24dp"
+            android:paddingTop="28dp"
+            android:paddingBottom="40dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/headerDetalhes5W2H"
+            app:layout_constraintVertical_bias="0.0">
+
+            <!-- Título "Plano de ação 5W2H" -->
+            <TextView
+                android:id="@+id/txtTitulo5W2HDetalhe"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:text="Plano de ação 5W2H"
+                android:textColor="#111111"
+                android:textSize="26sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <!-- Subtítulo / Resumo -->
+            <TextView
+                android:id="@+id/txtSubtitulo5W2HDetalhe"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:text="Detalhes completos do planejamento"
+                android:textColor="#616161"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txtTitulo5W2HDetalhe" />
+
+            <!-- 1. O que (What) -->
+            <TextView
+                android:id="@+id/lblWhat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:text="O que (What)"
+                android:textColor="#083248"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txtSubtitulo5W2HDetalhe" />
+
+            <TextView
+                android:id="@+id/txtWhatAcao"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:background="@drawable/bg_campo_texto"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:padding="14dp"
+                android:textColor="#212121"
+                android:textSize="14sp"
+                app:layout_constraintTop_toBottomOf="@id/lblWhat"
+                tools:text="Otimizar o recebimento de materiais" />
+
+            <!-- 2. Por quê (Why) -->
+            <TextView
+                android:id="@+id/lblWhy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:text="Por quê (Why)"
+                android:textColor="#083248"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txtWhatAcao" />
+
+            <TextView
+                android:id="@+id/txtWhyJustificativa"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:background="@drawable/bg_campo_texto"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:padding="14dp"
+                android:textColor="#212121"
+                android:textSize="14sp"
+                app:layout_constraintTop_toBottomOf="@id/lblWhy"
+                tools:text="Reduzir o tempo de separação e evitar avarias." />
+
+            <!-- 3. Onde (Where) -->
+            <TextView
+                android:id="@+id/lblWhere"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:text="Onde (Where)"
+                android:textColor="#083248"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txtWhyJustificativa" />
+
+            <TextView
+                android:id="@+id/txtWhereLocal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:background="@drawable/bg_campo_texto"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:padding="14dp"
+                android:textColor="#212121"
+                android:textSize="14sp"
+                app:layout_constraintTop_toBottomOf="@id/lblWhere"
+                tools:text="Almoxarifado Central" />
+
+            <!-- 4. Quando (When) -->
+            <TextView
+                android:id="@+id/lblWhen"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:text="Quando (When)"
+                android:textColor="#083248"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txtWhereLocal" />
+
+            <TextView
+                android:id="@+id/txtWhenPrazo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:background="@drawable/bg_campo_texto"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:padding="14dp"
+                android:textColor="#212121"
+                android:textSize="14sp"
+                app:layout_constraintTop_toBottomOf="@id/lblWhen"
+                tools:text="Início: 26/05/2026 - Fim: 30/10/2026" />
+
+            <!-- 5. Quem (Who) -->
+            <TextView
+                android:id="@+id/lblWho"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:text="Quem (Who)"
+                android:textColor="#083248"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txtWhenPrazo" />
+
+            <TextView
+                android:id="@+id/txtWhoResponsavel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:background="@drawable/bg_campo_texto"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:padding="14dp"
+                android:textColor="#212121"
+                android:textSize="14sp"
+                app:layout_constraintTop_toBottomOf="@id/lblWho"
+                tools:text="Catarina Cândido" />
+
+            <!-- 6. Como (How) -->
+            <TextView
+                android:id="@+id/lblHow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:text="Como (How)"
+                android:textColor="#083248"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txtWhoResponsavel" />
+
+            <TextView
+                android:id="@+id/txtHowModoExecucao"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:background="@drawable/bg_campo_texto"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:padding="14dp"
+                android:textColor="#212121"
+                android:textSize="14sp"
+                app:layout_constraintTop_toBottomOf="@id/lblHow"
+                tools:text="Treinamento da equipe e automação de conferência." />
+
+            <!-- 7. Quanto custa (How Much) -->
+            <TextView
+                android:id="@+id/lblHowMuch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:text="Quanto custa (How Much)"
+                android:textColor="#083248"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txtHowModoExecucao" />
+
+            <TextView
+                android:id="@+id/txtHowMuchCusto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:background="@drawable/bg_campo_texto"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:padding="14dp"
+                android:textColor="#212121"
+                android:textSize="14sp"
+                app:layout_constraintTop_toBottomOf="@id/lblHowMuch"
+                tools:text="R$ 1.500,00" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>

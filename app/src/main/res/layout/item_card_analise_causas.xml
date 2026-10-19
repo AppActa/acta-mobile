@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cardAnaliseCausas"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="24dp"
+    android:layout_marginTop="16dp"
+    android:background="@drawable/bg_card_white"
+    android:elevation="4dp"
+    android:padding="20dp">
+
+    <!-- Subtítulo "Análise de causas" -->
+    <TextView
+        android:id="@+id/lblCategoriaAnaliseCausas"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/plus_jakarta_sans"
+        android:text="Análise de causas"
+        android:textColor="#006775"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/txtStatusEnviada"
+        app:layout_constraintEnd_toStartOf="@id/txtStatusEnviada"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/txtStatusEnviada" />
+
+    <!-- Status Badge "Enviada" -->
+    <TextView
+        android:id="@+id/txtStatusEnviada"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_pill_enviada"
+        android:fontFamily="@font/plus_jakarta_sans"
+        android:paddingHorizontal="14dp"
+        android:paddingVertical="5dp"
+        android:text="Enviada"
+        android:textColor="#238357"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Título Principal "Contribuição registrada" -->
+    <TextView
+        android:id="@+id/txtTituloAnaliseCausas"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:fontFamily="@font/plus_jakarta_sans"
+        android:text="Contribuição registrada"
+        android:textColor="#083248"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txtStatusEnviada" />
+
+    <!-- Descrição das respostas -->
+    <TextView
+        android:id="@+id/txtDescricaoAnaliseCausas"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:fontFamily="@font/plus_jakarta_sans"
+        android:lineSpacingExtra="2dp"
+        android:text="Enviada em 28 set · 6 respostas compartilhadas com o gestor."
+        android:textColor="#616161"
+        android:textSize="13sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txtTituloAnaliseCausas" />
+
+    <!-- Botão "Ver sua resposta" -->
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnVerSuaResposta"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/bg_btn_enviar_resposta"
+        android:clickable="true"
+        android:elevation="3dp"
+        android:focusable="true"
+        android:fontFamily="@font/plus_jakarta_sans"
+        android:foreground="?attr/selectableItemBackground"
+        android:text="Ver sua resposta"
+        android:textAllCaps="false"
+        android:textColor="#FFFFFF"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txtDescricaoAnaliseCausas" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

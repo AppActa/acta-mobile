@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/imagemFundoBoasVindas"
+    android:fillViewport="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- 1. Topo Verde-Água (Cabeçalho com botão voltar, título e status) -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/headerDoCiclo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="24dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <!-- Botão Voltar -->
+            <ImageButton
+                android:id="@+id/btnVoltarDoCiclo"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="Voltar"
+                android:scaleType="fitCenter"
+                android:src="@drawable/voltar"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <!-- Ícone Quadrado Ciano do Do -->
+            <FrameLayout
+                android:id="@+id/containerIconeDo"
+                android:layout_width="104dp"
+                android:layout_height="104dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/bg_circle_do"
+                android:elevation="4dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/btnVoltarDoCiclo">
+
+                <ImageView
+                    android:id="@+id/imgIconeDo"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:layout_gravity="center"
+                    android:contentDescription="Ícone Do"
+                    android:src="@drawable/codex_play"
+                    app:tint="#FFFFFF" />
+            </FrameLayout>
+
+            <!-- Título do Ciclo (Ao lado do ícone) -->
+            <TextView
+                android:id="@+id/txtTituloDoCiclo"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:text="Redução do tempo de atendimento"
+                android:textColor="#111111"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/containerIconeDo"
+                app:layout_constraintTop_toTopOf="@id/containerIconeDo" />
+
+            <!-- Badge Status "Status: Do" -->
+            <TextView
+                android:id="@+id/txtStatusDoCiclo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/bg_status_pill"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="4dp"
+                android:text="Status: Do"
+                android:textColor="#FFFFFF"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@id/txtTituloDoCiclo"
+                app:layout_constraintTop_toBottomOf="@id/txtTituloDoCiclo" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- 2. Cartão Branco que ocupa todo o resto da tela -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/containerDoBranco"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/bg_cartao_topo_arredondado"
+            android:minHeight="600dp"
+            android:paddingHorizontal="24dp"
+            android:paddingTop="28dp"
+            android:paddingBottom="40dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/headerDoCiclo"
+            app:layout_constraintVertical_bias="0.0">
+
+            <!-- Informações do Ciclo (Responsável, Datas) -->
+            <TextView
+                android:id="@+id/txtResponsavelDo"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:text="Responsável pelo ciclo: Catarina Cândido"
+                android:textColor="#616161"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/txtDataInicioDo"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:text="Iniciado em: —"
+                android:textColor="#616161"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txtResponsavelDo" />
+
+            <TextView
+                android:id="@+id/txtPrazoFinalDo"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:text="Prazo final: —"
+                android:textColor="#616161"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txtDataInicioDo" />
+
+            <!-- Título de Seção "Do - Resumo" -->
+            <TextView
+                android:id="@+id/lblDoResumo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="28dp"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:text="Do - Resumo"
+                android:textColor="#083248"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txtPrazoFinalDo" />
+
+            <!-- Mensagem caso o ciclo não esteja em Do -->
+            <TextView
+                android:id="@+id/txtSemInformacoesDo"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:gravity="center"
+                android:text="Não existe informações nessa tela ainda"
+                android:textColor="#757575"
+                android:textSize="15sp"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/lblDoResumo" />
+
+            <!-- RecyclerView dos Planos de Ação do Do -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvPlanosAcaoDo"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:clipToPadding="false"
+                android:nestedScrollingEnabled="false"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/lblDoResumo"
+                tools:listitem="@layout/item_card_plano_acao" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>
