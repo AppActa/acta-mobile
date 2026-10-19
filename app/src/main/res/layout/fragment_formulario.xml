@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="?attr/imagemFundoBoasVindas" android:fillViewport="true">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical">
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="24dp">
+            <ImageButton android:id="@+id/btnVoltarFormulario" android:layout_width="48dp" android:layout_height="48dp"
+                android:background="?attr/selectableItemBackgroundBorderless" android:src="@drawable/voltar"
+                android:contentDescription="@string/formulario_voltar" />
+            <TextView android:id="@+id/txtTituloFormulario" android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:layout_marginTop="16dp" android:fontFamily="@font/plus_jakarta_sans" android:textColor="#083248" android:text="@string/formulario_titulo" android:textSize="26sp" android:textStyle="bold" />
+            <TextView android:id="@+id/txtDescricaoFormulario" android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:layout_marginTop="8dp" android:fontFamily="@font/plus_jakarta_sans" android:textColor="#083248" android:textSize="14sp" tools:text="Compartilhe sua avaliação sobre o treinamento." />
+        </LinearLayout>
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical"
+            android:background="@drawable/bg_cartao_topo_arredondado" android:padding="24dp">
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:fontFamily="@font/plus_jakarta_sans" android:textColor="#083248" android:text="@string/formulario_orientacao" android:textSize="14sp" />
+            <androidx.recyclerview.widget.RecyclerView android:id="@+id/listaPerguntasFormulario"
+                android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="20dp"
+                android:nestedScrollingEnabled="false" tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/item_pergunta_texto" tools:itemCount="3" />
+            <Button android:id="@+id/btnEnviarFormulario" android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:minHeight="48dp" android:layout_marginTop="16dp" android:backgroundTint="#006775"
+                android:fontFamily="@font/plus_jakarta_sans" android:text="@string/formulario_enviar" android:textAllCaps="false" android:textColor="#FFFFFF" />
+        </LinearLayout>
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

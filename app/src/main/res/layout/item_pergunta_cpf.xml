@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="16dp"
+    android:orientation="vertical" android:padding="16dp" android:background="@drawable/bg_card_white">
+    <TextView android:id="@+id/txtTituloPergunta" android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:fontFamily="@font/plus_jakarta_sans" android:textColor="#083248" android:textSize="16sp" android:textStyle="bold" android:accessibilityHeading="true" tools:text="Título da pergunta *" />
+    <EditText android:id="@+id/edtRespostaPergunta" android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:minHeight="56dp" android:layout_marginTop="12dp" android:background="@drawable/bg_campo_texto"
+        android:padding="16dp" android:fontFamily="@font/plus_jakarta_sans" android:textColor="#083248" android:textColorHint="#666666" android:textSize="16sp"
+        android:hint="@string/formulario_cpf" android:inputType="number" android:maxLength="11" />
+    <TextView android:id="@+id/txtErroPergunta" android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:layout_marginTop="8dp" android:fontFamily="@font/plus_jakarta_sans" android:textColor="#B3261E"
+        android:textSize="13sp" android:accessibilityLiveRegion="polite" android:visibility="gone"
+        tools:text="Preencha este campo." />
+</LinearLayout>

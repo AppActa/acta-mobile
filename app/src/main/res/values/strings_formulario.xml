@@ -1,0 +1,19 @@
+<resources>
+    <string name="formulario_voltar">Voltar</string>
+    <string name="formulario_titulo">Formulário</string>
+    <string name="formulario_orientacao">Responda às perguntas abaixo. Os campos com * são obrigatórios.</string>
+    <string name="formulario_enviar">Enviar respostas</string>
+    <string name="formulario_texto">Digite sua resposta</string>
+    <string name="formulario_data">DD/MM/AAAA</string>
+    <string name="formulario_email">nome@exemplo.com</string>
+    <string name="formulario_numero">Digite um número</string>
+    <string name="formulario_telefone">DDD e telefone</string>
+    <string name="formulario_cpf">Digite seu CPF</string>
+    <string name="formulario_arquivo">Selecionar arquivo</string>
+    <string name="formulario_sem_arquivo">Nenhum arquivo selecionado</string>
+    <string name="formulario_sim">Sim</string>
+    <string name="formulario_nao">Não</string>
+    <string name="formulario_escolha_unica">Selecione uma opção</string>
+    <string name="formulario_escolha_multipla">Selecione uma ou mais opções</string>
+    <string name="formulario_range">Ajuste o valor na escala</string>
+</resources>
