@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.net.Uri;
+import android.util.Log;
 
 import com.cloudinary.android.preprocess.Preprocess;
 import com.cloudinary.android.preprocess.PreprocessException;
@@ -12,6 +13,8 @@ import com.cloudinary.android.preprocess.PreprocessException;
 import java.io.InputStream;
 
 public class AutoRotation implements Preprocess<Bitmap> {
+    private static final String TAG = "AutoRotation";
+
     private Context context;
     private Uri imageUri;
 
@@ -40,7 +43,7 @@ public class AutoRotation implements Preprocess<Bitmap> {
                     return 0;
             }
         } catch (Exception e){
-            e.printStackTrace();
+            Log.w(TAG, "Não foi possível ler a orientação da imagem.", e);
             return 0;
         }
     }
