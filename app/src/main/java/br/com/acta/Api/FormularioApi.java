@@ -9,6 +9,9 @@ import retrofit2.http.Path;
 
 public interface FormularioApi {
 
+    @GET("formularios/{idFormulario}")
+    Call<Formulario> buscarPorId(@Path("idFormulario") String idFormulario);
+
     @GET("ciclos/{idCiclo}/formularios")
     Call<List<Formulario>> buscarPorCiclo(@Path("idCiclo") Long idCiclo);
 }

@@ -30,4 +30,8 @@
         tools:layout="@layout/fragment_detalhes_ciclo" />
 
     <fragment android:id="@+id/notificacoesFragment" android:name="br.com.acta.NotificacoesFragment" android:label="Notificações" />
+    <fragment android:id="@+id/formularioFragment" android:name="br.com.acta.FormularioFragment"
+        android:label="Formulário" tools:layout="@layout/fragment_formulario">
+        <argument android:name="idFormulario" app:argType="string" />
+    </fragment>
 </navigation>

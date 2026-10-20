@@ -16,4 +16,8 @@ public class FormularioService {
     public void buscarPorCiclo(Long idCiclo, RepositoryCallback<List<Formulario>> callback) {
         Enqueue.enqueue(api.buscarPorCiclo(idCiclo), callback);
     }
+
+    public void buscarPorId(String idFormulario, RepositoryCallback<Formulario> callback) {
+        Enqueue.enqueue(api.buscarPorId(idFormulario), callback);
+    }
 }

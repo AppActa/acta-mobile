@@ -1,4 +1,9 @@
 <resources>
+    <string name="formulario_cep">Digite o CEP</string>
+    <string name="formulario_campo_indisponivel">Este tipo de campo ainda não está disponível nesta versão.</string>
+    <string name="formulario_tentar">Tentar novamente</string>
+    <string name="formulario_enviado">Respostas enviadas</string>
+    <string name="formulario_sucesso">Suas respostas foram enviadas com sucesso.</string>
     <string name="formulario_voltar">Voltar</string>
     <string name="formulario_titulo">Formulário</string>
     <string name="formulario_orientacao">Responda às perguntas abaixo. Os campos com * são obrigatórios.</string>

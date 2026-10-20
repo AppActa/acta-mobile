@@ -17,6 +17,17 @@
             android:background="@drawable/bg_cartao_topo_arredondado" android:padding="24dp">
             <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
                 android:fontFamily="@font/plus_jakarta_sans" android:textColor="#083248" android:text="@string/formulario_orientacao" android:textSize="14sp" />
+            <ProgressBar android:id="@+id/progressoFormulario" android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal" android:visibility="gone" />
+            <TextView android:id="@+id/txtStatusFormulario" android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:layout_marginTop="16dp" android:textColor="#083248" android:accessibilityLiveRegion="polite" android:visibility="gone" />
+
+            <Button
+                android:id="@+id/btnTentarFormulario"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/formulario_tentar"
+                android:visibility="gone" />
             <androidx.recyclerview.widget.RecyclerView android:id="@+id/listaPerguntasFormulario"
                 android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="20dp"
                 android:nestedScrollingEnabled="false" tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
