@@ -1,6 +1,7 @@
 package br.com.acta.Adapter;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
@@ -27,6 +28,7 @@ import br.com.acta.Model.Enum.TipoResposta;
 import br.com.acta.Model.Pergunta;
 import br.com.acta.Model.RespostasFormulario;
 import br.com.acta.R;
+import br.com.acta.TelaMapa;
 
 public class PerguntaAdapter extends RecyclerView.Adapter<PerguntaAdapter.PerguntaViewHolder> {
     private final List<Pergunta> perguntas;
@@ -50,6 +52,7 @@ public class PerguntaAdapter extends RecyclerView.Adapter<PerguntaAdapter.Pergun
             case CHECKBOX: return R.layout.item_pergunta_checkbox;
             case SIM_NAO: return R.layout.item_pergunta_sim_nao;
             case DATA: return R.layout.item_pergunta_data;
+            case CEP: return R.layout.item_pergunta_cep;
             case EMAIL: return R.layout.item_pergunta_email;
             case NUMERO_INTEIRO: return R.layout.item_pergunta_numero_inteiro;
             case NUMERO_DECIMAL: return R.layout.item_pergunta_numero_decimal;
@@ -119,6 +122,12 @@ public class PerguntaAdapter extends RecyclerView.Adapter<PerguntaAdapter.Pergun
             EditText campo = itemView.findViewById(R.id.edtRespostaPergunta);
             if (campo != null) {
                 configurarTexto(campo, pergunta);
+                if (tipo == TipoResposta.CEP) {
+                    itemView.findViewById(R.id.btnSelecionarEndereco).setOnClickListener(view -> {
+                        Intent intent = new Intent(view.getContext(), TelaMapa.class);
+                        view.getContext().startActivity(intent);
+                    });
+                }
             } else if (tipo == TipoResposta.CHECKBOX) {
                 configurarCheckbox(pergunta);
             } else {

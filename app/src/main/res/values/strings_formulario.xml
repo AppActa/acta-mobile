@@ -1,6 +1,7 @@
 <resources>
     <string name="formulario_ja_respondido">Você já respondeu a este formulário.</string>
     <string name="formulario_cep">Digite o CEP</string>
+    <string name="formulario_selecionar_endereco">Selecionar endereço</string>
     <string name="formulario_campo_indisponivel">Este tipo de campo ainda não está disponível nesta versão.</string>
     <string name="formulario_tentar">Tentar novamente</string>
     <string name="formulario_enviado">Respostas enviadas</string>
