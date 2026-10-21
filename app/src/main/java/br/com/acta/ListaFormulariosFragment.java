@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -106,6 +107,7 @@ public class ListaFormulariosFragment extends Fragment {
 
             @Override
             public void onError(int code, String message) {
+                Toast.makeText(requireContext(), "Erro ao carregar formularios, tente novamente", Toast.LENGTH_SHORT).show();
             }
         }));
     }
