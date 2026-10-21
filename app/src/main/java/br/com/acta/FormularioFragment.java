@@ -1,11 +1,13 @@
 package br.com.acta;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,6 +20,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -38,6 +41,7 @@ import br.com.acta.Model.RespostasFormulario;
 import br.com.acta.Services.FormularioService;
 import br.com.acta.Services.MeService;
 import br.com.acta.Services.RespostaFormularioService;
+import br.com.acta.utils.DialogSucesso;
 
 public class FormularioFragment extends Fragment {
     public static final String ARG_ID_FORMULARIO = "idFormulario";
@@ -56,6 +60,7 @@ public class FormularioFragment extends Fragment {
     private boolean carregando;
     private boolean enviando;
     private boolean enviado;
+    private boolean respostaVerificada;
 
     @Nullable
     @Override
@@ -66,7 +71,7 @@ public class FormularioFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        KeyboardInsets.apply(view, false);
+        KeyboardInsets.apply(view.findViewById(R.id.conteudoFormulario), false);
         lista = view.findViewById(R.id.listaPerguntasFormulario);
         lista.setLayoutManager(new LinearLayoutManager(requireContext()));
         lista.setSaveEnabled(false);
@@ -91,11 +96,7 @@ public class FormularioFragment extends Fragment {
         botaoTentar.setOnClickListener(botao -> carregar());
         botaoEnviar.setOnClickListener(botao -> enviar());
         atualizarAcoes();
-        if (formulario != null && estruturaValida(formulario)) {
-            mostrarFormulario();
-        } else {
-            carregar();
-        }
+        carregar();
     }
 
     private void carregar() {
@@ -112,24 +113,55 @@ public class FormularioFragment extends Fragment {
             return;
         }
         carregando = true;
+        respostaVerificada = false;
         mostrarMensagem(null);
         botaoTentar.setVisibility(View.GONE);
         atualizarAcoes();
         formularioService.buscarPorId(idFormulario, new RepositoryCallback<Formulario>() {
             @Override
             public void onSuccess(Formulario resultado) {
-                carregando = false;
                 if (!estruturaValida(resultado)) {
                     erroCarregamento("Este formulário está incompleto e não pode ser exibido.");
                     return;
                 }
                 formulario = resultado;
-                mostrarFormulario();
+                verificarResposta();
             }
 
             @Override
             public void onError(int codigo, String detalhe) {
                 erroCarregamento(mensagemErro(codigo, "Não foi possível carregar o formulário. Tente novamente."));
+            }
+        });
+    }
+
+    private void verificarResposta() {
+        meService.getMe(new RepositoryCallback<Me>() {
+            @Override
+            public void onSuccess(Me usuario) {
+                if (usuario.getIdUsuario() == null) {
+                    erroCarregamento("Não foi possível identificar sua conta. Entre novamente.");
+                    return;
+                }
+                respostaService.buscarPorFormulario(idFormulario, usuario.getIdUsuario(), new RepositoryCallback<List<RespostaFormulario>>() {
+                    @Override
+                    public void onSuccess(List<RespostaFormulario> respostasExistentes) {
+                        enviado = respostasExistentes != null && !respostasExistentes.isEmpty();
+                        respostaVerificada = true;
+                        carregando = false;
+                        mostrarFormulario();
+                    }
+
+                    @Override
+                    public void onError(int codigo, String detalhe) {
+                        erroCarregamento(mensagemErro(codigo, "Não foi possível verificar se você já respondeu. Tente novamente."));
+                    }
+                });
+            }
+
+            @Override
+            public void onError(int codigo, String detalhe) {
+                erroCarregamento(mensagemErro(codigo, "Não foi possível verificar sua conta. Tente novamente."));
             }
         });
     }
@@ -143,12 +175,12 @@ public class FormularioFragment extends Fragment {
         titulo.setText(formulario.getTitulo());
         descricao.setText(formulario.getDescricao());
         lista.setAdapter(new PerguntaAdapter(formulario.getPerguntas(), respostas));
-        mostrarMensagem(enviado ? getString(R.string.formulario_sucesso) : null);
+        mostrarMensagem(enviado ? getString(R.string.formulario_ja_respondido) : null);
         atualizarAcoes();
     }
 
     private void enviar() {
-        if (carregando || enviando || enviado || formulario == null) {
+        if (carregando || enviando || enviado || !respostaVerificada || formulario == null) {
             return;
         }
         PerguntaAdapter adapter = (PerguntaAdapter) lista.getAdapter();
@@ -187,8 +219,16 @@ public class FormularioFragment extends Fragment {
             public void onSuccess(RespostaFormulario resultado) {
                 enviando = false;
                 enviado = true;
-                if (getView() != null) {
-                    mostrarMensagem(getString(R.string.formulario_sucesso));
+                if (isAdded()) {
+                    String msg = "Formulário enviado com sucesso ao gestor";
+                    if (formulario != null && formulario.getTitulo() != null && !formulario.getTitulo().trim().isEmpty()) {
+                        msg = "Formulário de " + formulario.getTitulo().toLowerCase().trim() + " enviado ao gestor";
+                    }
+                    DialogSucesso.exibir(requireContext(), msg, () -> {
+                        if (isAdded() && getView() != null) {
+                            Navigation.findNavController(getView()).navigateUp();
+                        }
+                    });
                 }
                 atualizarAcoes();
             }
@@ -196,6 +236,7 @@ public class FormularioFragment extends Fragment {
             @Override
             public void onError(int codigo, String detalhe) {
                 erroEnvio(mensagemErro(codigo, "Não foi possível confirmar o envio. Suas respostas foram mantidas. Tente novamente."));
+                Toast.makeText(requireContext(), "Erro ao salvar (" + codigo + "): ", Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -246,6 +287,7 @@ public class FormularioFragment extends Fragment {
             return;
         }
         textoStatus.setText(mensagem);
+        textoStatus.setTextColor(Color.parseColor("#D32F2F"));
         textoStatus.setVisibility(mensagem == null ? View.GONE : View.VISIBLE);
     }
 
@@ -253,7 +295,7 @@ public class FormularioFragment extends Fragment {
         if (getView() == null) {
             return;
         }
-        boolean pronto = formulario != null && !carregando && !enviando && !enviado;
+        boolean pronto = formulario != null && respostaVerificada && !carregando && !enviando && !enviado;
         progresso.setVisibility(carregando || enviando ? View.VISIBLE : View.GONE);
         botaoEnviar.setEnabled(pronto);
         botaoEnviar.setText(enviado ? R.string.formulario_enviado : R.string.formulario_enviar);

@@ -1,0 +1,17 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="72dp"
+    android:height="72dp"
+    android:viewportWidth="72"
+    android:viewportHeight="72">
+
+    <!-- Fundo Estrela Arredondada Verde -->
+    <path
+        android:fillColor="#38A169"
+        android:pathData="M36,8 C40.1,8 43.8,9.8 46.3,12.7 C49.5,12 52.8,12.8 55.2,15.2 C57.6,17.6 58.4,20.9 57.7,24.1 C60.6,26.6 62.4,30.3 62.4,34.4 C62.4,38.5 60.6,42.2 57.7,44.7 C58.4,47.9 57.6,51.2 55.2,53.6 C52.8,56 49.5,56.8 46.3,56.1 C43.8,59 40.1,60.8 36,60.8 C31.9,60.8 28.2,59 25.7,56.1 C22.5,56.8 19.2,56 16.8,53.6 C14.4,51.2 13.6,47.9 14.3,44.7 C11.4,42.2 9.6,38.5 9.6,34.4 C9.6,30.3 11.4,26.6 14.3,24.1 C13.6,20.9 14.4,17.6 16.8,15.2 C19.2,12.8 22.5,12 25.7,12.7 C28.2,9.8 31.9,8 36,8 Z" />
+
+    <!-- Ícone de Checkmark Branco -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M31.2,43.8 L23.4,36 L20.4,39 L31.2,49.8 L51.6,29.4 L48.6,26.4 Z" />
+
+</vector>
