@@ -13,8 +13,8 @@ public class RespostaFormularioService {
         this.api = api;
     }
 
-    public void buscarPorFormulario(String idFormulario, Long idUsuario, RepositoryCallback<List<RespostaFormulario>> callback) {
-        Enqueue.enqueue(api.buscarPorFormulario(idFormulario, idUsuario), callback);
+    public void buscarPorFormulario(String idFormulario, RepositoryCallback<List<RespostaFormulario>> callback) {
+        Enqueue.enqueue(api.buscarPorFormulario(idFormulario, true), callback);
     }
 
     public void buscarPorId(String idRespostaFormulario, RepositoryCallback<RespostaFormulario> callback) {

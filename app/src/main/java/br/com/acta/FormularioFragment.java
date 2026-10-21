@@ -136,32 +136,18 @@ public class FormularioFragment extends Fragment {
     }
 
     private void verificarResposta() {
-        meService.getMe(new RepositoryCallback<Me>() {
+        respostaService.buscarPorFormulario(idFormulario, new RepositoryCallback<List<RespostaFormulario>>() {
             @Override
-            public void onSuccess(Me usuario) {
-                if (usuario.getIdUsuario() == null) {
-                    erroCarregamento("Não foi possível identificar sua conta. Entre novamente.");
-                    return;
-                }
-                respostaService.buscarPorFormulario(idFormulario, usuario.getIdUsuario(), new RepositoryCallback<List<RespostaFormulario>>() {
-                    @Override
-                    public void onSuccess(List<RespostaFormulario> respostasExistentes) {
-                        enviado = respostasExistentes != null && !respostasExistentes.isEmpty();
-                        respostaVerificada = true;
-                        carregando = false;
-                        mostrarFormulario();
-                    }
-
-                    @Override
-                    public void onError(int codigo, String detalhe) {
-                        erroCarregamento(mensagemErro(codigo, "Não foi possível verificar se você já respondeu. Tente novamente."));
-                    }
-                });
+            public void onSuccess(List<RespostaFormulario> respostasExistentes) {
+                enviado = respostasExistentes != null && !respostasExistentes.isEmpty();
+                respostaVerificada = true;
+                carregando = false;
+                mostrarFormulario();
             }
 
             @Override
             public void onError(int codigo, String detalhe) {
-                erroCarregamento(mensagemErro(codigo, "Não foi possível verificar sua conta. Tente novamente."));
+                erroCarregamento(mensagemErro(codigo, "Não foi possível verificar se você já respondeu. Tente novamente."));
             }
         });
     }

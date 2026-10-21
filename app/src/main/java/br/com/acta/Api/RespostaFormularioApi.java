@@ -13,7 +13,7 @@ import retrofit2.http.Query;
 public interface RespostaFormularioApi {
 
     @GET("formularios/{idFormulario}/respostas")
-    Call<List<RespostaFormulario>> buscarPorFormulario(@Path("idFormulario") String idFormulario, @Query("idUsuario") Long idUsuario);
+    Call<List<RespostaFormulario>> buscarPorFormulario(@Path("idFormulario") String idFormulario, @Query("apenasDoUsuarioAutenticado") boolean apenasDoUsuarioAutenticado);
 
     @GET("respostas-formulario/{idRespostaFormulario}")
     Call<RespostaFormulario> buscarPorId(@Path("idRespostaFormulario") String idRespostaFormulario);
