@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_dialog_arredondado"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:paddingHorizontal="28dp"
+    android:paddingTop="32dp"
+    android:paddingBottom="28dp">
+
+    <!-- Ícone de Sucesso Verde -->
+    <ImageView
+        android:id="@+id/imgIconeDialogSucesso"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:contentDescription="Ícone de Sucesso"
+        android:src="@drawable/ic_dialog_sucesso_check" />
+
+    <!-- Título: Sucesso -->
+    <TextView
+        android:id="@+id/txtTituloDialogSucesso"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/plus_jakarta_sans"
+        android:text="Sucesso"
+        android:textColor="#111111"
+        android:textSize="22sp"
+        android:textStyle="bold" />
+
+    <!-- Mensagem de Sucesso (ex: Formulário de análise de causas enviado ao gestor) -->
+    <TextView
+        android:id="@+id/txtMensagemDialogSucesso"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/plus_jakarta_sans"
+        android:gravity="center"
+        android:lineSpacingExtra="3dp"
+        android:textColor="#757575"
+        android:textSize="14sp"
+        tools:text="Formulário de análise de causas enviado ao gestor" />
+
+    <!-- Botão Ação: Concluído -->
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnConcluidoDialogSucesso"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginTop="28dp"
+        android:background="@drawable/bg_btn_dark_rounded"
+        android:clickable="true"
+        android:elevation="2dp"
+        android:focusable="true"
+        android:fontFamily="@font/plus_jakarta_sans"
+        android:foreground="?attr/selectableItemBackground"
+        android:text="Concluído"
+        android:textAllCaps="false"
+        android:textColor="#FFFFFF"
+        android:textSize="15sp"
+        android:textStyle="bold" />
+
+</LinearLayout>

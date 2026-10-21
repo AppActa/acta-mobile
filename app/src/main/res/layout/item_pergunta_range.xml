@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="16dp"
+    android:orientation="vertical" android:padding="16dp" android:background="@drawable/bg_card_white">
+    <TextView android:id="@+id/txtTituloPergunta" android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:fontFamily="@font/plus_jakarta_sans" android:textColor="#083248" android:textSize="16sp" android:textStyle="bold" android:accessibilityHeading="true" tools:text="Título da pergunta *" />
+    <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:fontFamily="@font/plus_jakarta_sans" android:textColor="#083248" android:text="@string/formulario_range" android:textSize="13sp" /><SeekBar android:id="@+id/escalaRespostaPergunta" android:layout_width="match_parent" android:layout_height="48dp" android:layout_marginTop="12dp" android:contentDescription="@string/formulario_range" />
+    <TextView android:id="@+id/txtValorEscalaPergunta" android:layout_width="match_parent" android:layout_height="wrap_content" android:fontFamily="@font/plus_jakarta_sans" android:textColor="#083248" android:gravity="center" tools:text="5" />
+    <TextView android:id="@+id/txtErroPergunta" android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:layout_marginTop="8dp" android:fontFamily="@font/plus_jakarta_sans" android:textColor="#B3261E"
+        android:textSize="13sp" android:accessibilityLiveRegion="polite" android:visibility="gone"
+        tools:text="Preencha este campo." />
+</LinearLayout>
