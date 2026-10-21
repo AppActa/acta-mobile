@@ -1,5 +1,7 @@
 package br.com.acta.Services;
 
+import android.util.Log;
+
 import com.google.gson.Gson;
 
 import java.io.IOException;
@@ -12,9 +14,10 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class Enqueue {
-    private static Gson gson = new Gson();
+    private static final String TAG = "Enqueue";
+    private static final Gson gson = new Gson();
     public static <T> void enqueue(Call<T> call, RepositoryCallback<T> callback) {
-        call.enqueue(new Callback<T>() {
+        call.enqueue(new Callback<>() {
             @Override
             public void onResponse(Call<T> call, Response<T> response) {
                 T body = response.body();
@@ -27,9 +30,9 @@ public class Enqueue {
 
             @Override
             public void onFailure(Call<T> call, Throwable throwable) {
-                callback.onError(0, "Falha na requisição: " + throwable.getMessage());
-                System.out.println( "Não foi possível acessar a API ACTA: " + throwable.getMessage());
-                throwable.printStackTrace();
+                if (call.isCanceled()) return;
+                callback.onError(0, "Não foi possível conectar à API ACTA.");
+                Log.e(TAG, "Falha ao acessar a API ACTA.", throwable);
             }
         });
     }
@@ -37,8 +40,8 @@ public class Enqueue {
     private static String readError(Response<?> response) {
         ResponseBody errorBody = response.errorBody();
         if (errorBody != null) {
-            try {
-                ApiError error = gson.fromJson(errorBody.string(), ApiError.class);
+            try (ResponseBody body = errorBody) {
+                ApiError error = gson.fromJson(body.string(), ApiError.class);
                 if (error != null && error.mensagens != null && !error.mensagens.isEmpty()) {
                     return String.join("\n", error.mensagens);
                 }

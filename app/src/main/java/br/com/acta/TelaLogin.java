@@ -30,7 +30,7 @@ import java.util.Locale;
 import br.com.acta.Api.MeApi;
 import br.com.acta.Auth.FirebaseTokenProvider;
 import br.com.acta.Client.RepositoryCallback;
-import br.com.acta.Client.RetrofitClient;
+import br.com.acta.Client.RetrofitClientAuth;
 import br.com.acta.Model.Me;
 import br.com.acta.Services.MeService;
 
@@ -58,7 +58,7 @@ public class TelaLogin extends AppCompatActivity {
 
         firebaseAuth = FirebaseAuth.getInstance();
         FirebaseTokenProvider provider = new FirebaseTokenProvider(firebaseAuth);
-        MeApi api = RetrofitClient.getInstance(provider).create(MeApi.class);
+        MeApi api = RetrofitClientAuth.getInstance(provider).create(MeApi.class);
 
         service = new MeService(api);
         email = findViewById(R.id.edtEmail);
@@ -81,7 +81,7 @@ public class TelaLogin extends AppCompatActivity {
         botao.setOnClickListener(view -> enviar());
 
         FirebaseUser usuarioAtual = firebaseAuth.getCurrentUser();
-        if (usuarioAtual != null) verificarCadastro(usuarioAtual);
+        if (usuarioAtual != null) verificarCadastro();
     }
 
     private void enviar() {
@@ -103,7 +103,7 @@ public class TelaLogin extends AppCompatActivity {
         else {
             firebaseAuth.signInWithEmailAndPassword(txtEmail, txtSenha)
                     .addOnCompleteListener(this, task -> {
-                        if (task.isSuccessful() && firebaseAuth.getCurrentUser() != null) verificarCadastro(firebaseAuth.getCurrentUser());
+                        if (task.isSuccessful() && firebaseAuth.getCurrentUser() != null) verificarCadastro();
                         else {
                             mostrarMensagem("Não foi possível entrar. Confira o e-mail e a senha.");
                         }
@@ -147,26 +147,35 @@ public class TelaLogin extends AppCompatActivity {
         firebaseAuth.signInWithEmailAndPassword(txtEmail, txtSenha)
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful() && firebaseAuth.getCurrentUser() != null) {
-                        verificarCadastro(firebaseAuth.getCurrentUser());
+                        verificarCadastro();
                     } else {
                         mostrarMensagem("Esta conta já existe. Confira o e-mail e a senha para ativar o convite.");
                     }
                 });
     }
 
-    private void verificarCadastro(FirebaseUser usuario) {
+    private void verificarCadastro() {
         service.getMe(new RepositoryCallback<Me>() {
             @Override
             public void onSuccess(Me value) {
-                abrirPerfil();
+                if (value != null && value.temPerfilActa()) abrirPerfil();
+                else if (value != null && value.cadastroNaoIniciado()) {
+                    mudarModo(MODO_ATIVAR);
+                    mostrarMensagem("Sua conta ainda não tem perfil no ACTA. Se recebeu um convite, informe o código. Sem convite, peça acesso ao administrador da empresa; para cadastrar uma empresa, use o canal web do ACTA.");
+                } else mostrarMensagem("Não foi possível confirmar seu perfil no ACTA. Tente novamente mais tarde.");
             }
 
             @Override
             public void onError(int statusCode, String error) {
-                if (statusCode == 401 || statusCode == 403) {
-                    mudarModo(MODO_ATIVAR);
-                    mostrarMensagem("Sua conta ainda não está ativada. Informe o código recebido no convite.");
-                } else mostrarMensagem("Não foi possível validar sua sessão. Verifique a conexão e tente novamente.");
+                if (statusCode == -1) mostrarMensagem("Não foi possível obter a sessão Firebase. Entre novamente e tente.");
+                else if (statusCode == 401) {
+                    firebaseAuth.signOut();
+                    mudarModo(MODO_LOGIN);
+                    mostrarMensagem("Sua sessão Firebase expirou. Entre novamente.");
+                }
+                else if (statusCode == 403) mostrarMensagem("Sua conta não tem acesso ao perfil ACTA. Fale com o administrador da sua empresa.");
+                else if (statusCode == 0 || statusCode >= 500) mostrarMensagem("Não foi possível conectar à Auth API. Verifique a internet e tente novamente.");
+                else mostrarMensagem("Não foi possível validar seu perfil no ACTA. Tente novamente.");
             }
         });
     }
@@ -207,14 +216,21 @@ public class TelaLogin extends AppCompatActivity {
                 service.ativar(token, new RepositoryCallback<Me>() {
                     @Override
                     public void onSuccess(Me value) {
-                        abrirPerfil();
+                        verificarCadastro();
                     }
 
                     @Override
                     public void onError(int statusCode, String error) {
-                        if (statusCode == 401 || statusCode == 403) mostrarMensagem("Ativação não autorizada. Confira se o código está válido e se o e-mail da conta corresponde ao convite; se a conta já foi ativada, entre novamente.");
-                        else if (statusCode == 0) mostrarMensagem("Falha de conexão ao ativar. Verifique a internet e tente novamente.");
-                        else mostrarMensagem("Não foi possível ativar o convite (HTTP " + statusCode + "). Tente novamente.");
+                        if (statusCode == -1) mostrarMensagem("Não foi possível obter a sessão Firebase. Entre novamente e tente ativar o convite.");
+                        else if (statusCode == 401) {
+                            firebaseAuth.signOut();
+                            mudarModo(MODO_LOGIN);
+                            mostrarMensagem("Sua sessão Firebase expirou. Entre novamente para ativar o convite.");
+                        }
+                        else if (statusCode == 400 || statusCode == 422) mostrarMensagem("O código do convite é inválido ou expirou. Confira o código recebido por e-mail.");
+                        else if (statusCode == 403) mostrarMensagem("O e-mail verificado não corresponde ao convite. Entre com a conta usada pela empresa ao enviar o convite.");
+                        else if (statusCode == 0 || statusCode >= 500) mostrarMensagem("Não foi possível conectar à Auth API para ativar o convite. Verifique a internet e tente novamente.");
+                        else mostrarMensagem("Não foi possível ativar o convite. Confira o código e tente novamente.");
                     }
                 });
             });
@@ -254,6 +270,7 @@ public class TelaLogin extends AppCompatActivity {
                 modo == MODO_LOGIN
                         ? "Entre para continuar sua jornada no ACTA."
                         : "Informe o código de seis caracteres enviado para o e-mail do convite.");
+        ((TextView) findViewById(R.id.txtCodigoAjuda)).setText("Digite o código recebido por e-mail. Sem convite, peça acesso ao administrador da empresa. Para cadastrar uma empresa, use o canal web do ACTA.");
         botao.setText(modo == MODO_CRIAR_CONTA ? "Continuar" : modo == MODO_ATIVAR ? "Ativar convite" : "Entrar");
         ((TextView) findViewById(R.id.txtPrimeiroAcesso)).setText(
                 modo == MODO_LOGIN ? "Primeiro acesso? Ativar convite" : "Já tem uma conta? Entrar");

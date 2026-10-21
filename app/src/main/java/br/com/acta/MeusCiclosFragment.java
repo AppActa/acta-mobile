@@ -1,6 +1,7 @@
 package br.com.acta;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -23,6 +24,7 @@ import br.com.acta.DAO.AppDatabase;
 import br.com.acta.Model.Ciclo;
 
 public class MeusCiclosFragment extends Fragment {
+    private static final String TAG = "MeusCiclosFragment";
 
     private CicloAdapter cicloAdapter;
 
@@ -52,7 +54,7 @@ public class MeusCiclosFragment extends Fragment {
                     rvTodosCiclosGrid.setAdapter(cicloAdapter);
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                Log.e(TAG, "Erro ao carregar ciclos locais.", e);
             }
         }
 
