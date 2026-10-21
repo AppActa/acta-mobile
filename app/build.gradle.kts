@@ -35,6 +35,8 @@ android {
         val urlAuth = localProperties.getProperty("AUTH_API_URL")?.trim()?.removeSurrounding("\"")
         val urlFcm = localProperties.getProperty("FCM_API_BASE_URL")?.trim()?.removeSurrounding("\"")
         val urlMongo = localProperties.getProperty("MONGO_API_URL")?.trim()?.removeSurrounding("\"")
+        val mapsKey = localProperties.getProperty("MAPS_API_KEY")?.trim()?.removeSurrounding("\"")
+        manifestPlaceholders["MAPS_API_KEY"] = mapsKey.orEmpty()
 
         buildConfigField("String", "CLOUDINARY_CLOUD_NAME", "\"$cloudName\"")
         buildConfigField("String", "CLOUDINARY_API_KEY", "\"$apiKey\"")
@@ -66,6 +68,8 @@ android {
 }
 
 dependencies {
+    implementation("com.google.android.gms:play-services-maps:20.1.0")
+    implementation("com.google.android.gms:play-services-location:21.3.0")
     // AndroidX e Material
     implementation(libs.androidx.activity.ktx)
     implementation(libs.androidx.appcompat)
