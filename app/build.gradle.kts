@@ -38,6 +38,7 @@ android {
         val mapsKey = localProperties.getProperty("MAPS_API_KEY")?.trim()?.removeSurrounding("\"")
         manifestPlaceholders["MAPS_API_KEY"] = mapsKey.orEmpty()
 
+        buildConfigField("String", "MAPS_API_KEY", "\"$mapsKey\"")
         buildConfigField("String", "CLOUDINARY_CLOUD_NAME", "\"$cloudName\"")
         buildConfigField("String", "CLOUDINARY_API_KEY", "\"$apiKey\"")
         buildConfigField("String", "CLOUDINARY_API_SECRET", "\"$apiSecret\"")

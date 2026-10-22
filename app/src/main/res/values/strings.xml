@@ -12,4 +12,6 @@
     <string name="mapa_permissao_negada">Permita o acesso à localização para usar sua posição atual. Você também pode buscar um endereço.</string>
     <string name="mapa_localizacao_indisponivel">Não foi possível obter sua localização. Confira se a localização do aparelho está ativada e tente novamente.</string>
     <string name="mapa_coordenadas">Latitude: %1$.6f\nLongitude: %2$.6f</string>
+    <string name="mapa_erro_cep">Não foi possível obter o CEP. Verifique sua conexão e tente novamente.</string>
+    <string name="mapa_cep_nao_encontrado">Não encontramos um CEP para este endereço. Escolha outro local.</string>
 </resources>

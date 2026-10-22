@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
+import br.com.acta.BuildConfig;
 
 import androidx.activity.EdgeToEdge;
 import androidx.activity.result.ActivityResultLauncher;
@@ -42,10 +43,19 @@ import java.util.Locale;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import br.com.acta.Api.GeocodingApi;
+import br.com.acta.Client.RetrofitClientGeocoding;
+import br.com.acta.Model.GeocodingResponse;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class TelaMapa extends AppCompatActivity implements OnMapReadyCallback {
 
     public static final String EXTRA_LATITUDE = "latitude";
     public static final String EXTRA_LONGITUDE = "longitude";
+    public static final String EXTRA_ID_PERGUNTA = "idPergunta";
+    public static final String EXTRA_CEP = "cep";
     private static final String TAG = "TelaMapa";
     private final ExecutorService executorBusca = Executors.newSingleThreadExecutor();
     private GoogleMap mapa;
@@ -53,11 +63,13 @@ public class TelaMapa extends AppCompatActivity implements OnMapReadyCallback {
     private TextInputEditText textoBusca;
     private MaterialButton botaoBuscar;
     private MaterialButton botaoMinhaPosicao;
+    private MaterialButton botaoUtilizarEndereco;
     private TextView enderecoLugar;
     private View progresso;
     private boolean buscando;
     private LatLng localSelecionado;
     private CancellationTokenSource cancelamentoLocalizacao;
+    private Call<GeocodingResponse> chamadaGeocoding;
     private final ActivityResultLauncher<String[]> pedirPermissao = registerForActivityResult(
             new ActivityResultContracts.RequestMultiplePermissions(), resposta -> {
                 if (temPermissao()) {
@@ -85,11 +97,13 @@ public class TelaMapa extends AppCompatActivity implements OnMapReadyCallback {
         textoBusca = findViewById(R.id.edtBuscarEndereco);
         botaoBuscar = findViewById(R.id.btnBuscarEndereco);
         botaoMinhaPosicao = findViewById(R.id.btnMinhaPosicao);
+        botaoUtilizarEndereco = findViewById(R.id.btnUtilizarEndereco);
         enderecoLugar = findViewById(R.id.txtEnderecoLugar);
         progresso = findViewById(R.id.progresso);
         findViewById(R.id.btnVoltarMapa).setOnClickListener(view -> finish());
         botaoBuscar.setEnabled(false);
         botaoMinhaPosicao.setEnabled(false);
+        botaoUtilizarEndereco.setOnClickListener(view -> utilizarEndereco());
         botaoMinhaPosicao.setOnClickListener(view -> {
             if (temPermissao()) {
                 ativarMinhaPosicao();
@@ -233,6 +247,7 @@ public class TelaMapa extends AppCompatActivity implements OnMapReadyCallback {
         mapa.animateCamera(CameraUpdateFactory.newLatLngZoom(local, 16f));
         enderecoLugar.setText(getString(R.string.mapa_coordenadas, local.latitude, local.longitude));
         enderecoLugar.setVisibility(View.VISIBLE);
+        botaoUtilizarEndereco.setEnabled(true);
     }
 
     private void iniciarBusca() {
@@ -243,7 +258,73 @@ public class TelaMapa extends AppCompatActivity implements OnMapReadyCallback {
         botaoMinhaPosicao.setEnabled(false);
         progresso.setVisibility(View.VISIBLE);
         enderecoLugar.setVisibility(View.GONE);
+        botaoUtilizarEndereco.setEnabled(false);
         mapa.clear();
+    }
+
+    private void utilizarEndereco() {
+        if (localSelecionado == null || chamadaGeocoding != null || BuildConfig.MAPS_API_KEY.trim().isEmpty()) {
+            campoBusca.setError(getString(R.string.mapa_erro_cep));
+            return;
+        }
+        campoBusca.setError(null);
+        botaoUtilizarEndereco.setEnabled(false);
+        progresso.setVisibility(View.VISIBLE);
+        String coordenadas = localSelecionado.latitude + "," + localSelecionado.longitude;
+        GeocodingApi api = RetrofitClientGeocoding.getInstance().create(GeocodingApi.class);
+        chamadaGeocoding = api.buscarPorCoordenadas(coordenadas, BuildConfig.MAPS_API_KEY);
+        chamadaGeocoding.enqueue(new Callback<GeocodingResponse>() {
+            @Override
+            public void onResponse(Call<GeocodingResponse> chamada, Response<GeocodingResponse> resposta) {
+                chamadaGeocoding = null;
+                progresso.setVisibility(View.GONE);
+                if (isFinishing() || isDestroyed()) {
+                    return;
+                }
+                String cep = extrairCep(resposta);
+                if (cep == null) {
+                    botaoUtilizarEndereco.setEnabled(true);
+                    campoBusca.setError(getString(R.string.mapa_cep_nao_encontrado));
+                    return;
+                }
+                Intent resultado = new Intent();
+                resultado.putExtra(EXTRA_ID_PERGUNTA, getIntent().getStringExtra(EXTRA_ID_PERGUNTA));
+                resultado.putExtra(EXTRA_CEP, cep);
+                setResult(RESULT_OK, resultado);
+                finish();
+            }
+
+            @Override
+            public void onFailure(Call<GeocodingResponse> chamada, Throwable erro) {
+                chamadaGeocoding = null;
+                if (isFinishing() || isDestroyed() || chamada.isCanceled()) {
+                    return;
+                }
+                progresso.setVisibility(View.GONE);
+                botaoUtilizarEndereco.setEnabled(true);
+                Log.e(TAG, "Não foi possível consultar o CEP do endereço selecionado", erro);
+                campoBusca.setError(getString(R.string.mapa_erro_cep));
+            }
+        });
+    }
+
+    private String extrairCep(Response<GeocodingResponse> resposta) {
+        if (!resposta.isSuccessful() || resposta.body() == null || !"OK".equals(resposta.body().getStatus())
+                || resposta.body().getResults() == null) {
+            return null;
+        }
+        for (GeocodingResponse.Resultado resultado : resposta.body().getResults()) {
+            if (resultado.getAddressComponents() == null) {
+                continue;
+            }
+            for (GeocodingResponse.Componente componente : resultado.getAddressComponents()) {
+                if (componente.getTypes() != null && componente.getTypes().contains("postal_code")
+                        && componente.getLongName() != null && componente.getLongName().matches("\\d{5}-?\\d{3}")) {
+                    return componente.getLongName();
+                }
+            }
+        }
+        return null;
     }
 
     private void finalizarBusca() {
@@ -255,6 +336,9 @@ public class TelaMapa extends AppCompatActivity implements OnMapReadyCallback {
 
     @Override
     protected void onDestroy() {
+        if (chamadaGeocoding != null) {
+            chamadaGeocoding.cancel();
+        }
         if (cancelamentoLocalizacao != null) {
             cancelamentoLocalizacao.cancel();
         }

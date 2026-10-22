@@ -112,4 +112,16 @@
         android:visibility="gone"
         tools:text="Avenida Paulista, 1000, São Paulo - SP"
         tools:visibility="visible" />
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnUtilizarEndereco"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="12dp"
+        android:enabled="false"
+        android:minHeight="52dp"
+        android:text="Utilizar esse endereço"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        app:backgroundTint="@color/turquesa_dark_center"
+        app:cornerRadius="12dp" />
 </LinearLayout>
