@@ -21,7 +21,7 @@ android {
 
     defaultConfig {
         applicationId = "br.com.acta"
-        minSdk = 33
+        minSdk = 30
         targetSdk = 36
         versionCode = 1
         versionName = "1.0"
@@ -32,14 +32,19 @@ android {
         val apiKey = localProperties.getProperty("CLOUDINARY_API_KEY")?.trim()?.removeSurrounding("\"")
         val apiSecret = localProperties.getProperty("CLOUDINARY_API_SECRET")?.trim()?.removeSurrounding("\"")
         val urlPg = localProperties.getProperty("PG_API_URL")?.trim()?.removeSurrounding("\"")
+        val urlAuth = localProperties.getProperty("AUTH_API_URL")?.trim()?.removeSurrounding("\"")
         val urlFcm = localProperties.getProperty("FCM_API_BASE_URL")?.trim()?.removeSurrounding("\"")
         val urlMongo = localProperties.getProperty("MONGO_API_URL")?.trim()?.removeSurrounding("\"")
+        val mapsKey = localProperties.getProperty("MAPS_API_KEY")?.trim()?.removeSurrounding("\"")
+        manifestPlaceholders["MAPS_API_KEY"] = mapsKey.orEmpty()
 
+        buildConfigField("String", "MAPS_API_KEY", "\"$mapsKey\"")
         buildConfigField("String", "CLOUDINARY_CLOUD_NAME", "\"$cloudName\"")
         buildConfigField("String", "CLOUDINARY_API_KEY", "\"$apiKey\"")
         buildConfigField("String", "CLOUDINARY_API_SECRET", "\"$apiSecret\"")
 
         buildConfigField("String", "API_BASE_URL_PG", "\"$urlPg\"")
+        buildConfigField("String", "API_BASE_URL_AUTH", "\"$urlAuth\"")
         buildConfigField("String", "API_BASE_URL_MONGO", "\"$urlMongo\"")
         buildConfigField("String", "FCM_API_BASE_URL", "\"$urlFcm\"")
     }
@@ -64,11 +69,15 @@ android {
 }
 
 dependencies {
+    implementation("com.google.android.gms:play-services-maps:20.1.0")
+    implementation("com.google.android.gms:play-services-location:21.3.0")
     // AndroidX e Material
     implementation(libs.androidx.activity.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.navigation.fragment.ktx)
+    implementation(libs.androidx.navigation.ui.ktx)
     implementation(libs.material)
 
     // Credenciais e Login com Google

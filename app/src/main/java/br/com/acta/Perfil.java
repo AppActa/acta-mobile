@@ -62,6 +62,7 @@ import br.com.acta.Auth.FirebaseTokenProvider;
 import br.com.acta.Auth.TokenProvider;
 import br.com.acta.Client.RepositoryCallback;
 import br.com.acta.Client.RetrofitClient;
+import br.com.acta.Client.RetrofitClientAuth;
 import br.com.acta.Client.RetrofitClientFcm;
 import br.com.acta.DAO.AppDatabase;
 import br.com.acta.Model.Colaborador;
@@ -87,7 +88,7 @@ public class Perfil extends AppCompatActivity {
         });
     private SharedPreferences preferences;
     TokenProvider tokenProvider = new FirebaseTokenProvider(FirebaseAuth.getInstance());
-    private final MeApi meApi = RetrofitClient.getInstance(tokenProvider).create(MeApi.class);
+    private final MeApi meApi = RetrofitClientAuth.getInstance(tokenProvider).create(MeApi.class);
     private final ColaboradorApi colaboradorApi = RetrofitClient.getInstance(tokenProvider).create(ColaboradorApi.class);
     private final UsuarioApi usuarioApi = RetrofitClient.getInstance(tokenProvider).create(UsuarioApi.class);
     private final MeService meService = new MeService(meApi);
@@ -320,10 +321,16 @@ public class Perfil extends AppCompatActivity {
         meService.getMe(SkeletonLoading.wrap(findViewById(content), new RepositoryCallback<Me>(){
             @Override
             public void onSuccess(Me me) {
+                if (me == null || !me.temPerfilActa()) {
+                    Toast.makeText(Perfil.this, "Seu perfil ACTA não está disponível. Entre novamente ou peça acesso ao administrador da empresa.", Toast.LENGTH_LONG).show();
+                    finish();
+                    return;
+                }
+
                 nome.setText(me.getNome());
                 email.setText(me.getEmail());
                 id = me.getIdUsuario();
-                carregarColaborador(me.getIdColaborador());
+                if (me.getIdColaborador() != null) carregarColaborador(me.getIdColaborador());
                 buscarFotoDoBanco(id);
             }
 

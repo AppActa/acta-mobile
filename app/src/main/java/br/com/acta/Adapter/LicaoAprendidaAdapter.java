@@ -1,5 +1,6 @@
 package br.com.acta.Adapter;
 
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,16 +34,26 @@ public class LicaoAprendidaAdapter extends RecyclerView.Adapter<LicaoAprendidaAd
     public void onBindViewHolder(@NonNull LicaoViewHolder holder, int position) {
         LicaoAprendida licao = licaoList.get(position);
 
-        holder.txtTitulo.setText(licao.getTitulo() != null ? licao.getTitulo() : "Conferência dupla de pedidos");
+        if (holder.txtStatusBadge != null) {
+            String status = licao.getSeveridade() != null ? licao.getSeveridade() : "Pendente";
+            holder.txtStatusBadge.setText(status);
+        }
 
-        String fase = licao.getFaseOrigem() != null ? licao.getFaseOrigem() : "ACT";
-        String severidade = licao.getSeveridade() != null ? licao.getSeveridade() : "MEDIA";
-        holder.txtFaseOrigemESeveridade.setText("FASE: " + fase.toUpperCase() + "  •  SEVERIDADE: " + severidade.toUpperCase());
+        if (holder.txtTitulo != null) {
+            holder.txtTitulo.setText(licao.getTitulo() != null ? licao.getTitulo() : "Conferência dupla de pedidos");
+        }
 
-        String resultadoStr = licao.getResultado() != null ? "Resultado: " + licao.getResultado() : "Resultado: identificação mais rápida";
-        String areaStr = licao.getArea() != null ? " • Área: " + licao.getArea() : " • Área: Estoque";
+        if (holder.txtResponsavel != null) {
+            String respNome = licao.getArea() != null ? licao.getArea() : "Camila Souza";
+            String htmlResp = "<font color='#757575'>Responsável: </font><font color='#111111'><b>" + respNome + "</b></font>";
+            holder.txtResponsavel.setText(Html.fromHtml(htmlResp, Html.FROM_HTML_MODE_LEGACY));
+        }
 
-        holder.txtRodape.setText(resultadoStr + areaStr);
+        if (holder.txtCiclo != null) {
+            String cicloNome = licao.getLicao() != null ? licao.getLicao() : "Reduzir retrabalho na separação";
+            String htmlCiclo = "<font color='#757575'>Ciclo: </font><font color='#111111'><b>" + cicloNome + "</b></font>";
+            holder.txtCiclo.setText(Html.fromHtml(htmlCiclo, Html.FROM_HTML_MODE_LEGACY));
+        }
     }
 
     @Override
@@ -51,15 +62,17 @@ public class LicaoAprendidaAdapter extends RecyclerView.Adapter<LicaoAprendidaAd
     }
 
     public static class LicaoViewHolder extends RecyclerView.ViewHolder {
-        TextView txtFaseOrigemESeveridade;
+        TextView txtStatusBadge;
         TextView txtTitulo;
-        TextView txtRodape;
+        TextView txtResponsavel;
+        TextView txtCiclo;
 
         public LicaoViewHolder(@NonNull View itemView) {
             super(itemView);
-            txtFaseOrigemESeveridade = itemView.findViewById(R.id.txtFaseOrigemESeveridade);
+            txtStatusBadge = itemView.findViewById(R.id.txtStatusBadgeLicao);
             txtTitulo = itemView.findViewById(R.id.txtTituloLicao);
-            txtRodape = itemView.findViewById(R.id.txtRodapeLicao);
+            txtResponsavel = itemView.findViewById(R.id.txtResponsavelLicao);
+            txtCiclo = itemView.findViewById(R.id.txtCicloLicao);
         }
     }
 }

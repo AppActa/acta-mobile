@@ -2,6 +2,7 @@ package br.com.acta;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,6 +37,7 @@ import br.com.acta.Auth.FirebaseTokenProvider;
 import br.com.acta.Auth.TokenProvider;
 import br.com.acta.Client.RepositoryCallback;
 import br.com.acta.Client.RetrofitClient;
+import br.com.acta.Client.RetrofitClientAuth;
 import br.com.acta.DAO.AppDatabase;
 import br.com.acta.DAO.CicloDao;
 import br.com.acta.DAO.MeDao;
@@ -54,6 +56,8 @@ import br.com.acta.Services.UsuarioService;
 import br.com.acta.utils.SkeletonLoading;
 
 public class InicioFragment extends Fragment {
+    private static final String TAG = "InicioFragment";
+
     private final TokenProvider tokenProvider = new FirebaseTokenProvider(FirebaseAuth.getInstance());
     private final UsuarioApi usuarioApi = RetrofitClient.getInstance(tokenProvider).create(UsuarioApi.class);
     private final CicloApi cicloApi = RetrofitClient.getInstance(tokenProvider).create(CicloApi.class);
@@ -61,7 +65,7 @@ public class InicioFragment extends Fragment {
     private final UsuarioService usuarioService = new UsuarioService(usuarioApi);
     private final CicloService cicloService = new CicloService(cicloApi);
     private final TarefaService tarefaService = new TarefaService(tarefaApi);
-    private final MeApi meApi = RetrofitClient.getInstance(tokenProvider).create(MeApi.class);
+    private final MeApi meApi = RetrofitClientAuth.getInstance(tokenProvider).create(MeApi.class);
     private final MeService meService = new MeService(meApi);
 
     private TextView txtSaudacao;
@@ -151,7 +155,7 @@ public class InicioFragment extends Fragment {
                 exibirTarefasAte2Dias(tarefasLocais);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(TAG, "Erro ao carregar dados locais da tela inicial.", e);
         }
     }
 
@@ -165,7 +169,7 @@ public class InicioFragment extends Fragment {
                 try {
                     AppDatabase.getInstance(requireContext()).tarefaDao().salvarTodos(tarefas);
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    Log.e(TAG, "Erro ao salvar tarefas locais.", e);
                 }
 
                 exibirTarefasAte2Dias(tarefas);
@@ -245,7 +249,7 @@ public class InicioFragment extends Fragment {
                     try {
                         AppDatabase.getInstance(requireContext()).usuarioDao().salvar(usuario);
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        Log.e(TAG, "Erro ao salvar usuário local.", e);
                     }
 
                     if (usuario.getFotoUrl() != null && !usuario.getFotoUrl().isEmpty()) {
@@ -309,7 +313,7 @@ public class InicioFragment extends Fragment {
                             try {
                                 AppDatabase.getInstance(requireContext()).cicloDao().salvar(ciclo);
                             } catch (Exception e) {
-                                e.printStackTrace();
+                                Log.e(TAG, "Erro ao salvar ciclo local.", e);
                             }
                         }
 
@@ -320,7 +324,7 @@ public class InicioFragment extends Fragment {
                                 cicloDao.limparTabela();
                                 cicloDao.salvarTodos(listaCiclosCompleta);
                             } catch (Exception e) {
-                                e.printStackTrace();
+                                Log.e(TAG, "Erro ao atualizar ciclos locais.", e);
                             }
                             exibirCiclosNaTela(listaCiclosCompleta, rvMeusCiclos);
                         }
@@ -337,7 +341,7 @@ public class InicioFragment extends Fragment {
                                 cicloDao.limparTabela();
                                 cicloDao.salvarTodos(listaCiclosCompleta);
                             } catch (Exception e) {
-                                e.printStackTrace();
+                                Log.e(TAG, "Erro ao atualizar ciclos locais.", e);
                             }
                             exibirCiclosNaTela(listaCiclosCompleta, rvMeusCiclos);
                         }
@@ -351,7 +355,7 @@ public class InicioFragment extends Fragment {
                         cicloDao.limparTabela();
                         cicloDao.salvarTodos(listaCiclosCompleta);
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        Log.e(TAG, "Erro ao atualizar ciclos locais.", e);
                     }
                     exibirCiclosNaTela(listaCiclosCompleta, rvMeusCiclos);
                 }
@@ -377,22 +381,24 @@ public class InicioFragment extends Fragment {
             public void onSuccess(Me me) {
                 if (!isAdded()) return;
 
-                if (me != null) {
-                    // Salva o Me no SQLite local
-                    try {
-                        AppDatabase.getInstance(requireContext()).meDao().salvar(me);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-
-                    Long id = me.getIdUsuario();
-
-                    if (txtSaudacao != null && me.getNome() != null && !me.getNome().isEmpty()) {
-                        txtSaudacao.setText("Bom dia, " + me.getNome() + "!");
-                    }
-
-                    buscarUsuarioFotoECiclo(id, imgPerfilHeader, rvMeusCiclos);
+                if (me == null || !me.temPerfilActa()) {
+                    Toast.makeText(requireContext(), "Seu perfil ACTA não está disponível. Entre novamente ou peça acesso ao administrador da empresa.", Toast.LENGTH_LONG).show();
+                    return;
                 }
+
+                try {
+                    AppDatabase.getInstance(requireContext()).meDao().salvar(me);
+                } catch (Exception e) {
+                    Log.e(TAG, "Erro ao salvar perfil local.", e);
+                }
+
+                Long id = me.getIdUsuario();
+
+                if (txtSaudacao != null && me.getNome() != null && !me.getNome().isEmpty()) {
+                    txtSaudacao.setText("Bom dia, " + me.getNome() + "!");
+                }
+
+                buscarUsuarioFotoECiclo(id, imgPerfilHeader, rvMeusCiclos);
             }
 
             @Override

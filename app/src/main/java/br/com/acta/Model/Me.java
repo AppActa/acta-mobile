@@ -1,6 +1,7 @@
 package br.com.acta.Model;
 
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import lombok.AllArgsConstructor;
@@ -18,60 +19,22 @@ public class Me {
 
     @PrimaryKey
     private Long idUsuario;
-
     private Long idEmpresa;
-
     private Long idColaborador;
-
     private String nome;
-
     private String email;
-
     private String nomeEmpresa;
-
     private String tipo;
-
     private boolean permissaoGestor;
-
     private String status;
+    @Ignore
+    private String estadoPerfil;
 
-    public String getFirebaseUid() {
-        return firebaseUid;
+    public boolean temPerfilActa() {
+        return "PERFIL_CRIADO".equals(estadoPerfil) && idUsuario != null && idEmpresa != null;
     }
 
-    public Long getIdUsuario() {
-        return idUsuario;
-    }
-
-    public Long getIdEmpresa() {
-        return idEmpresa;
-    }
-
-    public Long getIdColaborador() {
-        return idColaborador;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getNomeEmpresa() {
-        return nomeEmpresa;
-    }
-
-    public String getTipo() {
-        return tipo;
-    }
-
-    public boolean isPermissaoGestor() {
-        return permissaoGestor;
-    }
-
-    public String getStatus() {
-        return status;
+    public boolean cadastroNaoIniciado() {
+        return "CADASTRO_NAO_INICIADO".equals(estadoPerfil);
     }
 }

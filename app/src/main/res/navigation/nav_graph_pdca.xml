@@ -77,4 +77,16 @@
         android:label="Act - Padronização"
         tools:layout="@layout/fragment_act_ciclo" />
 
+    <fragment
+        android:id="@+id/listaFormulariosFragment"
+        android:name="br.com.acta.ListaFormulariosFragment"
+        android:label="Lista de Formulários"
+        tools:layout="@layout/fragment_lista_formularios" />
+
+    <fragment
+        android:id="@+id/formularioFragment"
+        android:name="br.com.acta.FormularioFragment"
+        android:label="Responder Formulário"
+        tools:layout="@layout/fragment_formulario" />
+
 </navigation>

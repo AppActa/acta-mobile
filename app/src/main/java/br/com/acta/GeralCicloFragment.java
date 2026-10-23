@@ -87,6 +87,23 @@ public class GeralCicloFragment extends Fragment {
                 buscarPlanosETarefas(idCicloAtual);
             }
         }
+
+        View cardFormulario = view.findViewById(R.id.cardFormularioCicloInclude);
+        if (cardFormulario != null) {
+            View btnAbrirForm = cardFormulario.findViewById(R.id.btnAbrirFormulariosCiclo);
+            View.OnClickListener clickListener = v -> {
+                Bundle args = new Bundle();
+                if (idCicloAtual != null && idCicloAtual != 0L) {
+                    args.putLong("idCiclo", idCicloAtual);
+                }
+                Navigation.findNavController(v).navigate(R.id.listaFormulariosFragment, args);
+            };
+
+            cardFormulario.setOnClickListener(clickListener);
+            if (btnAbrirForm != null) {
+                btnAbrirForm.setOnClickListener(clickListener);
+            }
+        }
     }
 
     private void buscarCiclo(Long idCiclo) {

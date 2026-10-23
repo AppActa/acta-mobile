@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:fillViewport="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/conteudoFormulario"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- Fundo Verde/Teal Apenas para o Cabeçalho Superior -->
+        <View
+            android:id="@+id/bgHeaderFormulario"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="?attr/imagemFundoBoasVindas"
+            app:layout_constraintBottom_toBottomOf="@id/headerFormulario"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- 1. Cabeçalho Verde-Água (Seta Voltar + Título + Descrição) -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/headerFormulario"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="24dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="32dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <!-- Botão Voltar -->
+            <ImageButton
+                android:id="@+id/btnVoltarFormulario"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/formulario_voltar"
+                android:scaleType="fitCenter"
+                android:src="@drawable/voltar"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <!-- Título do Formulário -->
+            <TextView
+                android:id="@+id/txtTituloFormulario"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:textColor="#111111"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/btnVoltarFormulario"
+                tools:text="Análise do fenômeno" />
+
+            <!-- Descrição do Formulário -->
+            <TextView
+                android:id="@+id/txtDescricaoFormulario"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:textColor="#006775"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txtTituloFormulario"
+                tools:text="Compartilhe sua avaliação sobre o treinamento." />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- 2. Cartão Branco (Com topo arredondado sobre o fundo branco da página) -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/containerFormularioBranco"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-16dp"
+            android:background="@drawable/bg_cartao_topo_arredondado"
+            android:minHeight="600dp"
+            android:paddingHorizontal="24dp"
+            android:paddingTop="28dp"
+            android:paddingBottom="40dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/headerFormulario"
+            app:layout_constraintVertical_bias="0.0">
+
+            <TextView
+                android:id="@+id/lblOrientacaoFormulario"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:text="@string/formulario_orientacao"
+                android:textColor="#083248"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ProgressBar
+                android:id="@+id/progressoFormulario"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/lblOrientacaoFormulario" />
+
+            <TextView
+                android:id="@+id/txtStatusFormulario"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:accessibilityLiveRegion="polite"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:textColor="#D32F2F"
+                android:textSize="14sp"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/progressoFormulario" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnTentarFormulario"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/bg_status_pill"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:text="@string/formulario_tentar"
+                android:textAllCaps="false"
+                android:textColor="#FFFFFF"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txtStatusFormulario" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/listaPerguntasFormulario"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:nestedScrollingEnabled="false"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/btnTentarFormulario"
+                tools:itemCount="3"
+                tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/item_pergunta_texto" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnEnviarFormulario"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="28dp"
+                android:background="@drawable/bg_btn_enviar_resposta"
+                android:clickable="true"
+                android:elevation="3dp"
+                android:focusable="true"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:foreground="?attr/selectableItemBackground"
+                android:text="@string/formulario_enviar"
+                android:textAllCaps="false"
+                android:textColor="#FFFFFF"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/listaPerguntasFormulario" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>
