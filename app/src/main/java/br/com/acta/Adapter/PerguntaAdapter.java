@@ -1,6 +1,7 @@
 package br.com.acta.Adapter;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.activity.result.ActivityResultLauncher;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -27,16 +29,19 @@ import br.com.acta.Model.Enum.TipoResposta;
 import br.com.acta.Model.Pergunta;
 import br.com.acta.Model.RespostasFormulario;
 import br.com.acta.R;
+import br.com.acta.TelaMapa;
 
 public class PerguntaAdapter extends RecyclerView.Adapter<PerguntaAdapter.PerguntaViewHolder> {
     private final List<Pergunta> perguntas;
     private final RespostasFormulario respostas;
+    private final ActivityResultLauncher<Intent> seletorEndereco;
     private boolean mostrarErros;
     private boolean habilitado = true;
 
-    public PerguntaAdapter(List<Pergunta> perguntas, RespostasFormulario respostas) {
+    public PerguntaAdapter(List<Pergunta> perguntas, RespostasFormulario respostas, ActivityResultLauncher<Intent> seletorEndereco) {
         this.perguntas = perguntas;
         this.respostas = respostas;
+        this.seletorEndereco = seletorEndereco;
     }
 
     @Override
@@ -50,6 +55,7 @@ public class PerguntaAdapter extends RecyclerView.Adapter<PerguntaAdapter.Pergun
             case CHECKBOX: return R.layout.item_pergunta_checkbox;
             case SIM_NAO: return R.layout.item_pergunta_sim_nao;
             case DATA: return R.layout.item_pergunta_data;
+            case CEP: return R.layout.item_pergunta_cep;
             case EMAIL: return R.layout.item_pergunta_email;
             case NUMERO_INTEIRO: return R.layout.item_pergunta_numero_inteiro;
             case NUMERO_DECIMAL: return R.layout.item_pergunta_numero_decimal;
@@ -119,6 +125,13 @@ public class PerguntaAdapter extends RecyclerView.Adapter<PerguntaAdapter.Pergun
             EditText campo = itemView.findViewById(R.id.edtRespostaPergunta);
             if (campo != null) {
                 configurarTexto(campo, pergunta);
+                if (tipo == TipoResposta.CEP) {
+                    itemView.findViewById(R.id.btnSelecionarEndereco).setOnClickListener(view -> {
+                        Intent intent = new Intent(view.getContext(), TelaMapa.class);
+                        intent.putExtra(TelaMapa.EXTRA_ID_PERGUNTA, pergunta.getId());
+                        seletorEndereco.launch(intent);
+                    });
+                }
             } else if (tipo == TipoResposta.CHECKBOX) {
                 configurarCheckbox(pergunta);
             } else {

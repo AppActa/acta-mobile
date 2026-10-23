@@ -1,6 +1,8 @@
 package br.com.acta;
 
 import android.graphics.Color;
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +13,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -61,6 +65,23 @@ public class FormularioFragment extends Fragment {
     private boolean enviando;
     private boolean enviado;
     private boolean respostaVerificada;
+    private final ActivityResultLauncher<Intent> seletorEndereco = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(), resultado -> {
+                if (resultado.getResultCode() != Activity.RESULT_OK || resultado.getData() == null || respostas == null) {
+                    return;
+                }
+                String idPergunta = resultado.getData().getStringExtra(TelaMapa.EXTRA_ID_PERGUNTA);
+                String cep = resultado.getData().getStringExtra(TelaMapa.EXTRA_CEP);
+                if (idPergunta == null || cep == null) {
+                    return;
+                }
+                respostas.atualizar(idPergunta, cep);
+                if (lista != null && lista.getAdapter() != null) {
+                    lista.getAdapter().notifyDataSetChanged();
+                } else if (isAdded() && formulario != null && getView() != null) {
+                    mostrarFormulario();
+                }
+            });
 
     @Nullable
     @Override
@@ -160,7 +181,7 @@ public class FormularioFragment extends Fragment {
         TextView descricao = requireView().findViewById(R.id.txtDescricaoFormulario);
         titulo.setText(formulario.getTitulo());
         descricao.setText(formulario.getDescricao());
-        lista.setAdapter(new PerguntaAdapter(formulario.getPerguntas(), respostas));
+        lista.setAdapter(new PerguntaAdapter(formulario.getPerguntas(), respostas, seletorEndereco));
         mostrarMensagem(enviado ? getString(R.string.formulario_ja_respondido) : null);
         atualizarAcoes();
     }

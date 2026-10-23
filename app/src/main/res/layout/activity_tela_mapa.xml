@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    tools:context=".TelaMapa">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_header_gradient"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <ImageButton
+            android:id="@+id/btnVoltarMapa"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/mapa_voltar"
+            android:src="@drawable/voltar"
+            android:scaleType="centerInside" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/plus_jakarta_sans"
+            android:text="@string/mapa_titulo"
+            android:textColor="@color/login_text_dark"
+            android:textSize="26sp"
+            android:textStyle="bold" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/campoBuscaEndereco"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:hint="@string/mapa_hint_busca"
+            android:textColorHint="@color/login_text_muted"
+            app:boxBackgroundColor="@color/white"
+            app:boxStrokeColor="@color/turquesa_dark_center"
+            app:hintTextColor="@color/turquesa_dark_center">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edtBuscarEndereco"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:imeOptions="actionSearch"
+                android:inputType="textPostalAddress"
+                android:maxLines="1"
+                android:textColor="@color/login_text_dark" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnBuscarEndereco"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:minHeight="48dp"
+            android:fontFamily="@font/plus_jakarta_sans"
+            android:text="@string/mapa_buscar"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            app:backgroundTint="@color/turquesa_dark_center"
+            app:cornerRadius="12dp" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnMinhaPosicao"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"
+            android:fontFamily="@font/plus_jakarta_sans"
+            android:text="@string/mapa_minha_posicao"
+            android:textAllCaps="false"
+            android:textColor="@color/turquesa_dark_center"
+            app:cornerRadius="12dp" />
+    </LinearLayout>
+
+    <com.google.android.material.progressindicator.LinearProgressIndicator
+        android:id="@+id/progresso"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:visibility="gone"
+        app:indicatorColor="@color/turquesa_dark_center"
+        app:trackColor="@color/turquesa_light_center" />
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/mapa"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <TextView
+        android:id="@+id/txtEnderecoLugar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:fontFamily="@font/plus_jakarta_sans"
+        android:padding="16dp"
+        android:textColor="@color/login_text_dark"
+        android:textSize="16sp"
+        android:accessibilityLiveRegion="polite"
+        android:visibility="gone"
+        tools:text="Avenida Paulista, 1000, São Paulo - SP"
+        tools:visibility="visible" />
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnUtilizarEndereco"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="12dp"
+        android:enabled="false"
+        android:minHeight="52dp"
+        android:text="Utilizar esse endereço"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        app:backgroundTint="@color/turquesa_dark_center"
+        app:cornerRadius="12dp" />
+</LinearLayout>
