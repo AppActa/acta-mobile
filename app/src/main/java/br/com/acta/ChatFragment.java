@@ -141,7 +141,7 @@ public class ChatFragment extends Fragment {
                 return conversaAberta;
             }
         });
-        adapter = new ChatAdapter(mensagens, this::enviarMensagem);
+        adapter = new ChatAdapter(requireContext(), mensagens, this::enviarMensagem);
         chatMessages.setAdapter(adapter);
         if (mensagens.isEmpty()) mensagens.add(new ChatMessage(telaInicialChat(), ""));
         adapter.notifyDataSetChanged();

@@ -1,5 +1,6 @@
 package br.com.acta.Adapter;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,14 +15,21 @@ import java.util.List;
 
 import br.com.acta.ChatMessage;
 import br.com.acta.R;
+import io.noties.markwon.Markwon;
+import io.noties.markwon.ext.tables.TablePlugin;
 
 public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MessageViewHolder> {
     private final List<ChatMessage> mensagens;
     private final SugestaoChatAdapter.OnSugestaoClickListener listener;
+    private final Markwon markdown;
 
-    public ChatAdapter(List<ChatMessage> mensagens, SugestaoChatAdapter.OnSugestaoClickListener listener) {
+    public ChatAdapter(Context context, List<ChatMessage> mensagens,
+                       SugestaoChatAdapter.OnSugestaoClickListener listener) {
         this.mensagens = mensagens;
         this.listener = listener;
+        markdown = Markwon.builder(context)
+                .usePlugin(TablePlugin.create(context))
+                .build();
     }
 
     @Override
@@ -70,7 +78,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MessageViewHol
                         mensagem.isTranscricaoAudio() ? View.VISIBLE : View.GONE);
             }
         } else if (mensagem.getType() == ChatMessage.Type.CATO) {
-            holder.catoMessage.setText(mensagem.getText());
+            markdown.setMarkdown(holder.catoMessage, mensagem.getText());
         } else if (mensagem.getType() == ChatMessage.Type.SUGGESTIONS) {
             RecyclerView sugestoes = holder.sugestoes;
             if (sugestoes.getLayoutManager() == null) {
