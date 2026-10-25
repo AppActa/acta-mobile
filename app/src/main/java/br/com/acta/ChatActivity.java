@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.OnBackPressedCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
@@ -72,6 +73,24 @@ public class ChatActivity extends AppCompatActivity implements ChatFragment.Host
         });
 
         drawer = findViewById(R.id.chatDrawer);
+        OnBackPressedCallback fecharHistoricoAoVoltar = new OnBackPressedCallback(false) {
+            @Override
+            public void handleOnBackPressed() {
+                drawer.closeDrawer(GravityCompat.END);
+            }
+        };
+        getOnBackPressedDispatcher().addCallback(this, fecharHistoricoAoVoltar);
+        drawer.addDrawerListener(new DrawerLayout.SimpleDrawerListener() {
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                fecharHistoricoAoVoltar.setEnabled(true);
+            }
+
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                fecharHistoricoAoVoltar.setEnabled(false);
+            }
+        });
         chatFragment = (ChatFragment) getSupportFragmentManager().findFragmentById(R.id.chatFragmentContainer);
         EditText chatInput = findViewById(R.id.chatInput);
         chatInputContainer = findViewById(R.id.chatInputContainer);
@@ -207,9 +226,4 @@ public class ChatActivity extends AppCompatActivity implements ChatFragment.Host
         if (listaConversasAdapter != null) listaConversasAdapter.setConversas(conversas);
     }
 
-    @Override
-    public void onBackPressed() {
-        if (drawer != null && drawer.isDrawerOpen(GravityCompat.END)) drawer.closeDrawer(GravityCompat.END);
-        else super.onBackPressed();
-    }
 }
