@@ -1,0 +1,8 @@
+{
+  "suggestions": [
+    { "title": "Como está meu ciclo?", "description": "Veja o andamento atual" },
+    { "title": "Quais tarefas tenho hoje?", "description": "Confira o que está com você" },
+    { "title": "Tenho algo atrasado?", "description": "Veja prazos pendentes" },
+    { "title": "Quais treinamentos devo fazer?", "description": "Consulte os materiais" }
+  ]
+}

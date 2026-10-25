@@ -35,8 +35,8 @@ android {
         val urlAuth = localProperties.getProperty("AUTH_API_URL")?.trim()?.removeSurrounding("\"")
         val urlFcm = localProperties.getProperty("FCM_API_BASE_URL")?.trim()?.removeSurrounding("\"")
         val urlMongo = localProperties.getProperty("MONGO_API_URL")?.trim()?.removeSurrounding("\"")
-        val urlChatbot = localProperties.getProperty("CHATBOT_API_URL")?.trim()?.removeSurrounding("\"")
         val mapsKey = localProperties.getProperty("MAPS_API_KEY")?.trim()?.removeSurrounding("\"")
+        val urlChatbot = localProperties.getProperty("CHATBOT_API_URL")?.trim()?.removeSurrounding("\"")
         manifestPlaceholders["MAPS_API_KEY"] = mapsKey.orEmpty()
 
         buildConfigField("String", "MAPS_API_KEY", "\"$mapsKey\"")

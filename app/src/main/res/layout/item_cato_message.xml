@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="7dp"
+    android:layout_marginEnd="1dp"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp"
+    tools:background="#BCE8E9">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/imgChatCato"
+        android:layout_width="46dp"
+        android:layout_height="46dp"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/bg_chat_avatar_cato"
+        android:contentDescription="Foto do Cato"
+        android:padding="4dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/cato_avatar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Full" />
+
+    <TextView
+        android:id="@+id/catoMessageSender"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="2dp"
+        android:fontFamily="@font/plus_jakarta_sans"
+        android:includeFontPadding="false"
+        android:lineHeight="15dp"
+        android:text="Cato"
+        android:textColor="#087C86"
+        android:textFontWeight="600"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="@id/catoMessageText"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/catoMessageText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="7dp"
+        android:background="@drawable/bg_chat_cato_bubble"
+        android:fontFamily="@font/plus_jakarta_sans"
+        android:includeFontPadding="false"
+        android:lineHeight="19dp"
+        android:padding="16dp"
+        android:textColor="#173A40"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/imgChatCato"
+        app:layout_constraintTop_toBottomOf="@id/catoMessageSender"
+        tools:text="Você tem uma tarefa atrasada:&#10;&#10;• Conferir etiquetas&#10;Prazo: 15 out&#10;Status: pendente&#10;&#10;Essa resposta foi gerada a partir da transcrição acima." />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

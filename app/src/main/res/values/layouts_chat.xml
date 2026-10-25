@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- A referência antiga usa o mesmo layout, sem duplicar o card. -->
+    <item name="item_audio_transcription" type="layout">@layout/item_user_message</item>
+</resources>

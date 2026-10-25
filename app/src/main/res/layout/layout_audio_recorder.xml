@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="wrap_content" android:background="@drawable/bg_chat_card" android:gravity="center_horizontal" android:orientation="vertical" android:padding="22dp">
+    <ImageView android:layout_width="56dp" android:layout_height="56dp" android:contentDescription="Cato" android:src="@drawable/cato_mascote" />
+    <TextView android:fontFamily="@font/plus_jakarta_sans" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="10dp" android:text="Ouvindo você" android:textColor="#253132" android:textSize="21sp" android:textStyle="bold" />
+    <TextView android:fontFamily="@font/plus_jakarta_sans" android:id="@+id/recordingTimer" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="5dp" android:text="00:00" android:textColor="#60777C" android:textSize="15sp" />
+    <br.com.acta.ui.chat.components.AudioWaveView android:id="@+id/audioWave" android:layout_width="match_parent" android:layout_height="84dp" android:layout_marginTop="18dp" />
+    <TextView android:fontFamily="@font/plus_jakarta_sans" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="6dp" android:text="Sua fala será transcrita ao encerrar." android:textColor="#60777C" android:textSize="13sp" />
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="22dp" android:orientation="horizontal">
+        <TextView android:fontFamily="@font/plus_jakarta_sans" android:id="@+id/buttonCancelRecording" android:layout_width="0dp" android:layout_height="50dp" android:layout_marginEnd="6dp" android:layout_weight="1" android:background="@drawable/bg_chat_input" android:gravity="center" android:text="Cancelar" android:textColor="#253132" android:textSize="14sp" />
+        <TextView android:fontFamily="@font/plus_jakarta_sans" android:id="@+id/buttonStopRecording" android:layout_width="0dp" android:layout_height="50dp" android:layout_marginStart="6dp" android:layout_weight="1" android:background="@drawable/bg_chat_action" android:gravity="center" android:text="Encerrar gravação" android:textColor="#FFFFFF" android:textSize="13sp" />
+    </LinearLayout>
+</LinearLayout>

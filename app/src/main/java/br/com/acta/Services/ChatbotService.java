@@ -12,15 +12,18 @@ import br.com.acta.Model.NovaConversaResponse;
 
 public class ChatbotService {
     private final ChatbotApi api;
+
     public ChatbotService(ChatbotApi api) {
         this.api = api;
     }
+
     public void novaConversa(
             NovaConversaRequest request,
             RepositoryCallback<NovaConversaResponse> callback
     ) {
         Enqueue.enqueue(api.novaConversa(request), callback);
     }
+
     public void listarChats(
             Integer usuarioId,
             Integer empresaId,
@@ -29,6 +32,7 @@ public class ChatbotService {
     ) {
         Enqueue.enqueue(api.listarChats(usuarioId, empresaId, limit), callback);
     }
+
     public void listarMensagens(
             String sessionId,
             Integer usuarioId,
@@ -41,12 +45,14 @@ public class ChatbotService {
                 callback
         );
     }
+
     public void enviarMensagem(
             ChatRequest request,
             RepositoryCallback<ChatResponse> callback
     ) {
         Enqueue.enqueue(api.enviarMensagem(request), callback);
     }
+
     public void enviarAudio(
             ChatAudioRequest request,
             RepositoryCallback<ChatResponse> callback

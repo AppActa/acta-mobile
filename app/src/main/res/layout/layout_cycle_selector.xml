@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cycleSelector"
+    android:layout_width="match_parent"
+    android:layout_height="58dp"
+    android:layout_marginTop="18dp"
+    android:layout_marginStart="23dp"
+    android:layout_marginEnd="23dp"
+    android:clickable="true"
+    android:focusable="true"
+    app:cardBackgroundColor="#EEF8F8"
+    app:cardCornerRadius="18dp"
+    app:cardElevation="0dp"
+    app:strokeWidth="0dp">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent"
+        android:gravity="center_vertical" android:orientation="horizontal" android:padding="12dp">
+        <ImageView android:layout_width="20dp" android:layout_height="20dp"
+            android:importantForAccessibility="no" android:src="@drawable/ic_chat_cycle" />
+        <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
+            android:layout_marginStart="10dp" android:layout_weight="1" android:orientation="vertical">
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:fontFamily="@font/plus_jakarta_sans" android:includeFontPadding="false"
+                android:text="CICLO DA CONVERSA" android:textColor="#66707A" android:textSize="8sp"
+                android:textStyle="bold" android:lineHeight="12dp" />
+            <TextView android:id="@+id/cycleName" android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:fontFamily="@font/plus_jakarta_sans"
+                android:includeFontPadding="false" android:ellipsize="end" android:maxLines="1"
+                android:text="Organização do estoque" android:textColor="#253132"
+                android:textFontWeight="600" android:textSize="12sp" android:lineHeight="17dp" />
+        </LinearLayout>
+        <TextView android:id="@+id/cyclePhase" android:layout_width="wrap_content" android:layout_height="28dp"
+            android:minWidth="38dp" android:layout_marginStart="8dp" android:paddingHorizontal="10dp"
+            android:background="@drawable/bg_chat_phase" android:fontFamily="@font/plus_jakarta_sans"
+            android:gravity="center" android:includeFontPadding="false"
+            android:text="DO" android:textColor="#173A40" android:textSize="11sp" android:textFontWeight="600" />
+        <ImageView android:layout_width="16dp" android:layout_height="16dp"
+            android:layout_marginStart="10dp" android:importantForAccessibility="no"
+            android:src="@drawable/ic_expand_more" android:tint="#173A40" />
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

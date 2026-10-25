@@ -266,5 +266,8 @@ public class HomeActivity extends AppCompatActivity {
         if (navHostFragment != null) {
             navController = navHostFragment.getNavController();
         }
+
+        findViewById(R.id.btnMenuOpcao5).setOnClickListener(v ->
+                startActivity(new Intent(HomeActivity.this, ChatActivity.class)));
     }
 }
