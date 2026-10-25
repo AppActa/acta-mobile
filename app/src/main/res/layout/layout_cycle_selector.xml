@@ -36,6 +36,6 @@
             android:text="DO" android:textColor="#173A40" android:textSize="11sp" android:textFontWeight="600" />
         <ImageView android:layout_width="16dp" android:layout_height="16dp"
             android:layout_marginStart="10dp" android:importantForAccessibility="no"
-            android:src="@drawable/ic_expand_more" android:tint="#173A40" />
+            android:src="@drawable/ic_expand_more" app:tint="#173A40" />
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>
