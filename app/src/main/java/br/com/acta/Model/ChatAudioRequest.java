@@ -17,7 +17,6 @@ import okio.BufferedSink;
 public class ChatAudioRequest extends RequestBody {
 
     private final File audio;
-    private final String audioContentType;
     private final String sessionId;
     private final Integer usuarioId;
     private final Integer empresaId;
@@ -28,7 +27,6 @@ public class ChatAudioRequest extends RequestBody {
 
     public ChatAudioRequest(
             File audio,
-            String audioContentType,
             String sessionId,
             Integer usuarioId,
             Integer empresaId,
@@ -36,7 +34,6 @@ public class ChatAudioRequest extends RequestBody {
             Integer cicloAtivo
     ) {
         this.audio = audio;
-        this.audioContentType = audioContentType;
         this.sessionId = sessionId;
         this.usuarioId = usuarioId;
         this.empresaId = empresaId;
@@ -66,26 +63,23 @@ public class ChatAudioRequest extends RequestBody {
         MultipartBody.Builder builder = new MultipartBody.Builder()
                 .setType(MultipartBody.FORM);
 
-        MediaType tipoAudio = MediaType.parse(
-                audioContentType != null ? audioContentType : "application/octet-stream"
-        );
         builder.addFormDataPart(
                 "audio",
                 audio.getName(),
-                RequestBody.create(tipoAudio, audio)
+                RequestBody.create(MediaType.parse("audio/mp4"), audio)
         );
-        addTextPart(builder, "session_id", sessionId);
-        addTextPart(builder, "usuario_id", String.valueOf(usuarioId));
-        addTextPart(builder, "empresa_id", String.valueOf(empresaId));
+        builder.addFormDataPart("session_id", sessionId);
+        builder.addFormDataPart("usuario_id", String.valueOf(usuarioId));
+        builder.addFormDataPart("empresa_id", String.valueOf(empresaId));
         if (idCiclo != null) {
             for (Integer cicloId : idCiclo) {
                 if (cicloId != null) {
-                    addTextPart(builder, "id_ciclo", String.valueOf(cicloId));
+                    builder.addFormDataPart("id_ciclo", String.valueOf(cicloId));
                 }
             }
         }
         if (cicloAtivo != null) {
-            addTextPart(builder, "ciclo_ativo", String.valueOf(cicloAtivo));
+            builder.addFormDataPart("ciclo_ativo", String.valueOf(cicloAtivo));
         }
 
         return builder.build();
@@ -104,9 +98,5 @@ public class ChatAudioRequest extends RequestBody {
     @Override
     public void writeTo(BufferedSink sink) throws IOException {
         transformaEmMultipart().writeTo(sink);
-    }
-
-    private static void addTextPart(MultipartBody.Builder builder, String name, String value) {
-        builder.addFormDataPart(name, value);
     }
 }

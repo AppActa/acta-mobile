@@ -1,10 +1,8 @@
 package br.com.acta;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
-@AllArgsConstructor
 public class ChatMessage {
     public enum Type {
         WELCOME,
@@ -16,4 +14,15 @@ public class ChatMessage {
 
     private final Type type;
     private final String text;
+    private final boolean transcricaoAudio;
+
+    public ChatMessage(Type type, String text) {
+        this(type, text, false);
+    }
+
+    public ChatMessage(Type type, String text, boolean transcricaoAudio) {
+        this.type = type;
+        this.text = text;
+        this.transcricaoAudio = transcricaoAudio;
+    }
 }

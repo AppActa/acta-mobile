@@ -1,12 +1,134 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="wrap_content" android:background="@drawable/bg_chat_card" android:gravity="center_horizontal" android:orientation="vertical" android:padding="22dp">
-    <ImageView android:layout_width="56dp" android:layout_height="56dp" android:contentDescription="Cato" android:src="@drawable/cato_mascote" />
-    <TextView android:fontFamily="@font/plus_jakarta_sans" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="10dp" android:text="Ouvindo você" android:textColor="#253132" android:textSize="21sp" android:textStyle="bold" />
-    <TextView android:fontFamily="@font/plus_jakarta_sans" android:id="@+id/recordingTimer" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="5dp" android:text="00:00" android:textColor="#60777C" android:textSize="15sp" />
-    <br.com.acta.ui.chat.components.AudioWaveView android:id="@+id/audioWave" android:layout_width="match_parent" android:layout_height="84dp" android:layout_marginTop="18dp" />
-    <TextView android:fontFamily="@font/plus_jakarta_sans" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="6dp" android:text="Sua fala será transcrita ao encerrar." android:textColor="#60777C" android:textSize="13sp" />
-    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="22dp" android:orientation="horizontal">
-        <TextView android:fontFamily="@font/plus_jakarta_sans" android:id="@+id/buttonCancelRecording" android:layout_width="0dp" android:layout_height="50dp" android:layout_marginEnd="6dp" android:layout_weight="1" android:background="@drawable/bg_chat_input" android:gravity="center" android:text="Cancelar" android:textColor="#253132" android:textSize="14sp" />
-        <TextView android:fontFamily="@font/plus_jakarta_sans" android:id="@+id/buttonStopRecording" android:layout_width="0dp" android:layout_height="50dp" android:layout_marginStart="6dp" android:layout_weight="1" android:background="@drawable/bg_chat_action" android:gravity="center" android:text="Encerrar gravação" android:textColor="#FFFFFF" android:textSize="13sp" />
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="2dp"
+    app:cardBackgroundColor="#FFFFFF"
+    app:cardCornerRadius="28dp"
+    app:cardElevation="1dp"
+    app:strokeColor="#DCE8E9"
+    app:strokeWidth="1dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingHorizontal="16dp"
+        android:paddingTop="14dp"
+        android:paddingBottom="12dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <View
+                android:layout_width="8dp"
+                android:layout_height="8dp"
+                android:background="@drawable/bg_audio_recording_dot" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:text="Ouvindo você"
+                android:textColor="#253132"
+                android:textFontWeight="600"
+                android:textSize="13sp" />
+        </LinearLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="68dp"
+            android:layout_marginTop="5dp">
+
+            <ImageView
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_gravity="center"
+                android:contentDescription="Cato"
+                android:scaleType="fitCenter"
+                android:src="@drawable/cato_mascote" />
+
+            <TextView
+                android:id="@+id/recordingTimer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|bottom"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:text="00:00"
+                android:textColor="#173A40"
+                android:textFontWeight="700"
+                android:textSize="18sp" />
+        </FrameLayout>
+
+        <ImageView
+            android:id="@+id/audioWaveform"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="2dp"
+            android:importantForAccessibility="no"
+            android:scaleType="fitCenter" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="2dp"
+            android:fontFamily="@font/plus_jakarta_sans"
+            android:gravity="center"
+            android:text="Sua fala será transcrita ao encerrar."
+            android:textColor="#66707A"
+            android:textSize="11sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:orientation="horizontal">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/buttonCancelRecording"
+                android:layout_width="0dp"
+                android:layout_height="42dp"
+                android:layout_marginEnd="5dp"
+                android:layout_weight="1"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:minHeight="0dp"
+                android:paddingHorizontal="8dp"
+                android:text="Cancelar"
+                android:textAllCaps="false"
+                android:textColor="#173A40"
+                android:textSize="12sp"
+                app:backgroundTint="#78CDD0"
+                app:cornerRadius="20dp"
+                app:icon="@drawable/ic_recording_cancel"
+                app:iconGravity="textStart"
+                app:iconPadding="7dp"
+                app:iconTint="#173A40" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/buttonStopRecording"
+                android:layout_width="0dp"
+                android:layout_height="42dp"
+                android:layout_marginStart="5dp"
+                android:layout_weight="1.6"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:minHeight="0dp"
+                android:paddingHorizontal="8dp"
+                android:text="Encerrar gravação"
+                android:textAllCaps="false"
+                android:textColor="#FFFFFF"
+                android:textSize="12sp"
+                app:backgroundTint="#173A40"
+                app:cornerRadius="20dp"
+                app:icon="@drawable/ic_recording_stop"
+                app:iconGravity="textStart"
+                app:iconPadding="7dp"
+                app:iconTint="#FFFFFF" />
+        </LinearLayout>
     </LinearLayout>
-</LinearLayout>
+</com.google.android.material.card.MaterialCardView>

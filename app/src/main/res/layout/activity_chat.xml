@@ -18,8 +18,8 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1" />
-        <include layout="@layout/layout_chat_input" />
-        <TextView android:fontFamily="@font/plus_jakarta_sans" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="28dp" android:layout_marginStart="27dp" android:layout_marginEnd="21dp" android:gravity="top|center_horizontal" android:includeFontPadding="false" android:lineHeight="15dp" android:paddingBottom="13dp" android:text="O Cato pode cometer erros. Verifique as informações corretamente." android:textColor="#66707A" android:textSize="10sp" />
+        <include android:id="@+id/chatInputContainer" layout="@layout/layout_chat_input" />
+        <TextView android:id="@+id/chatDisclaimer" android:fontFamily="@font/plus_jakarta_sans" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="28dp" android:layout_marginStart="27dp" android:layout_marginEnd="21dp" android:gravity="top|center_horizontal" android:includeFontPadding="false" android:lineHeight="15dp" android:paddingBottom="13dp" android:text="O Cato pode cometer erros. Verifique as informações corretamente." android:textColor="#66707A" android:textSize="10sp" />
     </LinearLayout>
 
     <include

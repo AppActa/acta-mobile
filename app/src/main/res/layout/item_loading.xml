@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="start|center_vertical" android:orientation="horizontal" android:paddingStart="46dp" android:paddingTop="10dp" android:paddingBottom="10dp">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="start|center_vertical" android:orientation="horizontal" android:paddingStart="7dp" android:paddingTop="10dp" android:paddingBottom="10dp">
     <ProgressBar android:layout_width="18dp" android:layout_height="18dp" android:indeterminateTint="#49AEB3" />
     <TextView android:fontFamily="@font/plus_jakarta_sans" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="10dp" android:text="Cato está pensando…" android:textColor="#60777C" android:textSize="13sp" />
 </LinearLayout>

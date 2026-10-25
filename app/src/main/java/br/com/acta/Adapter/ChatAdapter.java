@@ -1,5 +1,6 @@
 package br.com.acta.Adapter;
 
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,7 +60,15 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MessageViewHol
     public void onBindViewHolder(@NonNull MessageViewHolder holder, int position) {
         ChatMessage mensagem = mensagens.get(position);
         if (mensagem.getType() == ChatMessage.Type.USER) {
-            holder.userMessage.setText(mensagem.getText());
+            String texto = mensagem.getText();
+            holder.userMessage.setText(mensagem.isTranscricaoAudio()
+                    ? "“" + texto + "”" : texto);
+            holder.userMessage.setTextColor(Color.parseColor(
+                    mensagem.isTranscricaoAudio() ? "#66707A" : "#173A40"));
+            if (holder.audioTranscriptionLabel != null) {
+                holder.audioTranscriptionLabel.setVisibility(
+                        mensagem.isTranscricaoAudio() ? View.VISIBLE : View.GONE);
+            }
         } else if (mensagem.getType() == ChatMessage.Type.CATO) {
             holder.catoMessage.setText(mensagem.getText());
         } else if (mensagem.getType() == ChatMessage.Type.SUGGESTIONS) {
@@ -86,12 +95,14 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MessageViewHol
 
     static class MessageViewHolder extends RecyclerView.ViewHolder {
         final TextView userMessage;
+        final TextView audioTranscriptionLabel;
         final TextView catoMessage;
         final RecyclerView sugestoes;
 
         MessageViewHolder(@NonNull View itemView) {
             super(itemView);
             userMessage = itemView.findViewById(R.id.userMessageText);
+            audioTranscriptionLabel = itemView.findViewById(R.id.audioTranscriptionLabel);
             catoMessage = itemView.findViewById(R.id.catoMessageText);
             sugestoes = itemView.findViewById(R.id.chatSuggestions);
         }

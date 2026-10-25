@@ -3,11 +3,15 @@ package br.com.acta;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.SystemClock;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -17,32 +21,36 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import br.com.acta.Adapter.ChatAdapter;
 import br.com.acta.Api.ChatbotApi;
 import br.com.acta.Api.CicloApi;
 import br.com.acta.Api.MeApi;
 import br.com.acta.Api.UsuarioApi;
-import br.com.acta.Adapter.ChatAdapter;
 import br.com.acta.Auth.FirebaseTokenProvider;
 import br.com.acta.Auth.TokenProvider;
 import br.com.acta.Client.RepositoryCallback;
 import br.com.acta.Client.RetrofitClient;
 import br.com.acta.Client.RetrofitClientAuth;
 import br.com.acta.Client.RetrofitClientChatbot;
-import br.com.acta.Model.Ciclo;
+import br.com.acta.Model.ChatAudioRequest;
 import br.com.acta.Model.ChatItem;
 import br.com.acta.Model.ChatRequest;
 import br.com.acta.Model.ChatResponse;
+import br.com.acta.Model.Ciclo;
 import br.com.acta.Model.Enum.StatusCiclo;
 import br.com.acta.Model.ListarChatsResponse;
 import br.com.acta.Model.Me;
@@ -62,6 +70,8 @@ public class ChatFragment extends Fragment {
 
     public interface Host {
         void onHistoricoAtualizado(List<ChatItem> conversas);
+        void onAudioCancelRequested();
+        void onAudioFinishRequested();
     }
 
     private final List<ChatMessage> mensagens = new ArrayList<>();
@@ -81,6 +91,20 @@ public class ChatFragment extends Fragment {
     private View cycleSelector;
     private TextView cycleName;
     private TextView cyclePhase;
+    private View audioCard;
+    private TextView recordingTimer;
+    private ImageView waveformView;
+    private final Handler audioTimerHandler = new Handler(Looper.getMainLooper());
+    private long inicioGravacao;
+    private final Runnable atualizarCronometroAudio = new Runnable() {
+        @Override
+        public void run() {
+            if (recordingTimer == null || audioCard == null || audioCard.getVisibility() != View.VISIBLE) return;
+            long segundos = (SystemClock.elapsedRealtime() - inicioGravacao) / 1000;
+            recordingTimer.setText(String.format(Locale.getDefault(), "%02d:%02d", segundos / 60, segundos % 60));
+            audioTimerHandler.postDelayed(this, 1000);
+        }
+    };
     private Host host;
     private final List<Ciclo> ciclosDisponiveis = new ArrayList<>();
     private Ciclo cicloSelecionado;
@@ -125,6 +149,15 @@ public class ChatFragment extends Fragment {
         cycleSelector = view.findViewById(R.id.cycleSelector);
         cycleName = view.findViewById(R.id.cycleName);
         cyclePhase = view.findViewById(R.id.cyclePhase);
+        audioCard = view.findViewById(R.id.audioRecordingCard);
+        recordingTimer = audioCard.findViewById(R.id.recordingTimer);
+        waveformView = audioCard.findViewById(R.id.audioWaveform);
+        audioCard.findViewById(R.id.buttonCancelRecording).setOnClickListener(v -> {
+            if (host != null) host.onAudioCancelRequested();
+        });
+        audioCard.findViewById(R.id.buttonStopRecording).setOnClickListener(v -> {
+            if (host != null) host.onAudioFinishRequested();
+        });
         cycleSelector.setOnClickListener(v -> mostrarSeletorCiclo());
         atualizarSeletorCiclo();
 
@@ -440,6 +473,23 @@ public class ChatFragment extends Fragment {
         else atualizarCampoHabilitado();
     }
 
+    public void exibirCardGravacao(boolean visivel) {
+        if (audioCard == null || recordingTimer == null || waveformView == null) return;
+        audioTimerHandler.removeCallbacks(atualizarCronometroAudio);
+        audioCard.setVisibility(visivel ? View.VISIBLE : View.GONE);
+        if (visivel) {
+            Glide.with(this)
+                    .asGif()
+                    .load(R.drawable.audio_wave_recording)
+                    .into(waveformView);
+            inicioGravacao = SystemClock.elapsedRealtime();
+            recordingTimer.setText("00:00");
+            audioTimerHandler.post(atualizarCronometroAudio);
+        } else if (isAdded()) {
+            Glide.with(this).clear(waveformView);
+        }
+    }
+
     private ChatMessage.Type telaInicialChat() {
         SharedPreferences preferencias = requireContext().getSharedPreferences(PREFS_CHATBOT, Context.MODE_PRIVATE);
         boolean primeiroAcesso = preferencias.getBoolean(PREF_PRIMEIRO_ACESSO, true);
@@ -448,44 +498,21 @@ public class ChatFragment extends Fragment {
 
     public void enviarMensagem(String texto) {
         if (!sessaoPronta || enviando || texto == null || texto.trim().isEmpty()) return;
-        conversaAberta = true;
         String mensagem = texto.trim();
-        requireContext().getSharedPreferences(PREFS_CHATBOT, Context.MODE_PRIVATE)
-                .edit()
-                .putBoolean(PREF_PRIMEIRO_ACESSO, false)
-                .apply();
-        if (mensagens.size() == 1 && (mensagens.get(0).getType() == ChatMessage.Type.WELCOME
-                || mensagens.get(0).getType() == ChatMessage.Type.SUGGESTIONS)) mensagens.clear();
-
-        mensagens.add(new ChatMessage(ChatMessage.Type.USER, mensagem));
-        mensagens.add(new ChatMessage(ChatMessage.Type.LOADING, ""));
-        int posicaoCarregando = mensagens.size() - 1;
-        adapter.notifyDataSetChanged();
-        enviando = true;
-        atualizarCampoHabilitado();
-        atualizarVisualConversa();
-        rolarParaFinal();
+        int posicaoUsuario = iniciarEnvio(mensagem);
+        int posicaoCarregando = posicaoUsuario + 1;
 
         int geracao = geracaoConversa;
-        List<Integer> idsCiclo = new ArrayList<>();
-        for (Ciclo ciclo : ciclosDisponiveis) {
-            Integer id = ciclo == null ? null : idApi(ciclo.getId());
-            if (id != null && !idsCiclo.contains(id)) idsCiclo.add(id);
-        }
-        if (idsCiclo.isEmpty()) idsCiclo = null;
-        Integer idCicloAtivo = cicloSelecionado == null ? null : idApi(cicloSelecionado.getId());
-        if (idCicloAtivo != null && (idsCiclo == null || !idsCiclo.contains(idCicloAtivo))) {
-            idCicloAtivo = null;
-        }
+        List<Integer> idsCiclo = idsCiclosRequisicao();
+        Integer idCicloAtivo = idCicloAtivoRequisicao(idsCiclo);
         ChatRequest request = new ChatRequest(mensagem, sessionId, idsCiclo, idCicloAtivo, usuarioId, empresaId);
         chatbotService.enviarMensagem(request, new RepositoryCallback<ChatResponse>() {
             @Override
             public void onSuccess(ChatResponse resposta) {
                 if (!isAdded() || geracao != geracaoConversa) return;
                 sessionId = resposta.getSessionId() == null ? sessionId : resposta.getSessionId();
-                substituirCarregando(posicaoCarregando, mensagemErro(normalizarResposta(resposta.getResposta())));
-                enviando = false;
-                atualizarCampoHabilitado();
+                atualizarResultadoEnvio(posicaoCarregando,
+                        mensagemErro(normalizarResposta(resposta.getResposta())));
                 carregarHistorico();
                 rolarParaFinal();
             }
@@ -493,12 +520,98 @@ public class ChatFragment extends Fragment {
             @Override
             public void onError(int statusCode, String message) {
                 if (!isAdded() || geracao != geracaoConversa) return;
-                substituirCarregando(posicaoCarregando, mensagemErro(message));
-                enviando = false;
-                atualizarCampoHabilitado();
+                atualizarResultadoEnvio(posicaoCarregando, mensagemErro(message));
                 rolarParaFinal();
             }
         });
+    }
+
+    public void enviarAudio(File arquivo) {
+        if (arquivo == null) return;
+        if (!sessaoPronta || enviando || usuarioId == null || empresaId == null) {
+            arquivo.delete();
+            if (isAdded()) mostrarErro("A conversa ainda está sendo preparada. Tente novamente.");
+            return;
+        }
+
+        int posicaoUsuario = iniciarEnvio("Áudio enviado");
+        int posicaoCarregando = posicaoUsuario + 1;
+
+        int geracao = geracaoConversa;
+        List<Integer> idsCiclo = idsCiclosRequisicao();
+        ChatAudioRequest request = new ChatAudioRequest(
+                arquivo, sessionId, usuarioId, empresaId,
+                idsCiclo, idCicloAtivoRequisicao(idsCiclo));
+        chatbotService.enviarAudio(request, new RepositoryCallback<ChatResponse>() {
+            @Override
+            public void onSuccess(ChatResponse resposta) {
+                arquivo.delete();
+                if (!isAdded() || geracao != geracaoConversa) return;
+                sessionId = resposta.getSessionId() == null ? sessionId : resposta.getSessionId();
+                String transcricao = resposta.getTranscricao();
+                boolean possuiTranscricao = transcricao != null && !transcricao.trim().isEmpty();
+                mensagens.set(posicaoUsuario, new ChatMessage(
+                        ChatMessage.Type.USER,
+                        possuiTranscricao ? transcricao.trim() : "Áudio enviado",
+                        possuiTranscricao));
+                adapter.notifyItemChanged(posicaoUsuario);
+                atualizarResultadoEnvio(posicaoCarregando,
+                        mensagemErro(normalizarResposta(resposta.getResposta())));
+                carregarHistorico();
+                rolarParaFinal();
+            }
+
+            @Override
+            public void onError(int statusCode, String message) {
+                arquivo.delete();
+                if (!isAdded() || geracao != geracaoConversa) return;
+                atualizarResultadoEnvio(posicaoCarregando, mensagemErro(message));
+                rolarParaFinal();
+            }
+        });
+    }
+
+    private int iniciarEnvio(String mensagemUsuario) {
+        conversaAberta = true;
+        requireContext().getSharedPreferences(PREFS_CHATBOT, Context.MODE_PRIVATE)
+                .edit().putBoolean(PREF_PRIMEIRO_ACESSO, false).apply();
+        if (mensagens.size() == 1 && (mensagens.get(0).getType() == ChatMessage.Type.WELCOME
+                || mensagens.get(0).getType() == ChatMessage.Type.SUGGESTIONS)) mensagens.clear();
+
+        int posicaoUsuario = mensagens.size();
+        mensagens.add(new ChatMessage(ChatMessage.Type.USER, mensagemUsuario));
+        mensagens.add(new ChatMessage(ChatMessage.Type.LOADING, ""));
+        enviando = true;
+        adapter.notifyDataSetChanged();
+        atualizarCampoHabilitado();
+        atualizarVisualConversa();
+        rolarParaFinal();
+        return posicaoUsuario;
+    }
+
+    private void atualizarResultadoEnvio(int posicaoCarregando, String resposta) {
+        substituirCarregando(posicaoCarregando, resposta);
+        enviando = false;
+        atualizarCampoHabilitado();
+    }
+
+    @Nullable
+    private List<Integer> idsCiclosRequisicao() {
+        List<Integer> idsCiclo = new ArrayList<>();
+        for (Ciclo ciclo : ciclosDisponiveis) {
+            Integer id = ciclo == null ? null : idApi(ciclo.getId());
+            if (id != null && !idsCiclo.contains(id)) idsCiclo.add(id);
+        }
+        return idsCiclo.isEmpty() ? null : idsCiclo;
+    }
+
+    @Nullable
+    private Integer idCicloAtivoRequisicao(@Nullable List<Integer> idsCiclo) {
+        Integer idCicloAtivo = cicloSelecionado == null ? null : idApi(cicloSelecionado.getId());
+        if (idCicloAtivo != null && (idsCiclo == null || !idsCiclo.contains(idCicloAtivo))) {
+            return null;
+        }
+        return idCicloAtivo;
     }
 
     private String mensagemErro(String texto) {
@@ -572,12 +685,17 @@ public class ChatFragment extends Fragment {
 
     @Override
     public void onDestroyView() {
+        audioTimerHandler.removeCallbacks(atualizarCronometroAudio);
+        if (waveformView != null && isAdded()) Glide.with(this).clear(waveformView);
         chatMessages = null;
         chatInput = null;
         adapter = null;
         cycleSelector = null;
         cycleName = null;
         cyclePhase = null;
+        audioCard = null;
+        recordingTimer = null;
+        waveformView = null;
         super.onDestroyView();
     }
 
