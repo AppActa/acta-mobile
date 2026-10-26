@@ -2,9 +2,13 @@ package br.com.acta.Services;
 
 import android.util.Log;
 
-import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import br.com.acta.Client.RepositoryCallback;
@@ -15,7 +19,6 @@ import retrofit2.Response;
 
 public class Enqueue {
     private static final String TAG = "Enqueue";
-    private static final Gson gson = new Gson();
     public static <T> void enqueue(Call<T> call, RepositoryCallback<T> callback) {
         call.enqueue(new Callback<>() {
             @Override
@@ -41,9 +44,20 @@ public class Enqueue {
         ResponseBody errorBody = response.errorBody();
         if (errorBody != null) {
             try (ResponseBody body = errorBody) {
-                ApiError error = gson.fromJson(body.string(), ApiError.class);
-                if (error != null && error.mensagens != null && !error.mensagens.isEmpty()) {
-                    return String.join("\n", error.mensagens);
+                String json = body.string();
+                JsonElement raiz = JsonParser.parseString(json);
+                if (!raiz.isJsonObject()) return json;
+                JsonObject erro = raiz.getAsJsonObject();
+                String mensagens = lerMensagens(erro.get("mensagens"));
+                if (!mensagens.isEmpty()) return mensagens;
+                JsonElement detalhe = erro.get("detail");
+                if (detalhe != null && !detalhe.isJsonNull()) {
+                    if (detalhe.isJsonPrimitive()) return detalhe.getAsString();
+                    if (detalhe.isJsonArray()) {
+                        mensagens = lerMensagens(detalhe);
+                        if (!mensagens.isEmpty()) return mensagens;
+                    }
+                    return detalhe.toString();
                 }
             } catch (IOException | RuntimeException ignored) {
             }
@@ -58,7 +72,21 @@ public class Enqueue {
         return "A API respondeu com HTTP " + response.code() + ".";
     }
 
-    private static final class ApiError {
-        private List<String> mensagens;
+    private static String lerMensagens(JsonElement elemento) {
+        if (elemento == null || !elemento.isJsonArray()) return "";
+        JsonArray lista = elemento.getAsJsonArray();
+        List<String> mensagens = new ArrayList<>();
+        for (JsonElement item : lista) {
+            if (item == null || item.isJsonNull()) continue;
+            if (item.isJsonPrimitive()) {
+                mensagens.add(item.getAsString());
+            } else if (item.isJsonObject()) {
+                JsonElement mensagem = item.getAsJsonObject().get("msg");
+                mensagens.add(mensagem == null ? item.toString() : mensagem.getAsString());
+            } else {
+                mensagens.add(item.toString());
+            }
+        }
+        return String.join("\n", mensagens);
     }
 }

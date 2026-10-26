@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="bottom|center_horizontal" android:orientation="vertical" android:paddingBottom="@dimen/cato_welcome_bottom_gap">
+    <ImageView android:layout_width="184dp" android:layout_height="224dp" android:contentDescription="Cato, assistente virtual da ACTA" android:scaleType="fitCenter" android:src="@drawable/cato_mascote" />
+    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="-11dp" android:fontFamily="@font/plus_jakarta_sans" android:includeFontPadding="false" android:gravity="center" android:text="Oi! Eu sou o Cato." android:textColor="#253132" android:textFontWeight="600" android:textSize="32sp" />
+    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:maxWidth="335dp" android:layout_marginTop="6dp" android:fontFamily="@font/plus_jakarta_sans" android:gravity="center" android:includeFontPadding="false" android:lineSpacingExtra="2dp" android:text="Pergunte sobre seus ciclos, tarefas e treinamentos." android:textColor="#60777C" android:textSize="20sp" />
+</LinearLayout>

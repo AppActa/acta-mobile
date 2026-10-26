@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Reutiliza o degradê do app com as cores da tela do Cato. -->
+    <style name="ThemeOverlay.Acta.Cato" parent="">
+        <item name="corGradienteInicio">#7ACFD4</item>
+        <item name="corGradienteMeio">#BDE7E9</item>
+        <item name="corGradienteFim">@color/white</item>
+        <item name="android:fontFamily">@font/plus_jakarta_sans</item>
+    </style>
+</resources>

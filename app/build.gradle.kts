@@ -36,6 +36,7 @@ android {
         val urlFcm = localProperties.getProperty("FCM_API_BASE_URL")?.trim()?.removeSurrounding("\"")
         val urlMongo = localProperties.getProperty("MONGO_API_URL")?.trim()?.removeSurrounding("\"")
         val mapsKey = localProperties.getProperty("MAPS_API_KEY")?.trim()?.removeSurrounding("\"")
+        val urlChatbot = localProperties.getProperty("CHATBOT_API_URL")?.trim()?.removeSurrounding("\"")
         manifestPlaceholders["MAPS_API_KEY"] = mapsKey.orEmpty()
 
         buildConfigField("String", "MAPS_API_KEY", "\"$mapsKey\"")
@@ -46,6 +47,7 @@ android {
         buildConfigField("String", "API_BASE_URL_PG", "\"$urlPg\"")
         buildConfigField("String", "API_BASE_URL_AUTH", "\"$urlAuth\"")
         buildConfigField("String", "API_BASE_URL_MONGO", "\"$urlMongo\"")
+        buildConfigField("String", "CHATBOT_API_URL", "\"$urlChatbot\"")
         buildConfigField("String", "FCM_API_BASE_URL", "\"$urlFcm\"")
     }
 
@@ -116,6 +118,8 @@ dependencies {
     implementation("com.cloudinary:cloudinary-android:3.1.2")
     implementation("com.github.bumptech.glide:glide:4.16.0")
     annotationProcessor("com.github.bumptech.glide:compiler:4.16.0")
+    implementation("io.noties.markwon:core:4.6.2")
+    implementation("io.noties.markwon:ext-tables:4.6.2")
     implementation("androidx.room:room-runtime:2.6.1")
     annotationProcessor("androidx.room:room-compiler:2.6.1")
 

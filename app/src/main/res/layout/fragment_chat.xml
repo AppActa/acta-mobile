@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical" android:paddingStart="20dp" android:paddingEnd="20dp">
+
+    <include layout="@layout/layout_cycle_selector" />
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/chatMessages"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:overScrollMode="never"
+            android:paddingTop="6dp"
+            android:paddingBottom="6dp" />
+
+        <include
+            android:id="@+id/audioRecordingCard"
+            layout="@layout/layout_audio_recorder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="6dp"
+            android:visibility="gone" />
+    </FrameLayout>
+</LinearLayout>

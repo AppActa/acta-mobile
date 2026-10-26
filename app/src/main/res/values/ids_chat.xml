@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Mantém as referências Java existentes até a integração do adapter da grade. -->
+    <item name="suggestionOne" type="id" />
+    <item name="suggestionTwo" type="id" />
+    <item name="suggestionThree" type="id" />
+    <item name="suggestionFour" type="id" />
+    <!-- Referência do adapter antigo, preservada durante a etapa apenas visual. -->
+    <item name="transcriptionText" type="id" />
+</resources>

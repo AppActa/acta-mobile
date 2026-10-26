@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="7dp"
+    android:layout_marginEnd="1dp"
+    android:paddingTop="6dp"
+    android:paddingBottom="10dp"
+    tools:background="#BCE8E9">
+
+    <TextView
+        android:id="@+id/userMessageSender"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="6dp"
+        android:fontFamily="@font/plus_jakarta_sans"
+        android:includeFontPadding="false"
+        android:lineHeight="15dp"
+        android:text="Você"
+        android:textColor="#087C86"
+        android:textFontWeight="600"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toTopOf="@id/userMessageBubble"
+        app:layout_constraintEnd_toEndOf="@id/userMessageBubble"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/userMessageBubble"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:background="@drawable/bg_chat_user_bubble"
+        android:orientation="vertical"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="12dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/imgChatUser"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/userMessageSender">
+
+        <TextView
+            android:id="@+id/audioTranscriptionLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/plus_jakarta_sans"
+            android:includeFontPadding="false"
+            android:lineHeight="14dp"
+            android:text="Transcrição do áudio"
+            android:textColor="#253132"
+            android:textFontWeight="600"
+            android:textSize="11sp"
+            android:visibility="gone"
+            tools:visibility="visible" />
+
+        <TextView
+            android:id="@+id/userMessageText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/plus_jakarta_sans"
+            android:includeFontPadding="false"
+            android:lineHeight="19dp"
+            android:textColor="#173A40"
+            android:textSize="14sp"
+            tools:text="“Quais tarefas estão atrasadas no ciclo de estoque?”" />
+    </LinearLayout>
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/imgChatUser"
+        android:layout_width="46dp"
+        android:layout_height="46dp"
+        android:background="@drawable/bg_chat_avatar_user"
+        android:contentDescription="Foto do usuário"
+        android:scaleType="centerCrop"
+        android:src="@drawable/reicon_profile_filled"
+        app:layout_constraintBottom_toBottomOf="@id/userMessageBubble"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Full"
+        tools:src="@tools:sample/avatars" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
