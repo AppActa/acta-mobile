@@ -320,7 +320,7 @@ public class TelaMapa extends AppCompatActivity implements OnMapReadyCallback {
             for (GeocodingResponse.Componente componente : resultado.getAddressComponents()) {
                 if (componente.getTypes() != null && componente.getTypes().contains("postal_code")
                         && componente.getLongName() != null && componente.getLongName().matches("\\d{5}-?\\d{3}")) {
-                    return componente.getLongName();
+                    return componente.getLongName().replace("-", "");
                 }
             }
         }
