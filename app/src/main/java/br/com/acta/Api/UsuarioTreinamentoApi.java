@@ -8,6 +8,6 @@ import retrofit2.http.GET;
 import retrofit2.http.Path;
 
 public interface UsuarioTreinamentoApi {
-    @GET("api/v1/treinamento/{id}/usuario")
+    @GET("treinamento/{id}/usuario")
     Call<List<UsuarioTreinamento>> buscar(@Path("id") Long id);
 }

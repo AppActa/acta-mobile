@@ -35,7 +35,7 @@ import br.com.acta.Api.RespostaFormularioApi;
 import br.com.acta.Auth.FirebaseTokenProvider;
 import br.com.acta.Auth.TokenProvider;
 import br.com.acta.Client.RepositoryCallback;
-import br.com.acta.Client.RetrofitClient;
+import br.com.acta.Client.RetrofitClientAuth;
 import br.com.acta.Client.RetrofitClientMongo;
 import br.com.acta.Model.Formulario;
 import br.com.acta.Model.Me;
@@ -52,7 +52,7 @@ public class FormularioFragment extends Fragment {
     private final TokenProvider tokenProvider = new FirebaseTokenProvider(FirebaseAuth.getInstance());
     private final FormularioService formularioService = new FormularioService(RetrofitClientMongo.getInstance(tokenProvider).create(FormularioApi.class));
     private final RespostaFormularioService respostaService = new RespostaFormularioService(RetrofitClientMongo.getInstance(tokenProvider).create(RespostaFormularioApi.class));
-    private final MeService meService = new MeService(RetrofitClient.getInstance(tokenProvider).create(MeApi.class));
+    private final MeService meService = new MeService(RetrofitClientAuth.getInstance(tokenProvider).create(MeApi.class));
     private RespostasFormulario respostas = new RespostasFormulario();
     private Formulario formulario;
     private String idFormulario;

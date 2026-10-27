@@ -30,13 +30,13 @@ public class ActCicloFragment extends Fragment {
     private final TokenProvider tokenProvider = new FirebaseTokenProvider(FirebaseAuth.getInstance());
     private final CicloApi cicloApi = RetrofitClient.getInstance(tokenProvider).create(CicloApi.class);
     private final CicloService cicloService = new CicloService(cicloApi);
-
     private TextView txtSemInformacoesAct;
     private TextView txtTituloAct;
     private TextView txtStatusAct;
     private TextView txtDataInicioAct;
     private TextView txtPrazoFinalAct;
     private View cardAprendizadosInclude;
+    private View cardTreinamentos;
 
     private Long idCicloAtual = 0L;
 
@@ -61,6 +61,7 @@ public class ActCicloFragment extends Fragment {
         txtDataInicioAct = view.findViewById(R.id.txtDataInicioAct);
         txtPrazoFinalAct = view.findViewById(R.id.txtPrazoFinalAct);
         cardAprendizadosInclude = view.findViewById(R.id.cardAprendizadosCicloInclude);
+        cardTreinamentos = view.findViewById(R.id.cardTreinamentosAct);
 
         if (getArguments() != null && getArguments().containsKey("idCiclo")) {
             idCicloAtual = getArguments().getLong("idCiclo", 0L);
@@ -85,6 +86,15 @@ public class ActCicloFragment extends Fragment {
                     }
                 });
             }
+        }
+
+        if (cardTreinamentos != null) {
+            cardTreinamentos.setOnClickListener(v -> {
+                if (idCicloAtual == 0L) return;
+                Bundle args = new Bundle();
+                args.putLong("idCiclo", idCicloAtual);
+                Navigation.findNavController(v).navigate(R.id.listaTreinamentosFragment, args);
+            });
         }
     }
 
@@ -141,9 +151,11 @@ public class ActCicloFragment extends Fragment {
                 if (podeAcessarAct) {
                     if (txtSemInformacoesAct != null) txtSemInformacoesAct.setVisibility(View.GONE);
                     if (cardAprendizadosInclude != null) cardAprendizadosInclude.setVisibility(View.VISIBLE);
+                    if (cardTreinamentos != null) cardTreinamentos.setVisibility(View.VISIBLE);
                 } else {
                     if (cardAprendizadosInclude != null) cardAprendizadosInclude.setVisibility(View.GONE);
                     if (txtSemInformacoesAct != null) txtSemInformacoesAct.setVisibility(View.VISIBLE);
+                    if (cardTreinamentos != null) cardTreinamentos.setVisibility(View.GONE);
                 }
             }
 

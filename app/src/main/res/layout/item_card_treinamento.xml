@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cardTreinamentoItem"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="16dp"
+    android:layout_marginVertical="8dp"
+    android:background="@drawable/bg_card_white"
+    android:clickable="true"
+    android:elevation="4dp"
+    android:focusable="true"
+    android:foreground="?attr/selectableItemBackground">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:baselineAligned="false"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <!-- Conteúdo Interno do Card -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingHorizontal="20dp"
+            android:paddingVertical="18dp">
+
+            <!-- Ícone Círculo Escuro no Topo Esquerdo -->
+            <FrameLayout
+                android:id="@+id/containerIconeTreinamento"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:background="@drawable/bg_menu_active_circle"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/imgIconeTreinamento"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center"
+                    android:contentDescription="Ícone Equipe"
+                    android:src="@drawable/reicon_profile_2user_filled"
+                    app:tint="#FFFFFF" />
+            </FrameLayout>
+
+            <!-- Badge Status "Pendente" -->
+            <TextView
+                android:id="@+id/txtStatusBadgeTreinamento"
+                android:layout_width="wrap_content"
+                android:layout_height="28dp"
+                android:layout_marginStart="10dp"
+                android:background="@drawable/bg_status_pill"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:gravity="center"
+                android:paddingHorizontal="16dp"
+                android:textColor="#FFFFFF"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@id/containerIconeTreinamento"
+                app:layout_constraintStart_toEndOf="@id/containerIconeTreinamento"
+                app:layout_constraintTop_toTopOf="@id/containerIconeTreinamento"
+                tools:text="Pendente" />
+
+            <!-- Título Principal do Treinamento -->
+            <TextView
+                android:id="@+id/txtTituloTreinamento"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:ellipsize="end"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:maxLines="2"
+                android:textColor="#111111"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/containerIconeTreinamento"
+                tools:text="Conferência dupla de pedidos" />
+
+            <!-- Responsável (ex: Responsável: Camila Souza) -->
+            <TextView
+                android:id="@+id/txtResponsavelTreinamento"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:textColor="#424242"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txtTituloTreinamento"
+                tools:text="Responsável: Camila Souza" />
+
+            <!-- Ciclo (ex: Ciclo: Reduzir retrabalho na separação) -->
+            <TextView
+                android:id="@+id/txtCicloTreinamento"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:textColor="#424242"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txtResponsavelTreinamento"
+                tools:text="Ciclo: Reduzir retrabalho na separação" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- Barra Lateral Direita Arredondada Ciano -->
+        <View
+            android:id="@+id/barTreinamentoDireita"
+            android:layout_width="20dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_card_right_teal" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

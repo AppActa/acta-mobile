@@ -78,6 +78,12 @@
         tools:layout="@layout/fragment_act_ciclo" />
 
     <fragment
+        android:id="@+id/listaTreinamentosFragment"
+        android:name="br.com.acta.ListaTreinamentosFragment"
+        android:label="Meus treinamentos"
+        tools:layout="@layout/fragment_lista_treinamentos" />
+
+    <fragment
         android:id="@+id/listaFormulariosFragment"
         android:name="br.com.acta.ListaFormulariosFragment"
         android:label="Lista de Formulários"
