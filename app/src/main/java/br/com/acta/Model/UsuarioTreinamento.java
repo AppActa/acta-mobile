@@ -2,8 +2,6 @@ package br.com.acta.Model;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.time.OffsetDateTime;
-
 import br.com.acta.Model.Enum.StatusTreinamento;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -31,5 +29,5 @@ public class UsuarioTreinamento {
     private Boolean obrigatorio;
 
     @SerializedName("terminadoEm")
-    private OffsetDateTime terminadoEm;
+    private String terminadoEm;
 }
