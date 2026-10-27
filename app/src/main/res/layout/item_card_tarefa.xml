@@ -5,7 +5,6 @@
     android:id="@+id/cardTarefaItem"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginHorizontal="16dp"
     android:layout_marginVertical="8dp"
     android:background="@drawable/bg_card_white"
     android:elevation="3dp">
@@ -32,8 +31,9 @@
             <!-- PAINEL DE AÇÃO EXPANSÍVEL -->
             <LinearLayout
                 android:id="@+id/containerActionConcluir"
-                android:layout_width="170dp"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_weight="1"
                 android:gravity="center"
                 android:orientation="vertical"
                 android:padding="16dp"
