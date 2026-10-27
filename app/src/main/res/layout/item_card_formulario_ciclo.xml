@@ -5,6 +5,7 @@
     android:id="@+id/cardFormularioCicloItem"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginHorizontal="8dp"
     android:background="@drawable/bg_card_white"
     android:clickable="true"
     android:elevation="4dp"

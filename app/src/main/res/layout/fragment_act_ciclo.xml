@@ -97,6 +97,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:background="@drawable/bg_cartao_topo_arredondado"
+            android:clipChildren="false"
+            android:clipToPadding="false"
             android:minHeight="600dp"
             android:paddingHorizontal="20dp"
             android:paddingTop="28dp"
@@ -180,7 +182,7 @@
             <include
                 android:id="@+id/cardAprendizadosCicloInclude"
                 layout="@layout/item_card_aprendizado_ciclo"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -190,7 +192,7 @@
             <include
                 android:id="@+id/cardTreinamentosAct"
                 layout="@layout/item_card_treinamentos_act"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
                 android:visibility="gone"

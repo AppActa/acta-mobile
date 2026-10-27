@@ -97,6 +97,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:background="@drawable/bg_cartao_topo_arredondado"
+            android:clipChildren="false"
+            android:clipToPadding="false"
             android:minHeight="600dp"
             android:paddingHorizontal="24dp"
             android:paddingTop="28dp"
@@ -164,7 +166,7 @@
             <include
                 android:id="@+id/cardProgressoInclude"
                 layout="@layout/item_card_ciclo_progresso"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -175,7 +177,7 @@
             <include
                 android:id="@+id/cardStatusCicloInclude"
                 layout="@layout/item_card_status_ciclo"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -186,7 +188,7 @@
             <include
                 android:id="@+id/cardFormularioCicloInclude"
                 layout="@layout/item_card_formulario_ciclo"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
