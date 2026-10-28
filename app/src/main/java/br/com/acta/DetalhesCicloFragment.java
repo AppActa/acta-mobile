@@ -28,6 +28,7 @@ import br.com.acta.Client.RepositoryCallback;
 import br.com.acta.Client.RetrofitClient;
 import br.com.acta.Model.Ciclo;
 import br.com.acta.Model.PlanoAcao;
+import br.com.acta.Model.Usuario;
 import br.com.acta.Services.CicloService;
 import br.com.acta.Services.PlanoAcaoService;
 import br.com.acta.Services.UsuarioCicloService;
@@ -69,6 +70,7 @@ public class DetalhesCicloFragment extends Fragment {
         }
 
         rvPlanosAcao = view.findViewById(R.id.rvPlanosAcao);
+        responsavel = view.findViewById(R.id.txtResponsavelCiclo);
         if (rvPlanosAcao != null) {
             rvPlanosAcao.setLayoutManager(new LinearLayoutManager(requireContext()));
         }
@@ -88,6 +90,8 @@ public class DetalhesCicloFragment extends Fragment {
             @Override
             public void onSuccess(Ciclo ciclo) {
                 if (!isAdded() || ciclo == null) return;
+
+                buscarResponsavel(ciclo.getIdGestor());
 
                 dataFinal = view.findViewById(R.id.txtPrazoFinalCiclo);
                 if (dataFinal != null && ciclo.getDataEstimadaFim() != null) {
@@ -143,5 +147,31 @@ public class DetalhesCicloFragment extends Fragment {
             public void onError(int code, String message) {
             }
         }));
+    }
+
+    private void buscarResponsavel(Long idGestor) {
+        if (responsavel == null) return;
+        if (idGestor == null) {
+            responsavel.setText("Responsável pelo ciclo: Não informado");
+            return;
+        }
+
+        usuarioService.buscarUsuario(idGestor, new RepositoryCallback<Usuario>() {
+            @Override
+            public void onSuccess(Usuario usuario) {
+                if (!isAdded() || responsavel == null) return;
+                String nome = usuario == null || usuario.getNome() == null || usuario.getNome().trim().isEmpty()
+                        ? "Não informado"
+                        : usuario.getNome().trim();
+                responsavel.setText("Responsável pelo ciclo: " + nome);
+            }
+
+            @Override
+            public void onError(int code, String message) {
+                if (isAdded() && responsavel != null) {
+                    responsavel.setText("Responsável pelo ciclo: Não informado");
+                }
+            }
+        });
     }
 }

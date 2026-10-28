@@ -15,13 +15,16 @@ import androidx.navigation.Navigation;
 import com.google.firebase.auth.FirebaseAuth;
 
 import br.com.acta.Api.CicloApi;
+import br.com.acta.Api.UsuarioApi;
 import br.com.acta.Auth.FirebaseTokenProvider;
 import br.com.acta.Auth.TokenProvider;
 import br.com.acta.Client.RepositoryCallback;
 import br.com.acta.Client.RetrofitClient;
 import br.com.acta.Model.Ciclo;
 import br.com.acta.Model.Enum.StatusCiclo;
+import br.com.acta.Model.Usuario;
 import br.com.acta.Services.CicloService;
+import br.com.acta.Services.UsuarioService;
 import br.com.acta.utils.SkeletonLoading;
 import br.com.acta.utils.FormatoData;
 
@@ -29,12 +32,15 @@ public class ActCicloFragment extends Fragment {
 
     private final TokenProvider tokenProvider = new FirebaseTokenProvider(FirebaseAuth.getInstance());
     private final CicloApi cicloApi = RetrofitClient.getInstance(tokenProvider).create(CicloApi.class);
+    private final UsuarioApi usuarioApi = RetrofitClient.getInstance(tokenProvider).create(UsuarioApi.class);
     private final CicloService cicloService = new CicloService(cicloApi);
+    private final UsuarioService usuarioService = new UsuarioService(usuarioApi);
     private TextView txtSemInformacoesAct;
     private TextView txtTituloAct;
     private TextView txtStatusAct;
     private TextView txtDataInicioAct;
     private TextView txtPrazoFinalAct;
+    private TextView txtResponsavel;
     private View cardAprendizadosInclude;
     private View cardTreinamentos;
 
@@ -60,6 +66,7 @@ public class ActCicloFragment extends Fragment {
         txtStatusAct = view.findViewById(R.id.txtStatusActCiclo);
         txtDataInicioAct = view.findViewById(R.id.txtDataInicioAct);
         txtPrazoFinalAct = view.findViewById(R.id.txtPrazoFinalAct);
+        txtResponsavel = view.findViewById(R.id.txtResponsavelAct);
         cardAprendizadosInclude = view.findViewById(R.id.cardAprendizadosCicloInclude);
         cardTreinamentos = view.findViewById(R.id.cardTreinamentosAct);
 
@@ -128,6 +135,8 @@ public class ActCicloFragment extends Fragment {
             public void onSuccess(Ciclo ciclo) {
                 if (!isAdded() || ciclo == null) return;
 
+                buscarResponsavel(ciclo.getIdGestor());
+
                 if (txtTituloAct != null && ciclo.getTitulo() != null) {
                     txtTituloAct.setText(ciclo.getTitulo());
                 }
@@ -163,5 +172,31 @@ public class ActCicloFragment extends Fragment {
             public void onError(int code, String message) {
             }
         }));
+    }
+
+    private void buscarResponsavel(Long idGestor) {
+        if (txtResponsavel == null) return;
+        if (idGestor == null) {
+            txtResponsavel.setText("Responsável pelo ciclo: Não informado");
+            return;
+        }
+
+        usuarioService.buscarUsuario(idGestor, new RepositoryCallback<Usuario>() {
+            @Override
+            public void onSuccess(Usuario usuario) {
+                if (!isAdded() || txtResponsavel == null) return;
+                String nome = usuario == null || usuario.getNome() == null || usuario.getNome().trim().isEmpty()
+                        ? "Não informado"
+                        : usuario.getNome().trim();
+                txtResponsavel.setText("Responsável pelo ciclo: " + nome);
+            }
+
+            @Override
+            public void onError(int code, String message) {
+                if (isAdded() && txtResponsavel != null) {
+                    txtResponsavel.setText("Responsável pelo ciclo: Não informado");
+                }
+            }
+        });
     }
 }

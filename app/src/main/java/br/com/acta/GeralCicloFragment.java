@@ -33,6 +33,7 @@ import br.com.acta.Model.Enum.StatusCiclo;
 import br.com.acta.Model.Enum.StatusTarefa;
 import br.com.acta.Model.PlanoAcao;
 import br.com.acta.Model.Tarefa;
+import br.com.acta.Model.Usuario;
 import br.com.acta.Services.CicloService;
 import br.com.acta.Services.PlanoAcaoService;
 import br.com.acta.Services.TarefaService;
@@ -58,6 +59,7 @@ public class GeralCicloFragment extends Fragment {
     private TextView txtStatusCiclo;
     private TextView txtDataInicio;
     private TextView txtPrazoFinal;
+    private TextView txtResponsavel;
     private Long idCicloAtual;
 
     @Nullable
@@ -79,6 +81,7 @@ public class GeralCicloFragment extends Fragment {
         txtStatusCiclo = view.findViewById(R.id.txtStatusGeralCiclo);
         txtDataInicio = view.findViewById(R.id.txtDataInicioGeralCiclo);
         txtPrazoFinal = view.findViewById(R.id.txtPrazoFinalGeralCiclo);
+        txtResponsavel = view.findViewById(R.id.txtResponsavelGeralCiclo);
 
         if (requireActivity().getIntent() != null && requireActivity().getIntent().hasExtra("idCiclo")) {
             idCicloAtual = requireActivity().getIntent().getLongExtra("idCiclo", 0L);
@@ -112,6 +115,8 @@ public class GeralCicloFragment extends Fragment {
             public void onSuccess(Ciclo ciclo) {
                 if (!isAdded() || ciclo == null) return;
 
+                buscarResponsavel(ciclo.getIdGestor());
+
                 if (txtTituloCiclo != null && ciclo.getTitulo() != null) {
                     txtTituloCiclo.setText(ciclo.getTitulo());
                 }
@@ -135,6 +140,32 @@ public class GeralCicloFragment extends Fragment {
             public void onError(int code, String message) {
             }
         }));
+    }
+
+    private void buscarResponsavel(Long idGestor) {
+        if (txtResponsavel == null) return;
+        if (idGestor == null) {
+            txtResponsavel.setText("Responsável pelo ciclo: Não informado");
+            return;
+        }
+
+        usuarioService.buscarUsuario(idGestor, new RepositoryCallback<Usuario>() {
+            @Override
+            public void onSuccess(Usuario usuario) {
+                if (!isAdded() || txtResponsavel == null) return;
+                String nome = usuario == null || usuario.getNome() == null || usuario.getNome().trim().isEmpty()
+                        ? "Não informado"
+                        : usuario.getNome().trim();
+                txtResponsavel.setText("Responsável pelo ciclo: " + nome);
+            }
+
+            @Override
+            public void onError(int code, String message) {
+                if (isAdded() && txtResponsavel != null) {
+                    txtResponsavel.setText("Responsável pelo ciclo: Não informado");
+                }
+            }
+        });
     }
 
     private void buscarPlanosETarefas(Long idCiclo) {

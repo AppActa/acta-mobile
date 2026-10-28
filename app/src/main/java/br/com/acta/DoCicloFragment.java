@@ -21,6 +21,7 @@ import java.util.List;
 import br.com.acta.Adapter.PlanoAcaoAdapter;
 import br.com.acta.Api.CicloApi;
 import br.com.acta.Api.PlanoAcaoApi;
+import br.com.acta.Api.UsuarioApi;
 import br.com.acta.Auth.FirebaseTokenProvider;
 import br.com.acta.Auth.TokenProvider;
 import br.com.acta.Client.RepositoryCallback;
@@ -28,8 +29,10 @@ import br.com.acta.Client.RetrofitClient;
 import br.com.acta.Model.Ciclo;
 import br.com.acta.Model.Enum.StatusCiclo;
 import br.com.acta.Model.PlanoAcao;
+import br.com.acta.Model.Usuario;
 import br.com.acta.Services.CicloService;
 import br.com.acta.Services.PlanoAcaoService;
+import br.com.acta.Services.UsuarioService;
 import br.com.acta.utils.SkeletonLoading;
 import br.com.acta.utils.FormatoData;
 
@@ -37,8 +40,10 @@ public class DoCicloFragment extends Fragment {
     private final TokenProvider tokenProvider = new FirebaseTokenProvider(FirebaseAuth.getInstance());
     private final CicloApi cicloApi = RetrofitClient.getInstance(tokenProvider).create(CicloApi.class);
     private final PlanoAcaoApi planoAcaoApi = RetrofitClient.getInstance(tokenProvider).create(PlanoAcaoApi.class);
+    private final UsuarioApi usuarioApi = RetrofitClient.getInstance(tokenProvider).create(UsuarioApi.class);
     private final CicloService cicloService = new CicloService(cicloApi);
     private final PlanoAcaoService planoAcaoService = new PlanoAcaoService(planoAcaoApi);
+    private final UsuarioService usuarioService = new UsuarioService(usuarioApi);
 
     private RecyclerView rvPlanosAcaoDo;
     private TextView txtSemInformacoesDo;
@@ -46,6 +51,7 @@ public class DoCicloFragment extends Fragment {
     private TextView txtStatusDo;
     private TextView txtDataInicio;
     private TextView txtPrazoFinal;
+    private TextView txtResponsavel;
 
     @Nullable
     @Override
@@ -72,6 +78,7 @@ public class DoCicloFragment extends Fragment {
         txtStatusDo = view.findViewById(R.id.txtStatusDoCiclo);
         txtDataInicio = view.findViewById(R.id.txtDataInicioDo);
         txtPrazoFinal = view.findViewById(R.id.txtPrazoFinalDo);
+        txtResponsavel = view.findViewById(R.id.txtResponsavelDo);
 
         Long idCiclo = 0L;
         if (getArguments() != null && getArguments().containsKey("idCiclo")) {
@@ -115,6 +122,8 @@ public class DoCicloFragment extends Fragment {
             public void onSuccess(Ciclo ciclo) {
                 if (!isAdded() || ciclo == null) return;
 
+                buscarResponsavel(ciclo.getIdGestor());
+
                 if (txtTituloDo != null && ciclo.getTitulo() != null) {
                     txtTituloDo.setText(ciclo.getTitulo());
                 }
@@ -149,6 +158,32 @@ public class DoCicloFragment extends Fragment {
             public void onError(int code, String message) {
             }
         }));
+    }
+
+    private void buscarResponsavel(Long idGestor) {
+        if (txtResponsavel == null) return;
+        if (idGestor == null) {
+            txtResponsavel.setText("Responsável pelo ciclo: Não informado");
+            return;
+        }
+
+        usuarioService.buscarUsuario(idGestor, new RepositoryCallback<Usuario>() {
+            @Override
+            public void onSuccess(Usuario usuario) {
+                if (!isAdded() || txtResponsavel == null) return;
+                String nome = usuario == null || usuario.getNome() == null || usuario.getNome().trim().isEmpty()
+                        ? "Não informado"
+                        : usuario.getNome().trim();
+                txtResponsavel.setText("Responsável pelo ciclo: " + nome);
+            }
+
+            @Override
+            public void onError(int code, String message) {
+                if (isAdded() && txtResponsavel != null) {
+                    txtResponsavel.setText("Responsável pelo ciclo: Não informado");
+                }
+            }
+        });
     }
 
     private void buscarPlanoAcao(Long idCiclo) {

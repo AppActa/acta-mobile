@@ -3,16 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/card"
-    android:layout_width="152dp"
+    android:layout_width="match_parent"
     android:layout_height="195dp"
-    android:layout_marginEnd="12dp"
+    android:layout_marginHorizontal="6dp"
+    android:layout_marginVertical="8dp"
     android:background="@drawable/bg_card_ciclo"
     android:padding="10dp">
 
     <!-- Bloco Quadrado do Ícone do Ciclo -->
     <FrameLayout
         android:id="@+id/containerIconeCiclo"
-        android:layout_width="132dp"
+        android:layout_width="0dp"
         android:layout_height="85dp"
         android:background="@drawable/bg_btn_principal"
         app:layout_constraintEnd_toEndOf="parent"
