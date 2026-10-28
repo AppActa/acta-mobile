@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
@@ -41,6 +42,28 @@ public class CicloAdapter extends RecyclerView.Adapter<CicloAdapter.CardViewHold
     @Override
     public CicloAdapter.CardViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_ciclo_card, parent, false);
+
+        if (parent instanceof RecyclerView) {
+            RecyclerView recyclerView = (RecyclerView) parent;
+
+            if (recyclerView.getLayoutManager() instanceof LinearLayoutManager) {
+                LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+
+                if (layoutManager.getOrientation() == LinearLayoutManager.HORIZONTAL) {
+                    int density = (int) parent.getResources().getDisplayMetrics().density;
+                    ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
+                    layoutParams.width = 184 * density;
+                    layoutParams.setMargins(0, 0, 12 * density, 0);
+                    view.setLayoutParams(layoutParams);
+
+                    View containerIcone = view.findViewById(R.id.containerIconeCiclo);
+                    ViewGroup.LayoutParams iconParams = containerIcone.getLayoutParams();
+                    iconParams.width = 156 * density;
+                    containerIcone.setLayoutParams(iconParams);
+                }
+            }
+        }
+
         return new CardViewHolder(view);
     }
 

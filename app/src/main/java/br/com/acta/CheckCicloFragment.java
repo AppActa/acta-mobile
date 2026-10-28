@@ -22,6 +22,7 @@ import br.com.acta.Adapter.PlanoAcaoAdapter;
 import br.com.acta.Api.CicloApi;
 import br.com.acta.Api.PlanoAcaoApi;
 import br.com.acta.Api.VerificacaoResultadoApi;
+import br.com.acta.Api.UsuarioApi;
 import br.com.acta.Auth.FirebaseTokenProvider;
 import br.com.acta.Auth.TokenProvider;
 import br.com.acta.Client.RepositoryCallback;
@@ -33,6 +34,7 @@ import br.com.acta.Model.VerificacaoResultado;
 import br.com.acta.Services.CicloService;
 import br.com.acta.Services.PlanoAcaoService;
 import br.com.acta.Services.VerificacaoResultadoService;
+import br.com.acta.Services.UsuarioService;
 import br.com.acta.utils.SkeletonLoading;
 import br.com.acta.utils.FormatoData;
 
@@ -42,10 +44,12 @@ public class CheckCicloFragment extends Fragment {
     private final CicloApi cicloApi = RetrofitClient.getInstance(tokenProvider).create(CicloApi.class);
     private final PlanoAcaoApi planoAcaoApi = RetrofitClient.getInstance(tokenProvider).create(PlanoAcaoApi.class);
     private final VerificacaoResultadoApi verificacaoResultadoApi = RetrofitClient.getInstance(tokenProvider).create(VerificacaoResultadoApi.class);
+    private final UsuarioApi usuarioApi = RetrofitClient.getInstance(tokenProvider).create(UsuarioApi.class);
 
     private final CicloService cicloService = new CicloService(cicloApi);
     private final PlanoAcaoService planoAcaoService = new PlanoAcaoService(planoAcaoApi);
     private final VerificacaoResultadoService verificacaoResultadoService = new VerificacaoResultadoService(verificacaoResultadoApi);
+    private final UsuarioService usuarioService = new UsuarioService(usuarioApi);
 
     private RecyclerView rvPlanosAcaoCheck;
     private TextView txtSemInformacoesCheck;
@@ -128,6 +132,8 @@ public class CheckCicloFragment extends Fragment {
             public void onSuccess(Ciclo ciclo) {
                 if (!isAdded() || ciclo == null) return;
 
+                buscarResponsavel(ciclo.getIdGestor());
+
                 if (txtTituloCheck != null && ciclo.getTitulo() != null) {
                     txtTituloCheck.setText(ciclo.getTitulo());
                 }
@@ -163,6 +169,13 @@ public class CheckCicloFragment extends Fragment {
             public void onError(int code, String message) {
             }
         }));
+    }
+
+    private void buscarResponsavel(Long idGestor) {
+        if (txtResponsavelCheck == null) return;
+        usuarioService.buscarNomeGestor(idGestor, nome -> {
+            if (isAdded() && txtResponsavelCheck != null) txtResponsavelCheck.setText("Responsável pelo ciclo: " + nome);
+        });
     }
 
     private void buscarVerificacaoResultado(Long idCiclo) {

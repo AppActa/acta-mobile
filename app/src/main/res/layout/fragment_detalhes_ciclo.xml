@@ -115,7 +115,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/plus_jakarta_sans"
-                android:text="Responsável pelo ciclo: Catarina Cândido"
+                android:text="Responsável pelo ciclo: Carregando..."
                 android:textColor="#616161"
                 android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="parent"

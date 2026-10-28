@@ -69,6 +69,7 @@ public class DetalhesCicloFragment extends Fragment {
         }
 
         rvPlanosAcao = view.findViewById(R.id.rvPlanosAcao);
+        responsavel = view.findViewById(R.id.txtResponsavelCiclo);
         if (rvPlanosAcao != null) {
             rvPlanosAcao.setLayoutManager(new LinearLayoutManager(requireContext()));
         }
@@ -88,6 +89,8 @@ public class DetalhesCicloFragment extends Fragment {
             @Override
             public void onSuccess(Ciclo ciclo) {
                 if (!isAdded() || ciclo == null) return;
+
+                buscarResponsavel(ciclo.getIdGestor());
 
                 dataFinal = view.findViewById(R.id.txtPrazoFinalCiclo);
                 if (dataFinal != null && ciclo.getDataEstimadaFim() != null) {
@@ -143,5 +146,12 @@ public class DetalhesCicloFragment extends Fragment {
             public void onError(int code, String message) {
             }
         }));
+    }
+
+    private void buscarResponsavel(Long idGestor) {
+        if (responsavel == null) return;
+        usuarioService.buscarNomeGestor(idGestor, nome -> {
+            if (isAdded() && responsavel != null) responsavel.setText("Responsável pelo ciclo: " + nome);
+        });
     }
 }

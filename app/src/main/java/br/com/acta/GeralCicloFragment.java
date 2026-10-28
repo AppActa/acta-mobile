@@ -58,6 +58,7 @@ public class GeralCicloFragment extends Fragment {
     private TextView txtStatusCiclo;
     private TextView txtDataInicio;
     private TextView txtPrazoFinal;
+    private TextView txtResponsavel;
     private Long idCicloAtual;
 
     @Nullable
@@ -79,6 +80,7 @@ public class GeralCicloFragment extends Fragment {
         txtStatusCiclo = view.findViewById(R.id.txtStatusGeralCiclo);
         txtDataInicio = view.findViewById(R.id.txtDataInicioGeralCiclo);
         txtPrazoFinal = view.findViewById(R.id.txtPrazoFinalGeralCiclo);
+        txtResponsavel = view.findViewById(R.id.txtResponsavelGeralCiclo);
 
         if (requireActivity().getIntent() != null && requireActivity().getIntent().hasExtra("idCiclo")) {
             idCicloAtual = requireActivity().getIntent().getLongExtra("idCiclo", 0L);
@@ -112,6 +114,8 @@ public class GeralCicloFragment extends Fragment {
             public void onSuccess(Ciclo ciclo) {
                 if (!isAdded() || ciclo == null) return;
 
+                buscarResponsavel(ciclo.getIdGestor());
+
                 if (txtTituloCiclo != null && ciclo.getTitulo() != null) {
                     txtTituloCiclo.setText(ciclo.getTitulo());
                 }
@@ -135,6 +139,13 @@ public class GeralCicloFragment extends Fragment {
             public void onError(int code, String message) {
             }
         }));
+    }
+
+    private void buscarResponsavel(Long idGestor) {
+        if (txtResponsavel == null) return;
+        usuarioService.buscarNomeGestor(idGestor, nome -> {
+            if (isAdded() && txtResponsavel != null) txtResponsavel.setText("Responsável pelo ciclo: " + nome);
+        });
     }
 
     private void buscarPlanosETarefas(Long idCiclo) {
