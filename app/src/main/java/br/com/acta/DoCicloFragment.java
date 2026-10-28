@@ -29,7 +29,6 @@ import br.com.acta.Client.RetrofitClient;
 import br.com.acta.Model.Ciclo;
 import br.com.acta.Model.Enum.StatusCiclo;
 import br.com.acta.Model.PlanoAcao;
-import br.com.acta.Model.Usuario;
 import br.com.acta.Services.CicloService;
 import br.com.acta.Services.PlanoAcaoService;
 import br.com.acta.Services.UsuarioService;
@@ -162,27 +161,8 @@ public class DoCicloFragment extends Fragment {
 
     private void buscarResponsavel(Long idGestor) {
         if (txtResponsavel == null) return;
-        if (idGestor == null) {
-            txtResponsavel.setText("Responsável pelo ciclo: Não informado");
-            return;
-        }
-
-        usuarioService.buscarUsuario(idGestor, new RepositoryCallback<Usuario>() {
-            @Override
-            public void onSuccess(Usuario usuario) {
-                if (!isAdded() || txtResponsavel == null) return;
-                String nome = usuario == null || usuario.getNome() == null || usuario.getNome().trim().isEmpty()
-                        ? "Não informado"
-                        : usuario.getNome().trim();
-                txtResponsavel.setText("Responsável pelo ciclo: " + nome);
-            }
-
-            @Override
-            public void onError(int code, String message) {
-                if (isAdded() && txtResponsavel != null) {
-                    txtResponsavel.setText("Responsável pelo ciclo: Não informado");
-                }
-            }
+        usuarioService.buscarNomeGestor(idGestor, nome -> {
+            if (isAdded() && txtResponsavel != null) txtResponsavel.setText("Responsável pelo ciclo: " + nome);
         });
     }
 
