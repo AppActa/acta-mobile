@@ -1,6 +1,7 @@
 package br.com.acta.Services;
 
 import java.util.List;
+import java.util.Map;
 
 import br.com.acta.Api.TreinamentoApi;
 import br.com.acta.Client.RepositoryCallback;
@@ -19,5 +20,9 @@ public class TreinamentoService {
 
     public void buscar(Long id, RepositoryCallback<Treinamento> callback) {
         Enqueue.enqueue(api.buscar(id), callback);
+    }
+
+    public void patch(Long id, Map<String, Object> campos, RepositoryCallback<Treinamento> callback) {
+        Enqueue.enqueue(api.patch(id, campos), callback);
     }
 }
