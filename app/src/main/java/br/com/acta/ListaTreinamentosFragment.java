@@ -32,6 +32,7 @@ import br.com.acta.Client.RepositoryCallback;
 import br.com.acta.Client.RetrofitClient;
 import br.com.acta.Client.RetrofitClientAuth;
 import br.com.acta.Model.Ciclo;
+import br.com.acta.Model.Enum.StatusTreinamento;
 import br.com.acta.Model.Me;
 import br.com.acta.Model.Treinamento;
 import br.com.acta.Model.UsuarioTreinamento;
@@ -181,6 +182,7 @@ public class ListaTreinamentosFragment extends Fragment {
     }
 
     private void exibirVinculoDoUsuario(Treinamento treinamento, UsuarioTreinamento vinculo) {
+        vinculo.setIdTreinamento(treinamento.getId());
         treinamentos.add(treinamento);
         vinculos.add(vinculo);
         Log.d(TAG, "Treinamento adicionado à lista de exibição. Total: " + treinamentos.size());
@@ -224,7 +226,7 @@ public class ListaTreinamentosFragment extends Fragment {
     private void exibirTreinamentos() {
         if (!isAdded() || listaTreinamentos == null) return;
         Log.d(TAG, "Exibindo treinamentos: " + treinamentos.size() + ", vínculos: " + vinculos.size());
-        listaTreinamentos.setAdapter(new TreinamentoAdapter(treinamentos, vinculos));
+        listaTreinamentos.setAdapter(new TreinamentoAdapter(treinamentos, vinculos, this::atualizarStatusTreinamento));
         if (treinamentos.isEmpty()) {
             mostrarEstado("Você ainda não tem treinamentos neste ciclo. exibir errado");
         } else if (estadoLista != null) {
@@ -237,6 +239,32 @@ public class ListaTreinamentosFragment extends Fragment {
         if (getContext() != null) {
             Toast.makeText(getContext(), mensagem, Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void atualizarStatusTreinamento(UsuarioTreinamento vinculo, StatusTreinamento status) {
+        if (vinculo == null || vinculo.getIdTreinamento() == null || vinculo.getIdUsuario() == null) return;
+
+        usuarioTreinamentoService.patchStatus(vinculo.getIdTreinamento(), vinculo.getIdUsuario(), status, new RepositoryCallback<UsuarioTreinamento>() {
+            @Override
+            public void onSuccess(UsuarioTreinamento atualizado) {
+                if (!isAdded()) return;
+                vinculo.setStatus(atualizado != null && atualizado.getStatus() != null ? atualizado.getStatus() : status);
+                if (listaTreinamentos != null && listaTreinamentos.getAdapter() != null) {
+                    listaTreinamentos.getAdapter().notifyDataSetChanged();
+                }
+                Toast.makeText(requireContext(), "Status do treinamento atualizado.", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onError(int code, String message) {
+                if (!isAdded()) return;
+                if (listaTreinamentos != null && listaTreinamentos.getAdapter() != null) {
+                    listaTreinamentos.getAdapter().notifyDataSetChanged();
+                }
+                Log.e(TAG, "Falha ao atualizar status do treinamento. Código=" + code + ", mensagem=" + message);
+                Toast.makeText(requireContext(), "Falha ao atualizar status. Código: " + code + ". " + message, Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     private void mostrarEstado(String mensagem) {

@@ -107,11 +107,33 @@
                 android:fontFamily="@font/plus_jakarta_sans"
                 android:textColor="#424242"
                 android:textSize="14sp"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/txtResponsavelTreinamento"
                 tools:text="Ciclo: Reduzir retrabalho na separação" />
+
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/spnStatusTreinamento"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="8dp"
+                android:contentDescription="Status do treinamento"
+                android:spinnerMode="dropdown"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txtCicloTreinamento" />
+
+            <Button
+                android:id="@+id/btnSalvarStatusTreinamento"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:enabled="false"
+                android:text="Salvar status"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/spnStatusTreinamento" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
