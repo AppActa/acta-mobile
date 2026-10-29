@@ -55,15 +55,15 @@ public class TreinamentoAdapter extends RecyclerView.Adapter<TreinamentoAdapter.
         holder.status.setText(statusAtual.name());
 
         holder.statusTreinamento.setOnItemSelectedListener(null);
-        boolean statusConcluido = statusAtual == StatusTreinamento.CONCLUIDO;
-        holder.statusTreinamento.setEnabled(!statusConcluido);
+        boolean permiteAlterarStatus = statusAtual == StatusTreinamento.PENDENTE;
+        holder.statusTreinamento.setEnabled(permiteAlterarStatus);
         ArrayAdapter<StatusTreinamento> statusAdapter = new ArrayAdapter<>(holder.statusTreinamento.getContext(), android.R.layout.simple_spinner_item, StatusTreinamento.values());
         statusAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         holder.statusTreinamento.setAdapter(statusAdapter);
         holder.statusTreinamento.setSelection(statusAtual.ordinal(), false);
         holder.statusSelecionado = statusAtual;
         holder.salvarStatus.setEnabled(false);
-        holder.salvarStatus.setVisibility(statusConcluido ? View.GONE : View.VISIBLE);
+        holder.salvarStatus.setVisibility(permiteAlterarStatus ? View.VISIBLE : View.GONE);
         holder.statusTreinamento.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int itemPosition, long id) {
@@ -75,7 +75,7 @@ public class TreinamentoAdapter extends RecyclerView.Adapter<TreinamentoAdapter.
             public void onNothingSelected(AdapterView<?> parent) {}
         });
         holder.salvarStatus.setOnClickListener(view -> {
-            if (statusConcluido || holder.statusSelecionado == statusAtual || listener == null) return;
+            if (!permiteAlterarStatus || holder.statusSelecionado == statusAtual || listener == null) return;
             holder.salvarStatus.setEnabled(false);
             listener.onStatusChanged(vinculo, holder.statusSelecionado);
         });
