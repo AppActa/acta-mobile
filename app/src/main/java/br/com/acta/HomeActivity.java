@@ -39,13 +39,27 @@ public class HomeActivity extends AppCompatActivity {
     private NavController navController;
     private Call<?> chamadaDestino;
     private boolean entradaConsumida;
+    private boolean revogacaoNotificacoesPendente;
 
     @Override
     protected void onResume() {
         super.onResume();
         if (formatoData != FormatoData.obterFormato(this)) {
             recreate();
+            return;
         }
+        if (DispositivoService.habilitado(this) && !DispositivoService.permissaoNotificacoesConcedida(this)) {
+            revogarNotificacoes();
+        }
+    }
+
+    private void revogarNotificacoes() {
+        if (revogacaoNotificacoesPendente) return;
+        revogacaoNotificacoesPendente = true;
+        DispositivoService.sincronizar(this, false, mensagem -> {
+            revogacaoNotificacoesPendente = false;
+            if (mensagem == null) DispositivoService.salvar(this, false);
+        });
     }
 
     @Override
@@ -242,7 +256,9 @@ public class HomeActivity extends AppCompatActivity {
         DispositivoService.iniciarSessao();
         ActaMessagingService.criarCanal(this);
 
-        if (DispositivoService.habilitado(this)) DispositivoService.sincronizar(true, mensagemErro -> {});
+        if (DispositivoService.habilitado(this) && DispositivoService.permissaoNotificacoesConcedida(this)) {
+            DispositivoService.sincronizar(this, true, mensagemErro -> {});
+        }
 
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_home);
