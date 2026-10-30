@@ -45,7 +45,7 @@
             android:layout_gravity="center"
             android:contentDescription="Todas as tarefas"
             android:scaleType="fitCenter"
-            android:src="@drawable/boxicons_clipboard_check" />
+            android:src="@drawable/fa7_solid_tasks" />
     </FrameLayout>
 
     <!-- Opção 3 (Centro - Logo) -->
@@ -83,7 +83,7 @@
             android:layout_gravity="center"
             android:contentDescription="Lições aprendidas"
             android:scaleType="fitCenter"
-            android:src="@drawable/iconamoon_profile" />
+            android:src="@drawable/boxicons_clipboard_check" />
     </FrameLayout>
 
     <!-- Opção 5 (Direita) -->
