@@ -28,7 +28,7 @@
                 android:id="@+id/imgLogoHeader"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:contentDescription="Logo Acta"
+                android:contentDescription="Logo ACTA"
                 android:src="@drawable/img"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
