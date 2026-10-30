@@ -77,11 +77,13 @@
         android:focusable="true"
         android:foreground="?attr/selectableItemBackground">
 
-        <View
+        <ImageView
             android:layout_width="38dp"
             android:layout_height="38dp"
             android:layout_gravity="center"
-            android:background="@drawable/bg_quadrado_placeholder" />
+            android:contentDescription="Lições aprendidas"
+            android:scaleType="fitCenter"
+            android:src="@drawable/iconamoon_profile" />
     </FrameLayout>
 
     <!-- Opção 5 (Direita) -->

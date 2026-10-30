@@ -8,8 +8,12 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface LicaoAprendidaApi {
+
+    @GET("licoes-aprendidas")
+    Call<List<LicaoAprendida>> buscarTodas(@Query("apenasDoUsuarioAutenticado") boolean apenasDoUsuarioAutenticado);
 
     @GET("ciclos/{idCiclo}/licoes-aprendidas")
     Call<List<LicaoAprendida>> buscarPorCiclo(@Path("idCiclo") Long idCiclo);

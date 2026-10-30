@@ -24,6 +24,12 @@
         tools:layout="@layout/fragment_minhas_tarefas" />
 
     <fragment
+        android:id="@+id/licoesAprendidasFragment"
+        android:name="br.com.acta.LicoesAprendidasFragment"
+        android:label="Lições Aprendidas"
+        tools:layout="@layout/fragment_licoes_aprendidas" />
+
+    <fragment
         android:id="@+id/detalhesCicloFragment"
         android:name="br.com.acta.DetalhesCicloFragment"
         android:label="Detalhes do Ciclo"

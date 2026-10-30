@@ -58,6 +58,7 @@ public class CheckCicloFragment extends Fragment {
     private TextView txtResponsavelCheck;
     private TextView txtDataInicioCheck;
     private TextView txtPrazoFinalCheck;
+    private TextView txtTituloSecaoPlanosCheck;
     private View cardVerificacaoInclude;
 
     @Nullable
@@ -87,6 +88,7 @@ public class CheckCicloFragment extends Fragment {
         txtDataInicioCheck = view.findViewById(R.id.txtDataInicioCheck);
         txtPrazoFinalCheck = view.findViewById(R.id.txtPrazoFinalCheck);
         cardVerificacaoInclude = view.findViewById(R.id.cardVerificacaoResultadoInclude);
+        txtTituloSecaoPlanosCheck = view.findViewById(R.id.txtTituloSecaoPlanosCheck);
 
         Long idCiclo = 0L;
         if (getArguments() != null && getArguments().containsKey("idCiclo")) {
@@ -161,6 +163,7 @@ public class CheckCicloFragment extends Fragment {
                 } else {
                     if (cardVerificacaoInclude != null) cardVerificacaoInclude.setVisibility(View.GONE);
                     if (rvPlanosAcaoCheck != null) rvPlanosAcaoCheck.setVisibility(View.GONE);
+                    txtTituloSecaoPlanosCheck.setVisibility(View.GONE);
                     if (txtSemInformacoesCheck != null) txtSemInformacoesCheck.setVisibility(View.VISIBLE);
                 }
             }
