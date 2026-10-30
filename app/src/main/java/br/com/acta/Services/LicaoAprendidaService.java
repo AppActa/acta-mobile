@@ -13,6 +13,10 @@ public class LicaoAprendidaService {
         this.api = api;
     }
 
+    public void buscarTodas(boolean apenasDoUsuarioAutenticado, RepositoryCallback<List<LicaoAprendida>> callback) {
+        Enqueue.enqueue(api.buscarTodas(apenasDoUsuarioAutenticado), callback);
+    }
+
     public void buscarPorCiclo(Long idCiclo, RepositoryCallback<List<LicaoAprendida>> callback) {
         Enqueue.enqueue(api.buscarPorCiclo(idCiclo), callback);
     }

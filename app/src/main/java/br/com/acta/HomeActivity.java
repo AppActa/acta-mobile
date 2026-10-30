@@ -281,6 +281,12 @@ public class HomeActivity extends AppCompatActivity {
                 navController.navigate(R.id.inicioFragment);
             }
         });
+        findViewById(R.id.btnMenuOpcao4).setOnClickListener(v -> {
+            if (navController != null && navController.getCurrentDestination() != null
+                    && navController.getCurrentDestination().getId() != R.id.licoesAprendidasFragment) {
+                navController.navigate(R.id.licoesAprendidasFragment);
+            }
+        });
         findViewById(R.id.btnMenuOpcao5).setOnClickListener(v ->
                 startActivity(new Intent(HomeActivity.this, ChatActivity.class)));
     }

@@ -101,8 +101,32 @@ public class LicoesAprendidasFragment extends Fragment {
         }
 
         if (idCiclo != 0L) {
+            if (btnAdicionarNovo != null) {
+                btnAdicionarNovo.setVisibility(View.VISIBLE);
+            }
             buscarLicoesPorCiclo(idCiclo);
+        } else {
+            if (btnAdicionarNovo != null) {
+                btnAdicionarNovo.setVisibility(View.GONE);
+            }
+            buscarTodasLicoes();
         }
+    }
+
+    private void buscarTodasLicoes() {
+        licaoService.buscarTodas(false, SkeletonLoading.wrap(getView(), new RepositoryCallback<List<LicaoAprendida>>() {
+            @Override
+            public void onSuccess(List<LicaoAprendida> licoes) {
+                if (getView() == null) return;
+                listaCompletaLicoes = licoes != null ? new ArrayList<>(licoes) : new ArrayList<>();
+                atualizarInterface(listaCompletaLicoes);
+            }
+
+            @Override
+            public void onError(int code, String message) {
+                if (getView() != null) Toast.makeText(requireContext(), "Não foi possível carregar suas lições. Tente novamente.", Toast.LENGTH_LONG).show();
+            }
+        }));
     }
 
     private void buscarLicoesPorCiclo(Long idCiclo) {
