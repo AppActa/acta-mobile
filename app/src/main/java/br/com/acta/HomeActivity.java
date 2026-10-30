@@ -267,6 +267,20 @@ public class HomeActivity extends AppCompatActivity {
             navController = navHostFragment.getNavController();
         }
 
+        findViewById(R.id.btnMenuOpcao1).setOnClickListener(v ->
+                startActivity(new Intent(HomeActivity.this, Perfil.class)));
+        findViewById(R.id.btnMenuOpcao2).setOnClickListener(v -> {
+            if (navController != null && navController.getCurrentDestination() != null
+                    && navController.getCurrentDestination().getId() != R.id.minhasTarefasFragment) {
+                navController.navigate(R.id.minhasTarefasFragment);
+            }
+        });
+        findViewById(R.id.btnMenuLogo).setOnClickListener(v -> {
+            if (navController != null && navController.getCurrentDestination() != null
+                    && navController.getCurrentDestination().getId() != R.id.inicioFragment) {
+                navController.navigate(R.id.inicioFragment);
+            }
+        });
         findViewById(R.id.btnMenuOpcao5).setOnClickListener(v ->
                 startActivity(new Intent(HomeActivity.this, ChatActivity.class)));
     }
