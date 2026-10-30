@@ -2,7 +2,6 @@ package br.com.acta.Services;
 
 import android.content.Context;
 import android.media.MediaRecorder;
-import android.os.Build;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,8 +21,7 @@ public class AudioRecorder {
 
         try {
             arquivo = File.createTempFile("chat_audio_", ".m4a", diretorio);
-            recorder = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
-                    ? new MediaRecorder(context) : new MediaRecorder();
+            recorder = new MediaRecorder();
             recorder.setAudioSource(MediaRecorder.AudioSource.VOICE_RECOGNITION);
             recorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
             recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
