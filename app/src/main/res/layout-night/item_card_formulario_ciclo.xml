@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cardFormularioCicloItem"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="8dp"
+    android:background="@drawable/bg_inicio_card_escuro"
+    android:clickable="true"
+    android:elevation="4dp"
+    android:focusable="true"
+    android:foreground="?attr/selectableItemBackground"
+    android:padding="20dp">
+
+    <!-- Rótulo do topo: Formulários pendentes -->
+    <TextView
+        android:id="@+id/lblFormulariosPendentesCard"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/plus_jakarta_sans"
+        android:text="Formulários pendentes"
+        android:textColor="#F1F3F4"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Título: Formulários do ciclo -->
+    <TextView
+        android:id="@+id/txtTituloFormularioCicloCard"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:fontFamily="@font/plus_jakarta_sans"
+        android:text="Formulários do ciclo"
+        android:textColor="#F1F3F4"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/lblFormulariosPendentesCard" />
+
+    <!-- Subtítulo: Acesse os formulários vinculados ao ciclo -->
+    <TextView
+        android:id="@+id/txtSubtituloFormularioCicloCard"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:fontFamily="@font/plus_jakarta_sans"
+        android:text="Acesse os formulários vinculados ao ciclo"
+        android:textColor="#AFB7B9"
+        android:textSize="13sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txtTituloFormularioCicloCard" />
+
+    <!-- Botão Clicável: Abrir formulário -->
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnAbrirFormulariosCiclo"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/bg_btn_enviar_resposta"
+        android:clickable="true"
+        android:elevation="2dp"
+        android:focusable="true"
+        android:fontFamily="@font/plus_jakarta_sans"
+        android:foreground="?attr/selectableItemBackground"
+        android:text="Abrir formulário"
+        android:textAllCaps="false"
+        android:textColor="#FFFFFF"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txtSubtituloFormularioCicloCard" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

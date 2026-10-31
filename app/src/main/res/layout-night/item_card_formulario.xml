@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cardFormularioItem"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="8dp"
+    android:layout_marginVertical="8dp"
+    android:background="@drawable/bg_inicio_card_escuro"
+    android:clickable="true"
+    android:elevation="4dp"
+    android:focusable="true"
+    android:foreground="?attr/selectableItemBackground"
+    android:padding="20dp">
+
+    <!-- Título Principal do Formulário (ex: Análise do fenômeno) -->
+    <TextView
+        android:id="@+id/txtTituloFormularioCard"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:fontFamily="@font/plus_jakarta_sans"
+        android:maxLines="2"
+        android:textColor="#79D1D4"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Análise do fenômeno" />
+
+    <!-- Subtítulo: Tipo / N° de perguntas (ex: Análise do fenômeno · 5 perguntas) -->
+    <TextView
+        android:id="@+id/txtSubtituloFormularioCard"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:fontFamily="@font/plus_jakarta_sans"
+        android:textColor="#AFB7B9"
+        android:textSize="13sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txtTituloFormularioCard"
+        tools:text="Análise do fenômeno · 5 perguntas" />
+
+    <!-- Descrição (ex: Relate o que observou durante a separação.) -->
+    <TextView
+        android:id="@+id/txtDescricaoFormularioCard"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:fontFamily="@font/plus_jakarta_sans"
+        android:textColor="#C0C6C8"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txtSubtituloFormularioCard"
+        tools:text="Relate o que observou durante a separação." />
+
+    <!-- Linha Inferior: Status Badge (Esquerda) + Botão Responder (Direita) -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/containerRodapeFormularioCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txtDescricaoFormularioCard">
+
+        <!-- Badge de Status da API (ex: Pendente / RASCUNHO / ATIVO) -->
+        <TextView
+            android:id="@+id/txtStatusBadgeFormularioCard"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:background="@drawable/bg_status_pill"
+            android:fontFamily="@font/plus_jakarta_sans"
+            android:gravity="center"
+            android:paddingHorizontal="16dp"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Pendente" />
+
+        <!-- Botão Responder (Direita) -->
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnResponderFormularioCard"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:background="@drawable/bg_status_pill"
+            android:clickable="true"
+            android:elevation="2dp"
+            android:focusable="true"
+            android:fontFamily="@font/plus_jakarta_sans"
+            android:foreground="?attr/selectableItemBackground"
+            android:paddingHorizontal="20dp"
+            android:text="Responder"
+            android:textAllCaps="false"
+            android:textColor="#FFFFFF"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

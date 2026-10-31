@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/containerMenuInferior"
+    android:layout_width="match_parent"
+    android:layout_height="104dp"
+    android:background="@drawable/bg_menu_escuro"
+    android:baselineAligned="false"
+    android:elevation="12dp"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingHorizontal="12dp">
+
+    <!-- Opção 1 (Esquerda) -->
+    <FrameLayout
+        android:id="@+id/btnMenuOpcao1"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground">
+
+        <ImageView
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_gravity="center"
+            android:contentDescription="Perfil"
+            android:scaleType="fitCenter"
+            android:src="@drawable/group"
+            app:tint="#D6E3E3" />
+    </FrameLayout>
+
+    <!-- Opção 2 (Centro-Esquerda) -->
+    <FrameLayout
+        android:id="@+id/btnMenuOpcao2"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground">
+
+        <ImageView
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:layout_gravity="center"
+            android:contentDescription="Todas as tarefas"
+            android:scaleType="fitCenter"
+            android:src="@drawable/fa7_solid_tasks"
+            app:tint="#D6E3E3" />
+    </FrameLayout>
+
+    <!-- Opção 3 (Centro - Logo) -->
+    <FrameLayout
+        android:id="@+id/btnMenuLogo"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground">
+
+        <ImageView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center"
+            android:contentDescription="Logo ACTA"
+            android:scaleType="fitCenter"
+            android:src="@drawable/logo_azul" />
+    </FrameLayout>
+
+    <!-- Opção 4 (Centro-Direita) -->
+    <FrameLayout
+        android:id="@+id/btnMenuOpcao4"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground">
+
+        <ImageView
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:layout_gravity="center"
+            android:contentDescription="Lições aprendidas"
+            android:scaleType="fitCenter"
+            android:src="@drawable/boxicons_clipboard_check"
+            app:tint="#D6E3E3" />
+    </FrameLayout>
+
+    <!-- Opção 5 (Direita) -->
+    <FrameLayout
+        android:id="@+id/btnMenuOpcao5"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground">
+
+        <ImageView
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:layout_gravity="center"
+            android:contentDescription="Chatbot Cato"
+            android:scaleType="fitCenter"
+            android:src="@drawable/cato_cabeca" />
+    </FrameLayout>
+
+</LinearLayout>

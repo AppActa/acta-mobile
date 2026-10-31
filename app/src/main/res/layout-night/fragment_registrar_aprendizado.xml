@@ -1,0 +1,355 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#1D2225"
+    android:fillViewport="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- 1. Topo Verde-Água (Cabeçalho) -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/headerRegistrarAprendizado"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_inicio_cabecalho_escuro"
+            android:paddingHorizontal="24dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="24dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <!-- Botão Voltar -->
+            <ImageButton
+                android:id="@+id/btnVoltarRegistrarAprendizado"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="Voltar"
+                android:scaleType="fitCenter"
+                android:src="@drawable/voltar"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <!-- Título "Registrar aprendizado" -->
+            <TextView
+                android:id="@+id/txtTituloRegistrarHeader"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:text="Registrar aprendizado"
+                android:textColor="#10282B"
+                android:textSize="26sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/btnVoltarRegistrarAprendizado" />
+
+            <!-- Subtítulo "Boas práticas e resultados registrados" -->
+            <TextView
+                android:id="@+id/txtSubtituloRegistrarHeader"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:text="Boas práticas e resultados registrados"
+                android:textColor="#123E41"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txtTituloRegistrarHeader" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- 2. Cartão Branco com Formulário -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/containerFormularioBranco"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_inicio_fundo_escuro"
+            android:minHeight="600dp"
+            android:paddingHorizontal="24dp"
+            android:paddingTop="28dp"
+            android:paddingBottom="40dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/headerRegistrarAprendizado"
+            app:layout_constraintVertical_bias="0.0">
+
+            <!-- Título da Seção: Compartilhe o resultado observado -->
+            <TextView
+                android:id="@+id/txtTituloSecaoForm"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:text="Compartilhe o resultado observado"
+                android:textColor="#F1F3F4"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <!-- Campo 1: Título -->
+            <TextView
+                android:id="@+id/lblTituloAprendizado"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:text="Título"
+                android:textColor="#D8DEDF"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txtTituloSecaoForm" />
+
+            <EditText
+                android:id="@+id/edtTituloAprendizadoForm"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="6dp"
+                android:background="@drawable/bg_inicio_card_escuro"
+                android:elevation="2dp"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:hint="Ex. Conferir antes de embalar"
+                android:inputType="textCapSentences"
+                android:paddingHorizontal="16dp"
+                android:textColor="#F1F3F4"
+                android:textColorHint="#AFB7B9"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/lblTituloAprendizado" />
+
+            <!-- Campo 2: O que aprendemos? -->
+            <TextView
+                android:id="@+id/lblOQueAprendemos"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:text="O que aprendemos?"
+                android:textColor="#D8DEDF"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/edtTituloAprendizadoForm" />
+
+            <EditText
+                android:id="@+id/edtOQueAprendemosForm"
+                android:layout_width="match_parent"
+                android:layout_height="96dp"
+                android:layout_marginTop="6dp"
+                android:background="@drawable/bg_inicio_card_escuro"
+                android:elevation="2dp"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:gravity="top"
+                android:hint="Descreva a ação do ciclo"
+                android:inputType="textMultiLine"
+                android:padding="14dp"
+                android:textColor="#F1F3F4"
+                android:textColorHint="#AFB7B9"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/lblOQueAprendemos" />
+
+            <!-- Campo 3: Qual foi o resultado? -->
+            <TextView
+                android:id="@+id/lblQualResultado"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:text="Qual foi o resultado?"
+                android:textColor="#D8DEDF"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/edtOQueAprendemosForm" />
+
+            <EditText
+                android:id="@+id/edtResultadoForm"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="6dp"
+                android:background="@drawable/bg_inicio_card_escuro"
+                android:elevation="2dp"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:hint="Escreva o resultado observado"
+                android:inputType="textCapSentences"
+                android:paddingHorizontal="16dp"
+                android:textColor="#F1F3F4"
+                android:textColorHint="#AFB7B9"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/lblQualResultado" />
+
+            <!-- Campo 4: Área -->
+            <TextView
+                android:id="@+id/lblAreaForm"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:text="Área"
+                android:textColor="#D8DEDF"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/edtResultadoForm" />
+
+            <EditText
+                android:id="@+id/edtAreaForm"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="6dp"
+                android:background="@drawable/bg_inicio_card_escuro"
+                android:elevation="2dp"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:hint="Escreva sua área"
+                android:inputType="textCapWords"
+                android:paddingHorizontal="16dp"
+                android:textColor="#F1F3F4"
+                android:textColorHint="#AFB7B9"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/lblAreaForm" />
+
+            <!-- Campo 5: Tags -->
+            <TextView
+                android:id="@+id/lblTagsForm"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:text="Tags"
+                android:textColor="#D8DEDF"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/edtAreaForm" />
+
+            <EditText
+                android:id="@+id/edtTagsForm"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="6dp"
+                android:background="@drawable/bg_inicio_card_escuro"
+                android:elevation="2dp"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:hint="Adicione palavras-chave"
+                android:inputType="text"
+                android:paddingHorizontal="16dp"
+                android:textColor="#F1F3F4"
+                android:textColorHint="#AFB7B9"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/lblTagsForm" />
+
+            <!-- Linha Sutil: Fase de origem + Severidade lado a lado -->
+            <LinearLayout
+                android:id="@+id/containerOpcoesSutis"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:baselineAligned="false"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/edtTagsForm">
+
+                <!-- 1. Fase de origem -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/plus_jakarta_sans"
+                        android:text="Fase de origem"
+                        android:textColor="#C0C6C8"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+                    <Spinner
+                        android:id="@+id/spnFaseOrigemForm"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="4dp"
+                        android:background="@drawable/bg_inicio_card_escuro"
+                        android:elevation="1dp"
+                        android:paddingHorizontal="8dp" />
+                </LinearLayout>
+
+                <!-- 2. Severidade -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/plus_jakarta_sans"
+                        android:text="Severidade"
+                        android:textColor="#C0C6C8"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+                    <Spinner
+                        android:id="@+id/spnSeveridadeForm"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="4dp"
+                        android:background="@drawable/bg_inicio_card_escuro"
+                        android:elevation="1dp"
+                        android:paddingHorizontal="8dp" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!-- Botão "Registrar aprendizado" / Salvar -->
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnSalvarAprendizadoForm"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="28dp"
+                android:background="@drawable/bg_btn_enviar_resposta"
+                android:clickable="true"
+                android:elevation="3dp"
+                android:focusable="true"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:foreground="?attr/selectableItemBackground"
+                android:text="Registrar aprendizado"
+                android:textAllCaps="false"
+                android:textColor="#FFFFFF"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/containerOpcoesSutis" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>

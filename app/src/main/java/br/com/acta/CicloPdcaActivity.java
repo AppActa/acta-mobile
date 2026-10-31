@@ -157,16 +157,16 @@ public class CicloPdcaActivity extends AppCompatActivity {
         if (containerCheck != null) containerCheck.setBackground(null);
         if (containerAct != null) containerAct.setBackground(null);
 
-        if (imgGeral != null) imgGeral.setColorFilter(Color.parseColor("#212121"));
-        if (txtGeral != null) txtGeral.setTextColor(Color.parseColor("#212121"));
-        if (imgPlan != null) imgPlan.setColorFilter(Color.parseColor("#212121"));
-        if (txtPlan != null) txtPlan.setTextColor(Color.parseColor("#212121"));
+        if (imgGeral != null) imgGeral.setColorFilter(getColor(R.color.menu_pdca_neutro));
+        if (txtGeral != null) txtGeral.setTextColor(getColor(R.color.menu_pdca_neutro));
+        if (imgPlan != null) imgPlan.setColorFilter(getColor(R.color.menu_pdca_neutro));
+        if (txtPlan != null) txtPlan.setTextColor(getColor(R.color.menu_pdca_neutro));
         if (imgDo != null) imgDo.setColorFilter(Color.parseColor("#00A7B5"));
         if (txtDo != null) txtDo.setTextColor(Color.parseColor("#00A7B5"));
-        if (imgCheck != null) imgCheck.setColorFilter(Color.parseColor("#238357"));
-        if (txtCheck != null) txtCheck.setTextColor(Color.parseColor("#238357"));
-        if (imgAct != null) imgAct.setColorFilter(Color.parseColor("#006775"));
-        if (txtAct != null) txtAct.setTextColor(Color.parseColor("#006775"));
+        if (imgCheck != null) imgCheck.setColorFilter(getColor(R.color.menu_pdca_check));
+        if (txtCheck != null) txtCheck.setTextColor(getColor(R.color.menu_pdca_check));
+        if (imgAct != null) imgAct.setColorFilter(getColor(R.color.menu_pdca_act));
+        if (txtAct != null) txtAct.setTextColor(getColor(R.color.menu_pdca_act));
 
         if (destinationId == R.id.geralCicloFragment) {
             if (containerGeral != null) containerGeral.setBackgroundResource(R.drawable.bg_menu_active_circle);

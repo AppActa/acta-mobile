@@ -9,9 +9,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -26,6 +28,7 @@ import br.com.acta.Auth.TokenProvider;
 import br.com.acta.Client.RepositoryCallback;
 import br.com.acta.Client.RetrofitClient;
 import br.com.acta.DAO.AppDatabase;
+import br.com.acta.Model.Enum.StatusTarefa;
 import br.com.acta.Model.Tarefa;
 import br.com.acta.Services.TarefaService;
 import br.com.acta.utils.SkeletonLoading;
@@ -42,6 +45,8 @@ public class MinhasTarefasFragment extends Fragment {
 
     private RecyclerView rvTodasTarefas;
     private TarefaAdapter tarefaAdapter;
+    private String textoFiltro = "";
+    private StatusTarefa statusFiltro;
 
     @Nullable
     @Override
@@ -52,6 +57,31 @@ public class MinhasTarefasFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        if (savedInstanceState != null) {
+            textoFiltro = savedInstanceState.getString("texto_tarefa", "");
+            String statusSalvo = savedInstanceState.getString("status_tarefa");
+            if (statusSalvo != null) {
+                statusFiltro = StatusTarefa.valueOf(statusSalvo);
+            }
+        }
+
+        TextView btnFiltrarStatus = view.findViewById(R.id.btnFiltrarStatusTarefas);
+        atualizarTextoFiltro(btnFiltrarStatus);
+        btnFiltrarStatus.setOnClickListener(v -> {
+            PopupMenu menu = new PopupMenu(requireContext(), btnFiltrarStatus);
+            menu.getMenu().add("Todos os status").setOnMenuItemClickListener(item -> {
+                selecionarStatus(null, btnFiltrarStatus);
+                return true;
+            });
+            for (StatusTarefa status : StatusTarefa.values()) {
+                menu.getMenu().add(TarefaAdapter.nomeStatus(status)).setOnMenuItemClickListener(item -> {
+                    selecionarStatus(status, btnFiltrarStatus);
+                    return true;
+                });
+            }
+            menu.show();
+        });
 
         ImageButton btnVoltar = view.findViewById(R.id.btnVoltarMinhasTarefas);
         if (btnVoltar != null) {
@@ -65,14 +95,16 @@ public class MinhasTarefasFragment extends Fragment {
 
         EditText edtBuscarTarefa = view.findViewById(R.id.edtBuscarTarefa);
         if (edtBuscarTarefa != null) {
+            edtBuscarTarefa.setText(textoFiltro);
             edtBuscarTarefa.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    textoFiltro = s.toString();
                     if (tarefaAdapter != null) {
-                        tarefaAdapter.filtrar(s.toString());
+                        tarefaAdapter.filtrar(textoFiltro);
                     }
                 }
 
@@ -87,6 +119,7 @@ public class MinhasTarefasFragment extends Fragment {
                     if (getView() == null) return;
                     if (response.isSuccessful() && response.body() != null) {
                         tarefaAdapter = new TarefaAdapter(Collections.singletonList(response.body()));
+                        aplicarFiltros();
                         rvTodasTarefas.setAdapter(tarefaAdapter);
                     } else Toast.makeText(requireContext(), "Tarefa indisponível ou sem acesso.", Toast.LENGTH_LONG).show();
                 }
@@ -102,6 +135,7 @@ public class MinhasTarefasFragment extends Fragment {
             List<Tarefa> tarefasLocais = AppDatabase.getInstance(requireContext()).tarefaDao().listarTodas();
             if (tarefasLocais != null && !tarefasLocais.isEmpty() && rvTodasTarefas != null) {
                 tarefaAdapter = new TarefaAdapter(tarefasLocais);
+                aplicarFiltros();
                 rvTodasTarefas.setAdapter(tarefaAdapter);
             }
         } catch (Exception e) {
@@ -126,6 +160,7 @@ public class MinhasTarefasFragment extends Fragment {
 
                 if (rvTodasTarefas != null) {
                     tarefaAdapter = new TarefaAdapter(tarefas);
+                    aplicarFiltros();
                     rvTodasTarefas.setAdapter(tarefaAdapter);
                 }
             }
@@ -134,5 +169,31 @@ public class MinhasTarefasFragment extends Fragment {
             public void onError(int code, String message) {
             }
         }));
+    }
+
+    private void selecionarStatus(StatusTarefa status, TextView botao) {
+        statusFiltro = status;
+        atualizarTextoFiltro(botao);
+        aplicarFiltros();
+    }
+
+    private void atualizarTextoFiltro(TextView botao) {
+        botao.setText(statusFiltro == null ? "Filtrar por status" : "Status: " + TarefaAdapter.nomeStatus(statusFiltro));
+    }
+
+    private void aplicarFiltros() {
+        if (tarefaAdapter != null) {
+            tarefaAdapter.filtrar(textoFiltro);
+            tarefaAdapter.filtrarPorStatus(statusFiltro);
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("texto_tarefa", textoFiltro);
+        if (statusFiltro != null) {
+            outState.putString("status_tarefa", statusFiltro.name());
+        }
     }
 }

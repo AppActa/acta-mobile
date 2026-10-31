@@ -18,6 +18,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import br.com.acta.Api.TarefaApi;
 import br.com.acta.Auth.FirebaseTokenProvider;
@@ -39,16 +40,18 @@ public class TarefaAdapter extends RecyclerView.Adapter<TarefaAdapter.TarefaView
 
     private final List<Tarefa> tarefaList;
     private final List<Tarefa> tarefaListFull;
+    private String textoFiltro = "";
+    private StatusTarefa statusFiltro;
     private boolean showButton = true;
 
     public TarefaAdapter(List<Tarefa> tarefaList) {
-        this.tarefaList = tarefaList != null ? tarefaList : new ArrayList<>();
+        this.tarefaList = tarefaList != null ? new ArrayList<>(tarefaList) : new ArrayList<>();
         this.tarefaListFull = new ArrayList<>(this.tarefaList);
         this.showButton = true;
     }
 
     public TarefaAdapter(List<Tarefa> tarefaList, boolean showButton) {
-        this.tarefaList = tarefaList != null ? tarefaList : new ArrayList<>();
+        this.tarefaList = tarefaList != null ? new ArrayList<>(tarefaList) : new ArrayList<>();
         this.tarefaListFull = new ArrayList<>(this.tarefaList);
         this.showButton = showButton;
     }
@@ -80,7 +83,7 @@ public class TarefaAdapter extends RecyclerView.Adapter<TarefaAdapter.TarefaView
         }
 
         if (tarefa.getStatus() != null) {
-            holder.txtStatus.setText("Status: " + tarefa.getStatus().name());
+            holder.txtStatus.setText("Status: " + nomeStatus(tarefa.getStatus()));
         } else {
             holder.txtStatus.setText("Status: Em andamento");
         }
@@ -97,7 +100,7 @@ public class TarefaAdapter extends RecyclerView.Adapter<TarefaAdapter.TarefaView
             holder.btnConcluirAction.setTextColor(Color.parseColor("#757575"));
             holder.btnConcluirAction.setBackgroundColor(Color.parseColor("#D6D6D6"));
         } else {
-            holder.txtStatusPill.setText("Em andamento");
+            holder.txtStatusPill.setText(nomeStatus(tarefa.getStatus()));
             holder.txtStatusPill.setBackgroundResource(R.drawable.bg_status_pill);
 
             holder.btnConcluirAction.setEnabled(true);
@@ -122,10 +125,7 @@ public class TarefaAdapter extends RecyclerView.Adapter<TarefaAdapter.TarefaView
                     @Override
                     public void onSuccess(Tarefa tarefaAtualizada) {
                         tarefa.setStatus(StatusTarefa.CONCLUIDA);
-                        int pos = holder.getAdapterPosition();
-                        if (pos != RecyclerView.NO_POSITION) {
-                            notifyItemChanged(pos);
-                        }
+                        aplicarFiltros();
                         Toast.makeText(v.getContext(), "Tarefa concluída!", Toast.LENGTH_SHORT).show();
                     }
 
@@ -173,25 +173,49 @@ public class TarefaAdapter extends RecyclerView.Adapter<TarefaAdapter.TarefaView
     }
 
     public void filtrar(String texto) {
+        textoFiltro = texto == null ? "" : texto.trim().toLowerCase(Locale.ROOT);
+        aplicarFiltros();
+    }
+
+    public void filtrarPorStatus(StatusTarefa status) {
+        statusFiltro = status;
+        aplicarFiltros();
+    }
+
+    public static String nomeStatus(StatusTarefa status) {
+        if (status == null) {
+            return "Em andamento";
+        }
+        switch (status) {
+            case PENDENTE:
+                return "Pendente";
+            case EM_ANDAMENTO:
+                return "Em andamento";
+            case BLOQUEADA:
+                return "Bloqueada";
+            case CONCLUIDA:
+                return "Concluída";
+            case ATRASADA:
+                return "Atrasada";
+            case CANCELADA:
+                return "Cancelada";
+            default:
+                return "Em andamento";
+        }
+    }
+
+    private void aplicarFiltros() {
         tarefaList.clear();
-        if (texto == null || texto.trim().isEmpty()) {
-            tarefaList.addAll(tarefaListFull);
-        } else {
-            String filtro = texto.toLowerCase().trim();
-            for (Tarefa tarefa : tarefaListFull) {
-                boolean match = false;
-                if (tarefa.getTitulo() != null && tarefa.getTitulo().toLowerCase().contains(filtro)) {
-                    match = true;
-                }
-                if (tarefa.getDescricao() != null && tarefa.getDescricao().toLowerCase().contains(filtro)) {
-                    match = true;
-                }
-                if (tarefa.getStatus() != null && tarefa.getStatus().name().toLowerCase().contains(filtro)) {
-                    match = true;
-                }
-                if (match) {
-                    tarefaList.add(tarefa);
-                }
+        for (Tarefa tarefa : tarefaListFull) {
+            StatusTarefa status = tarefa.getStatus() == null ? StatusTarefa.EM_ANDAMENTO : tarefa.getStatus();
+            boolean statusCorresponde = statusFiltro == null || status == statusFiltro;
+            boolean textoCorresponde = textoFiltro.isEmpty()
+                    || (tarefa.getTitulo() != null && tarefa.getTitulo().toLowerCase(Locale.ROOT).contains(textoFiltro))
+                    || (tarefa.getDescricao() != null && tarefa.getDescricao().toLowerCase(Locale.ROOT).contains(textoFiltro))
+                    || nomeStatus(status).toLowerCase(Locale.ROOT).contains(textoFiltro)
+                    || status.name().toLowerCase(Locale.ROOT).contains(textoFiltro);
+            if (statusCorresponde && textoCorresponde) {
+                tarefaList.add(tarefa);
             }
         }
         notifyDataSetChanged();

@@ -3,7 +3,6 @@ package br.com.acta.Adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.graphics.Color;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -38,14 +37,15 @@ public class EfeitoSecundarioAdapter extends RecyclerView.Adapter<EfeitoSecundar
         if (efeito.getTipo() == TipoEfeitoSecundario.POSITIVO) {
             holder.txtBadge.setText("Efeito: Positivo");
             holder.txtBadge.setBackgroundResource(R.drawable.bg_status_pill);
-            holder.txtDescricao.setTextColor(Color.parseColor("#238357"));
+            holder.txtDescricao.setTextColor(holder.itemView.getContext().getColor(R.color.efeito_positivo));
         } else if (efeito.getTipo() == TipoEfeitoSecundario.NEGATIVO) {
             holder.txtBadge.setText("Efeito: Negativo");
             holder.txtBadge.setBackgroundResource(R.drawable.bg_status_pill_dark);
-            holder.txtDescricao.setTextColor(Color.parseColor("#083248"));
+            holder.txtDescricao.setTextColor(holder.itemView.getContext().getColor(R.color.efeito_descricao));
         } else {
             holder.txtBadge.setText("Efeito: Neutro");
             holder.txtBadge.setBackgroundResource(R.drawable.bg_status_pill);
+            holder.txtDescricao.setTextColor(holder.itemView.getContext().getColor(R.color.efeito_descricao));
         }
 
         holder.txtDescricao.setText(efeito.getDescricao() != null ? efeito.getDescricao() : "");

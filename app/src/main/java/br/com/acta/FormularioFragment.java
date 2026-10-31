@@ -1,6 +1,5 @@
 package br.com.acta;
 
-import android.graphics.Color;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -303,7 +302,7 @@ public class FormularioFragment extends Fragment {
             return;
         }
         textoStatus.setText(mensagem);
-        textoStatus.setTextColor(Color.parseColor("#D32F2F"));
+        textoStatus.setTextColor(requireContext().getColor(R.color.formulario_erro));
         textoStatus.setVisibility(mensagem == null ? View.GONE : View.VISIBLE);
     }
 
