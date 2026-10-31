@@ -1,11 +1,14 @@
 package br.com.acta.Services;
 
+import android.Manifest;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 
@@ -49,12 +52,16 @@ public class ActaMessagingService extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(RemoteMessage mensagem) {
         if (!DispositivoService.habilitado(this)) return;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
+                && ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
+                != PackageManager.PERMISSION_GRANTED) return;
 
         String idNotificacao = mensagem.getData().get("idNotificacao");
         if (idNotificacao == null) idNotificacao = mensagem.getData().get("notificationId");
         if (idNotificacao == null) return;
 
         criarCanal(this);
+        if (!DispositivoService.notificacoesDisponiveis(this)) return;
         Intent intent = new Intent(this, HomeActivity.class);
         intent.putExtra("idNotificacao", idNotificacao);
         intent.setData(Uri.parse("acta://notificacoes/" + Uri.encode(idNotificacao)));
