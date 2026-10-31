@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cardTarefasCicloItem"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="8dp"
+    android:layout_marginVertical="8dp"
+    android:background="@drawable/bg_inicio_card_escuro"
+    android:elevation="4dp"
+    android:padding="20dp">
+
+    <!-- Subtítulo "Minhas tarefas" -->
+    <TextView
+        android:id="@+id/lblMinhasTarefasCard"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/plus_jakarta_sans"
+        android:text="Minhas tarefas"
+        android:textColor="#6DD6AA"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Título Principal "Você tem 12 tarefas" -->
+    <TextView
+        android:id="@+id/txtTituloTarefasCiclo"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:ellipsize="end"
+        android:fontFamily="@font/plus_jakarta_sans"
+        android:maxLines="2"
+        android:text="Você tem 12 tarefas"
+        android:textColor="#F1F3F4"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/lblMinhasTarefasCard" />
+
+    <!-- Rótulo "Progresso das tarefas" -->
+    <TextView
+        android:id="@+id/lblProgressoTarefasCiclo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/plus_jakarta_sans"
+        android:text="Progresso das tarefas"
+        android:textColor="#AFB7B9"
+        android:textSize="13sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txtTituloTarefasCiclo" />
+
+    <!-- Porcentagem "25%" -->
+    <TextView
+        android:id="@+id/txtPorcentagemTarefasCiclo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/plus_jakarta_sans"
+        android:text="25%"
+        android:textColor="#F1F3F4"
+        android:textSize="13sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/lblProgressoTarefasCiclo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/lblProgressoTarefasCiclo" />
+
+    <!-- Barra de Progresso Horizontal -->
+    <ProgressBar
+        android:id="@+id/progressBarTarefasCiclo"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="0dp"
+        android:layout_height="10dp"
+        android:layout_marginTop="10dp"
+        android:progress="25"
+        android:progressDrawable="@drawable/bg_progress_bar_custom"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/lblProgressoTarefasCiclo" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

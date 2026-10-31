@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="menu_pdca_neutro">#D6E3E3</color>
+    <color name="menu_pdca_check">#6DD6AA</color>
+    <color name="menu_pdca_act">#74CBD0</color>
+    <color name="efeito_positivo">#6DD6AA</color>
+    <color name="efeito_descricao">#F1F3F4</color>
+    <color name="formulario_erro">#FFAAA3</color>
+</resources>

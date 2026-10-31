@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="16dp"
+    android:background="@drawable/bg_inicio_card_escuro"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/txtTituloPergunta"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:accessibilityHeading="true"
+        android:fontFamily="@font/plus_jakarta_sans"
+        android:textColor="#F1F3F4"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        tools:text="Qual é o seu CEP? *" />
+
+    <EditText
+        android:id="@+id/edtRespostaPergunta"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/bg_inicio_campo_escuro"
+        android:fontFamily="@font/plus_jakarta_sans"
+        android:hint="@string/formulario_cep"
+        android:inputType="number"
+        android:minHeight="56dp"
+        android:padding="16dp"
+        android:textColor="#F1F3F4"
+        android:textColorHint="#AFB7B9"
+        android:textSize="16sp" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnSelecionarEndereco"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/plus_jakarta_sans"
+        android:minHeight="48dp"
+        android:text="@string/formulario_selecionar_endereco"
+        android:textAllCaps="false"
+        android:textColor="#79D1D4"
+        app:cornerRadius="12dp" />
+
+    <TextView
+        android:id="@+id/txtErroPergunta"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:accessibilityLiveRegion="polite"
+        android:fontFamily="@font/plus_jakarta_sans"
+        android:textColor="#FFAAA3"
+        android:textSize="13sp"
+        android:visibility="gone"
+        tools:text="Preencha este campo." />
+</LinearLayout>

@@ -103,23 +103,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <!-- Botão Filtro por Status -->
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btnFiltrarPorStatusFormularios"
-                android:layout_width="wrap_content"
-                android:layout_height="32dp"
-                android:layout_marginTop="12dp"
-                android:background="@drawable/bg_status_pill"
-                android:fontFamily="@font/plus_jakarta_sans"
-                android:paddingHorizontal="16dp"
-                android:text="Filtrar por status"
-                android:textAllCaps="false"
-                android:textColor="#FFFFFF"
-                android:textSize="12sp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/edtBuscarFormularios" />
-
             <!-- RecyclerView dos Formulários -->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvListaFormularios"
@@ -132,7 +115,7 @@
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/btnFiltrarPorStatusFormularios"
+                app:layout_constraintTop_toBottomOf="@id/edtBuscarFormularios"
                 tools:listitem="@layout/item_card_formulario" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

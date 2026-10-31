@@ -21,4 +21,10 @@
     <color name="login_edit_text_hint">#8C969E</color>
     <color name="login_edit_text_line">#2C3E50</color>
     <color name="login_btn_bg">#48B3C6</color>
+    <color name="menu_pdca_neutro">#212121</color>
+    <color name="menu_pdca_check">#238357</color>
+    <color name="menu_pdca_act">#006775</color>
+    <color name="efeito_positivo">#238357</color>
+    <color name="efeito_descricao">#083248</color>
+    <color name="formulario_erro">#D32F2F</color>
 </resources>

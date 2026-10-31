@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cardEfeitoSecundarioItem"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginVertical="8dp"
+    android:background="@drawable/bg_inicio_card_escuro"
+    android:elevation="4dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:baselineAligned="false"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <!-- Barra Lateral Esquerda Arredondada -->
+        <View
+            android:id="@+id/barEfeitoSecundario"
+            android:layout_width="20dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_card_left_teal" />
+
+        <!-- Conteúdo Interno do Card -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="20dp">
+
+            <!-- Badge Tipo de Efeito (Ex: Efeito: Positivo) -->
+            <TextView
+                android:id="@+id/txtTipoEfeitoBadge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_status_pill"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="5dp"
+                android:text="Efeito: Positivo"
+                android:textColor="#FFFFFF"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <!-- Descrição Principal do Efeito -->
+            <TextView
+                android:id="@+id/txtDescricaoEfeitoSecundario"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:ellipsize="end"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:maxLines="3"
+                android:textColor="#6DD6AA"
+                android:textSize="17sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txtTipoEfeitoBadge"
+                tools:text="A conferência dupla ajuda a encontrar divergências antes da expedição" />
+
+            <!-- Caixa com Borda: Impacto Estimado -->
+            <LinearLayout
+                android:id="@+id/containerImpactoEstimado"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:background="@drawable/bg_inicio_campo_escuro"
+                android:orientation="vertical"
+                android:padding="14dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txtDescricaoEfeitoSecundario">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/plus_jakarta_sans"
+                    android:text="Impacto estimado"
+                    android:textColor="#C0C6C8"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:id="@+id/txtImpactoEstimado"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:fontFamily="@font/plus_jakarta_sans"
+                    android:textColor="#F1F3F4"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    tools:text="Menos retrabalho no fechamento dos pedidos" />
+
+            </LinearLayout>
+
+            <!-- Peso Registrado (Footer) -->
+            <TextView
+                android:id="@+id/txtPesoRegistrado"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:textColor="#C0C6C8"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/containerImpactoEstimado"
+                tools:text="Peso registrado: 20%" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

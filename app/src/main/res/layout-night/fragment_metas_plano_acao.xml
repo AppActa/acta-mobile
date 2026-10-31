@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_inicio_cabecalho_escuro"
+    android:fillViewport="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- 1. Topo Verde-Água (Cabeçalho do Plano de Ação) -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/headerMetasPlano"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="24dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="24dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <!-- Botão Voltar -->
+            <ImageButton
+                android:id="@+id/btnVoltarMetasPlano"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="Voltar"
+                android:scaleType="fitCenter"
+                android:src="@drawable/voltar"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <!-- Card do Plano de Ação no Topo -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cardHeaderPlanoMetas"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/bg_inicio_card_escuro"
+                android:elevation="4dp"
+                android:padding="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/btnVoltarMetasPlano">
+
+                <TextView
+                    android:id="@+id/txtNomePlanoMetasHeader"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/plus_jakarta_sans"
+                    android:textColor="#F1F3F4"
+                    android:textSize="22sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="Plano de Redução de Avarias no Estoque" />
+
+                <TextView
+                    android:id="@+id/txtPrioridadePlanoMetasHeader"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:fontFamily="@font/plus_jakarta_sans"
+                    android:textColor="#6DD6AA"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="@id/txtStatusPlanoBadgeMetasHeader"
+                    app:layout_constraintEnd_toStartOf="@id/txtStatusPlanoBadgeMetasHeader"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/txtStatusPlanoBadgeMetasHeader"
+                    tools:text="Prioridade: Alta" />
+
+                <TextView
+                    android:id="@+id/txtStatusPlanoBadgeMetasHeader"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/bg_status_pill"
+                    android:fontFamily="@font/plus_jakarta_sans"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="5dp"
+                    android:textColor="#FFFFFF"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/txtNomePlanoMetasHeader"
+                    tools:text="Em execução" />
+
+                <TextView
+                    android:id="@+id/txtObjetivoPlanoMetasHeader"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:fontFamily="@font/plus_jakarta_sans"
+                    android:textColor="#C0C6C8"
+                    android:textSize="14sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/txtStatusPlanoBadgeMetasHeader"
+                    tools:text="Otimizar o processo de recebimento e organização de insumos para reduzir o tempo de separação" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- 2. Cartão Branco com Conteúdo das Metas -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/containerMetasBranco"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_inicio_fundo_escuro"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            android:minHeight="600dp"
+            android:paddingHorizontal="8dp"
+            android:paddingTop="24dp"
+            android:paddingBottom="40dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/headerMetasPlano"
+            app:layout_constraintVertical_bias="0.0">
+
+            <!-- Título da Seção: Check - Checagem -->
+            <TextView
+                android:id="@+id/txtTituloSecaoMetas"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:text="Check — Checagem"
+                android:textColor="#F1F3F4"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <!-- RecyclerView das Metas do Plano de Ação -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvMetasPlanoAcao"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:clipChildren="false"
+                android:clipToPadding="false"
+                android:nestedScrollingEnabled="false"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txtTituloSecaoMetas"
+                tools:listitem="@layout/item_card_meta" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>

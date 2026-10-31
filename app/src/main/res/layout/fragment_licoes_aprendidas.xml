@@ -164,23 +164,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/cardDestaqueMeusAprendizados" />
 
-            <!-- Botão Filtro por Etapa -->
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btnFiltrarPorEtapa"
-                android:layout_width="wrap_content"
-                android:layout_height="32dp"
-                android:layout_marginTop="12dp"
-                android:background="@drawable/bg_status_pill"
-                android:fontFamily="@font/plus_jakarta_sans"
-                android:paddingHorizontal="16dp"
-                android:text="Filtrar por etapa"
-                android:textAllCaps="false"
-                android:textColor="#FFFFFF"
-                android:textSize="12sp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/edtBuscarAprendizados" />
-
             <!-- RecyclerView das Lições Aprendidas -->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvLicoesAprendidas"
@@ -192,7 +175,7 @@
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/btnFiltrarPorEtapa"
+                app:layout_constraintTop_toBottomOf="@id/edtBuscarAprendizados"
                 tools:listitem="@layout/item_card_licao_aprendida" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

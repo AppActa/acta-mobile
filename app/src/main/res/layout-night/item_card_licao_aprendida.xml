@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cardLicaoAprendidaItem"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginVertical="8dp"
+    android:background="@drawable/bg_inicio_card_escuro"
+    android:elevation="4dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:baselineAligned="false"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <!-- Conteúdo Interno do Card -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingHorizontal="20dp"
+            android:paddingVertical="18dp">
+
+            <!-- Ícone Círculo Escuro no Topo Esquerdo -->
+            <FrameLayout
+                android:id="@+id/containerIconeLicao"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:background="@drawable/bg_menu_active_circle"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/imgIconeLicao"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center"
+                    android:contentDescription="Ícone Equipe"
+                    android:src="@drawable/reicon_profile_2user_filled"
+                    app:tint="#FFFFFF" />
+            </FrameLayout>
+
+            <!-- Badge Status "Pendente" / Status ao lado do ícone -->
+            <TextView
+                android:id="@+id/txtStatusBadgeLicao"
+                android:layout_width="wrap_content"
+                android:layout_height="28dp"
+                android:layout_marginStart="10dp"
+                android:background="@drawable/bg_status_pill"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:gravity="center"
+                android:paddingHorizontal="16dp"
+                android:textColor="#FFFFFF"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@id/containerIconeLicao"
+                app:layout_constraintStart_toEndOf="@id/containerIconeLicao"
+                app:layout_constraintTop_toTopOf="@id/containerIconeLicao"
+                tools:text="Pendente" />
+
+            <!-- Título Principal da Lição (ex: Conferência dupla de pedidos) -->
+            <TextView
+                android:id="@+id/txtTituloLicao"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:ellipsize="end"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:maxLines="2"
+                android:textColor="#F1F3F4"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/containerIconeLicao"
+                tools:text="Conferência dupla de pedidos" />
+
+            <!-- Responsável (ex: Responsável: Camila Souza) -->
+            <TextView
+                android:id="@+id/txtResponsavelLicao"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:textColor="#D8DEDF"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txtTituloLicao"
+                tools:text="Responsável: Camila Souza" />
+
+            <!-- Ciclo (ex: Ciclo: Reduzir retrabalho na separação) -->
+            <TextView
+                android:id="@+id/txtCicloLicao"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:textColor="#D8DEDF"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txtResponsavelLicao"
+                tools:text="Ciclo: Reduzir retrabalho na separação" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- Barra Lateral Direita Arredondada Ciano -->
+        <View
+            android:id="@+id/barLicaoAprendidaDireita"
+            android:layout_width="20dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_card_right_teal" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

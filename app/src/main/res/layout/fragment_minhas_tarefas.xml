@@ -76,6 +76,21 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/txtTituloMinhasTarefas" />
 
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnFiltrarStatusTarefas"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/bg_status_pill"
+            android:fontFamily="@font/plus_jakarta_sans"
+            android:paddingHorizontal="16dp"
+            android:text="Filtrar por status"
+            android:textAllCaps="false"
+            android:textColor="#FFFFFF"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/edtBuscarTarefa" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <!-- 3. RecyclerView Rolável (Apenas a lista rola abaixo da busca) -->

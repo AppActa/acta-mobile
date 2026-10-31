@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="16dp"
+    android:orientation="vertical" android:padding="16dp" android:background="@drawable/bg_inicio_card_escuro">
+    <TextView android:id="@+id/txtTituloPergunta" android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:fontFamily="@font/plus_jakarta_sans" android:textColor="#F1F3F4" android:textSize="16sp" android:textStyle="bold" android:accessibilityHeading="true" tools:text="Título da pergunta *" />
+    <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:fontFamily="@font/plus_jakarta_sans" android:textColor="#F1F3F4" android:text="@string/formulario_escolha_multipla" android:textSize="13sp" /><LinearLayout android:id="@+id/containerOpcoesPergunta" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:layout_marginTop="8dp" />
+    <TextView android:id="@+id/txtErroPergunta" android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:layout_marginTop="8dp" android:fontFamily="@font/plus_jakarta_sans" android:textColor="#FFAAA3"
+        android:textSize="13sp" android:accessibilityLiveRegion="polite" android:visibility="gone"
+        tools:text="Preencha este campo." />
+</LinearLayout>
