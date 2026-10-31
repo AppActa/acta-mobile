@@ -26,6 +26,7 @@ import br.com.acta.Adapter.NotificacaoAdapter;
 import br.com.acta.Api.NotificacaoApi;
 import br.com.acta.Client.RetrofitClientFcm;
 import br.com.acta.Model.Notificacao;
+import br.com.acta.Model.Enum.DestinoDeepLink;
 import br.com.acta.utils.DeepLink;
 import br.com.acta.utils.FormatoData;
 
@@ -232,7 +233,9 @@ public class NotificacoesFragment extends Fragment {
         Button botaoAbrir = dialog.findViewById(R.id.abrirDialogNotificacao);
         Button botaoMarcarLida = dialog.findViewById(R.id.lerDialogNotificacao);
         TextView mensagemErro = dialog.findViewById(R.id.erroDialogNotificacao);
-        botaoAbrir.setVisibility(View.VISIBLE);
+        DeepLink linkNotificacao = DeepLink.parse(notificacao.deepLink);
+        boolean treinamento = DestinoDeepLink.TREINAMENTO.correspondeTipoEntidade(notificacao.tipoEntidade) || (linkNotificacao != null && linkNotificacao.destino == DestinoDeepLink.TREINAMENTO);
+        botaoAbrir.setVisibility(treinamento ? View.GONE : View.VISIBLE);
         botaoMarcarLida.setVisibility(notificacao.lidoEm == null ? View.VISIBLE : View.GONE);
 
         View.OnClickListener acao = botao -> {

@@ -124,12 +124,7 @@ public class FormularioFragment extends Fragment {
         if (carregando) {
             return;
         }
-        try {
-            if (idFormulario == null || !UUID.fromString(idFormulario).toString().equalsIgnoreCase(idFormulario)) {
-                erroCarregamento("Não foi possível identificar o formulário.");
-                return;
-            }
-        } catch (IllegalArgumentException exception) {
+        if (!idFormularioValido(idFormulario)) {
             erroCarregamento("Não foi possível identificar o formulário.");
             return;
         }
@@ -154,6 +149,20 @@ public class FormularioFragment extends Fragment {
                 erroCarregamento(mensagemErro(codigo, "Não foi possível carregar o formulário. Tente novamente."));
             }
         });
+    }
+
+    private boolean idFormularioValido(String id) {
+        if (id == null) {
+            return false;
+        }
+        if (id.matches("[0-9a-fA-F]{24}")) {
+            return true;
+        }
+        try {
+            return UUID.fromString(id).toString().equalsIgnoreCase(id);
+        } catch (IllegalArgumentException exception) {
+            return false;
+        }
     }
 
     private void verificarResposta() {

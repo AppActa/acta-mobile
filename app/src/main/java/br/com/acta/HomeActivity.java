@@ -20,6 +20,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import java.util.function.Consumer;
 
 import br.com.acta.Api.CicloApi;
+import br.com.acta.Api.FormularioApi;
 import br.com.acta.Api.LicaoAprendidaApi;
 import br.com.acta.Api.TarefaApi;
 import br.com.acta.Auth.FirebaseTokenProvider;
@@ -133,8 +134,6 @@ public class HomeActivity extends AppCompatActivity {
                 limparEntrada();
                 return true;
             case LICAO_APRENDIDA:
-                // a consulta individual atual usa UUID
-                if (link.id.length() != 36) return false;
                 LicaoAprendidaApi licaoApi = RetrofitClientMongo.getInstance(new FirebaseTokenProvider(FirebaseAuth.getInstance())).create(LicaoAprendidaApi.class);
                 carregarDestino(licaoApi.buscarPorId(link.id), licao -> {
                     if (licao.getIdCiclo() == null || licao.getIdCiclo() <= 0) {
@@ -145,6 +144,14 @@ public class HomeActivity extends AppCompatActivity {
                     destino.putExtra("idCiclo", licao.getIdCiclo().longValue());
                     destino.putExtra("idLicao", link.id);
                     startActivity(destino);
+                });
+                return true;
+            case FORMULARIO:
+                FormularioApi formularioApi = RetrofitClientMongo.getInstance(new FirebaseTokenProvider(FirebaseAuth.getInstance())).create(FormularioApi.class);
+                carregarDestino(formularioApi.buscarPorId(link.id), formulario -> {
+                    Bundle argumentosFormulario = new Bundle();
+                    argumentosFormulario.putString(FormularioFragment.ARG_ID_FORMULARIO, link.id);
+                    navController.navigate(R.id.formularioFragment, argumentosFormulario);
                 });
                 return true;
             case CICLO:
