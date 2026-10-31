@@ -1,6 +1,9 @@
 package br.com.acta.Services;
 
+import android.app.NotificationManager;
+import android.app.NotificationChannel;
 import android.content.Context;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
@@ -39,7 +42,7 @@ public final class DispositivoService {
     }
 
     public static void atualizarFidRegistrado(Context contexto, String fidRegistrado) {
-        if (encerrandoSessao || sincronizando || !habilitado(contexto) || !permissaoNotificacoesConcedida(contexto) || FirebaseAuth.getInstance().getCurrentUser() == null) return;
+        if (encerrandoSessao || sincronizando || !habilitado(contexto) || !notificacoesDisponiveis(contexto) || FirebaseAuth.getInstance().getCurrentUser() == null) return;
         cadastroPendente = RetrofitClientFcm.api().registrar(new NotificacaoApi.Dispositivo(fidRegistrado));
         // se falhar, o próximo acesso tenta sincronizar de novo
         enviar(cadastroPendente, mensagemErro -> {});
@@ -66,6 +69,18 @@ public final class DispositivoService {
         return NotificationManagerCompat.from(contexto).areNotificationsEnabled();
     }
 
+    public static boolean canalNotificacoesHabilitado(Context contexto) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) return true;
+        NotificationManager gerenciador = contexto.getSystemService(NotificationManager.class);
+        if (gerenciador == null) return false;
+        NotificationChannel canal = gerenciador.getNotificationChannel(ActaMessagingService.CHANNEL);
+        return canal != null && canal.getImportance() != NotificationManager.IMPORTANCE_NONE;
+    }
+
+    public static boolean notificacoesDisponiveis(Context contexto) {
+        return permissaoNotificacoesConcedida(contexto) && canalNotificacoesHabilitado(contexto);
+    }
+
     public static void salvar(Context contexto, boolean ativo) {
         contexto.getSharedPreferences("config_app", Context.MODE_PRIVATE).edit().putBoolean(chave(), ativo).apply();
     }
@@ -76,8 +91,8 @@ public final class DispositivoService {
             aoConcluir.accept("Sua sessão expirou. Entre novamente.");
             return;
         }
-        if (ativo && !permissaoNotificacoesConcedida(contexto)) {
-            aoConcluir.accept("Ative as notificações do ACTA nas configurações do Android para ligar o push.");
+        if (ativo && !notificacoesDisponiveis(contexto)) {
+            aoConcluir.accept("Ative as notificações e o canal Avisos ACTA nas configurações do Android para ligar o push.");
             return;
         }
 

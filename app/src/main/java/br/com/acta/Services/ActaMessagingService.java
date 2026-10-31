@@ -72,7 +72,7 @@ public class ActaMessagingService extends FirebaseMessagingService {
         NotificationCompat.Builder notificacaoAndroid = new NotificationCompat.Builder(this, CHANNEL);
         notificacaoAndroid.setSmallIcon(R.drawable.ic_notificacao_acta);
         notificacaoAndroid.setColor(ContextCompat.getColor(this, R.color.turquesa_dark_center));
-        notificacaoAndroid.setContentTitle("ACTA");
+        notificacaoAndroid.setContentTitle(notificacao != null && notificacao.getTitle() != null ? notificacao.getTitle() : "ACTA");
         notificacaoAndroid.setContentText(notificacao != null && notificacao.getBody() != null ? notificacao.getBody() : "Uma nova notificação está disponível.");
         notificacaoAndroid.setContentIntent(abrirCentral);
         notificacaoAndroid.setAutoCancel(true);

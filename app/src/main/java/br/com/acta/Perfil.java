@@ -4,9 +4,11 @@ import static android.R.id.content;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -33,6 +35,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.content.FileProvider;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -81,6 +84,22 @@ public class Perfil extends AppCompatActivity {
 
     private boolean ajustandoNotificacoes;
     private boolean revogacaoNotificacoesPendente;
+    private final ActivityResultLauncher<String> permissaoNotificacoes = registerForActivityResult(
+            new ActivityResultContracts.RequestPermission(), concedida -> {
+                if (concedida) {
+                    if (DispositivoService.canalNotificacoesHabilitado(this)) {
+                        sincronizarNotificacoes(true);
+                    } else {
+                        atualizarSwitchNotificacoes(false);
+                        Toast.makeText(this, "Ative o canal Avisos ACTA nas configurações para receber push.", Toast.LENGTH_LONG).show();
+                        abrirConfiguracoesCanal();
+                    }
+                } else {
+                    atualizarSwitchNotificacoes(false);
+                    revogarNotificacoes();
+                    Toast.makeText(this, "Permissão negada. A central de notificações continua disponível no app.", Toast.LENGTH_LONG).show();
+                }
+            });
     private SharedPreferences preferences;
     TokenProvider tokenProvider = new FirebaseTokenProvider(FirebaseAuth.getInstance());
     private final MeApi meApi = RetrofitClientAuth.getInstance(tokenProvider).create(MeApi.class);
@@ -228,16 +247,12 @@ public class Perfil extends AppCompatActivity {
         });
 
         SwitchMaterial notificacoes = findViewById(R.id.switchNotificacoes);
-        findViewById(R.id.btnConfigurarAvisos).setOnClickListener(view -> {
-            Intent intent = new Intent(Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS);
-            intent.putExtra(Settings.EXTRA_APP_PACKAGE, getPackageName());
-            intent.putExtra(Settings.EXTRA_CHANNEL_ID, ActaMessagingService.CHANNEL);
-            startActivity(intent);
-        });
-        notificacoes.setChecked(DispositivoService.habilitado(this) && DispositivoService.permissaoNotificacoesConcedida(this));
+        findViewById(R.id.btnConfigurarAvisos).setOnClickListener(view -> abrirConfiguracoesCanal());
+        notificacoes.setChecked(DispositivoService.habilitado(this) && DispositivoService.notificacoesDisponiveis(this));
         notificacoes.setOnCheckedChangeListener((button, ativo) -> {
             if (ajustandoNotificacoes) return;
-            sincronizarNotificacoes(ativo);
+            if (ativo) habilitarNotificacoes();
+            else sincronizarNotificacoes(false);
         });
         editarImg.setOnClickListener(v -> {
             // 1. Infla o layout SEMPRE dentro do clique para criar uma nova instância de view
@@ -289,10 +304,38 @@ public class Perfil extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (DispositivoService.habilitado(this) && !DispositivoService.permissaoNotificacoesConcedida(this)) {
+        if (DispositivoService.habilitado(this) && !DispositivoService.notificacoesDisponiveis(this)) {
             atualizarSwitchNotificacoes(false);
             revogarNotificacoes();
+        } else {
+            atualizarSwitchNotificacoes(DispositivoService.habilitado(this));
         }
+    }
+
+    private void habilitarNotificacoes() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
+                && ContextCompat.checkSelfPermission(this, android.Manifest.permission.POST_NOTIFICATIONS)
+                != PackageManager.PERMISSION_GRANTED) {
+            atualizarSwitchNotificacoes(false);
+            permissaoNotificacoes.launch(android.Manifest.permission.POST_NOTIFICATIONS);
+            return;
+        }
+
+        if (!DispositivoService.canalNotificacoesHabilitado(this)) {
+            atualizarSwitchNotificacoes(false);
+            Toast.makeText(this, "Ative o canal Avisos ACTA nas configurações para receber push.", Toast.LENGTH_LONG).show();
+            abrirConfiguracoesCanal();
+            return;
+        }
+
+        sincronizarNotificacoes(true);
+    }
+
+    private void abrirConfiguracoesCanal() {
+        Intent intent = new Intent(Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS);
+        intent.putExtra(Settings.EXTRA_APP_PACKAGE, getPackageName());
+        intent.putExtra(Settings.EXTRA_CHANNEL_ID, ActaMessagingService.CHANNEL);
+        startActivity(intent);
     }
 
     private void revogarNotificacoes() {
