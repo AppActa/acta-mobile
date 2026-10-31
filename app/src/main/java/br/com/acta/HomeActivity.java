@@ -20,6 +20,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import java.util.function.Consumer;
 
 import br.com.acta.Api.CicloApi;
+import br.com.acta.Api.FormularioApi;
 import br.com.acta.Api.LicaoAprendidaApi;
 import br.com.acta.Api.TarefaApi;
 import br.com.acta.Auth.FirebaseTokenProvider;
@@ -39,13 +40,39 @@ public class HomeActivity extends AppCompatActivity {
     private NavController navController;
     private Call<?> chamadaDestino;
     private boolean entradaConsumida;
+    private boolean revogacaoNotificacoesPendente;
+    private boolean sincronizacaoPushNestaEntrada;
 
     @Override
     protected void onResume() {
         super.onResume();
         if (formatoData != FormatoData.obterFormato(this)) {
             recreate();
+            return;
         }
+        if (DispositivoService.habilitado(this)) {
+            if (!DispositivoService.notificacoesDisponiveis(this)) {
+                revogarNotificacoes();
+            } else if (!sincronizacaoPushNestaEntrada) {
+                sincronizacaoPushNestaEntrada = true;
+                DispositivoService.sincronizar(this, true, mensagemErro -> {});
+            }
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        sincronizacaoPushNestaEntrada = false;
+        super.onPause();
+    }
+
+    private void revogarNotificacoes() {
+        if (revogacaoNotificacoesPendente) return;
+        revogacaoNotificacoesPendente = true;
+        DispositivoService.sincronizar(this, false, mensagem -> {
+            revogacaoNotificacoesPendente = false;
+            if (mensagem == null) DispositivoService.salvar(this, false);
+        });
     }
 
     @Override
@@ -107,8 +134,6 @@ public class HomeActivity extends AppCompatActivity {
                 limparEntrada();
                 return true;
             case LICAO_APRENDIDA:
-                // a consulta individual atual usa UUID
-                if (link.id.length() != 36) return false;
                 LicaoAprendidaApi licaoApi = RetrofitClientMongo.getInstance(new FirebaseTokenProvider(FirebaseAuth.getInstance())).create(LicaoAprendidaApi.class);
                 carregarDestino(licaoApi.buscarPorId(link.id), licao -> {
                     if (licao.getIdCiclo() == null || licao.getIdCiclo() <= 0) {
@@ -119,6 +144,14 @@ public class HomeActivity extends AppCompatActivity {
                     destino.putExtra("idCiclo", licao.getIdCiclo().longValue());
                     destino.putExtra("idLicao", link.id);
                     startActivity(destino);
+                });
+                return true;
+            case FORMULARIO:
+                FormularioApi formularioApi = RetrofitClientMongo.getInstance(new FirebaseTokenProvider(FirebaseAuth.getInstance())).create(FormularioApi.class);
+                carregarDestino(formularioApi.buscarPorId(link.id), formulario -> {
+                    Bundle argumentosFormulario = new Bundle();
+                    argumentosFormulario.putString(FormularioFragment.ARG_ID_FORMULARIO, link.id);
+                    navController.navigate(R.id.formularioFragment, argumentosFormulario);
                 });
                 return true;
             case CICLO:
@@ -241,8 +274,6 @@ public class HomeActivity extends AppCompatActivity {
 
         DispositivoService.iniciarSessao();
         ActaMessagingService.criarCanal(this);
-
-        if (DispositivoService.habilitado(this)) DispositivoService.sincronizar(true, mensagemErro -> {});
 
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_home);

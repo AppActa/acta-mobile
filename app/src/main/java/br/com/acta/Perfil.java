@@ -2,13 +2,13 @@ package br.com.acta;
 
 import static android.R.id.content;
 
-import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -35,6 +35,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.content.FileProvider;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -82,10 +83,23 @@ import retrofit2.Response;
 public class Perfil extends AppCompatActivity {
 
     private boolean ajustandoNotificacoes;
+    private boolean revogacaoNotificacoesPendente;
     private final ActivityResultLauncher<String> permissaoNotificacoes = registerForActivityResult(
-        new ActivityResultContracts.RequestPermission(), permitida -> {
-            if (!permitida) Toast.makeText(this, "Push não autorizado. A central continua disponível.", Toast.LENGTH_LONG).show();
-        });
+            new ActivityResultContracts.RequestPermission(), concedida -> {
+                if (concedida) {
+                    if (DispositivoService.canalNotificacoesHabilitado(this)) {
+                        sincronizarNotificacoes(true);
+                    } else {
+                        atualizarSwitchNotificacoes(false);
+                        Toast.makeText(this, "Ative o canal Avisos ACTA nas configurações para receber push.", Toast.LENGTH_LONG).show();
+                        abrirConfiguracoesCanal();
+                    }
+                } else {
+                    atualizarSwitchNotificacoes(false);
+                    revogarNotificacoes();
+                    Toast.makeText(this, "Permissão negada. A central de notificações continua disponível no app.", Toast.LENGTH_LONG).show();
+                }
+            });
     private SharedPreferences preferences;
     TokenProvider tokenProvider = new FirebaseTokenProvider(FirebaseAuth.getInstance());
     private final MeApi meApi = RetrofitClientAuth.getInstance(tokenProvider).create(MeApi.class);
@@ -233,37 +247,12 @@ public class Perfil extends AppCompatActivity {
         });
 
         SwitchMaterial notificacoes = findViewById(R.id.switchNotificacoes);
-        findViewById(R.id.btnConfigurarAvisos).setOnClickListener(view -> {
-            Intent intent = new Intent(Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS);
-            intent.putExtra(Settings.EXTRA_APP_PACKAGE, getPackageName());
-            intent.putExtra(Settings.EXTRA_CHANNEL_ID, ActaMessagingService.CHANNEL);
-            startActivity(intent);
-        });
-        notificacoes.setChecked(DispositivoService.habilitado(this));
+        findViewById(R.id.btnConfigurarAvisos).setOnClickListener(view -> abrirConfiguracoesCanal());
+        notificacoes.setChecked(DispositivoService.habilitado(this) && DispositivoService.notificacoesDisponiveis(this));
         notificacoes.setOnCheckedChangeListener((button, ativo) -> {
             if (ajustandoNotificacoes) return;
-            notificacoes.setEnabled(false);
-            sair.setEnabled(false);
-
-            DispositivoService.sincronizar(ativo, mensagem -> {
-                boolean ok = mensagem == null;
-                if (ok) DispositivoService.salvar(this, ativo);
-                if (isFinishing() || isDestroyed()) return;
-
-                notificacoes.setEnabled(true);
-                sair.setEnabled(true);
-
-                if (ok) {
-                    if (ativo && checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-                        permissaoNotificacoes.launch(Manifest.permission.POST_NOTIFICATIONS);
-                    }
-                } else {
-                    ajustandoNotificacoes = true;
-                    notificacoes.setChecked(!ativo);
-                    ajustandoNotificacoes = false;
-                    Toast.makeText(this, mensagem, Toast.LENGTH_LONG).show();
-                }
-            });
+            if (ativo) habilitarNotificacoes();
+            else sincronizarNotificacoes(false);
         });
         editarImg.setOnClickListener(v -> {
             // 1. Infla o layout SEMPRE dentro do clique para criar uma nova instância de view
@@ -312,6 +301,91 @@ public class Perfil extends AppCompatActivity {
         });
 
     }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (DispositivoService.habilitado(this) && !DispositivoService.notificacoesDisponiveis(this)) {
+            atualizarSwitchNotificacoes(false);
+            revogarNotificacoes();
+        } else {
+            atualizarSwitchNotificacoes(DispositivoService.habilitado(this));
+        }
+    }
+
+    private void habilitarNotificacoes() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
+                && ContextCompat.checkSelfPermission(this, android.Manifest.permission.POST_NOTIFICATIONS)
+                != PackageManager.PERMISSION_GRANTED) {
+            atualizarSwitchNotificacoes(false);
+            permissaoNotificacoes.launch(android.Manifest.permission.POST_NOTIFICATIONS);
+            return;
+        }
+
+        if (!DispositivoService.canalNotificacoesHabilitado(this)) {
+            atualizarSwitchNotificacoes(false);
+            Toast.makeText(this, "Ative o canal Avisos ACTA nas configurações para receber push.", Toast.LENGTH_LONG).show();
+            abrirConfiguracoesCanal();
+            return;
+        }
+
+        sincronizarNotificacoes(true);
+    }
+
+    private void abrirConfiguracoesCanal() {
+        Intent intent = new Intent(Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS);
+        intent.putExtra(Settings.EXTRA_APP_PACKAGE, getPackageName());
+        intent.putExtra(Settings.EXTRA_CHANNEL_ID, ActaMessagingService.CHANNEL);
+        startActivity(intent);
+    }
+
+    private void revogarNotificacoes() {
+        if (revogacaoNotificacoesPendente) return;
+        revogacaoNotificacoesPendente = true;
+        DispositivoService.sincronizar(this, false, mensagem -> {
+            revogacaoNotificacoesPendente = false;
+            if (mensagem == null) {
+                DispositivoService.salvar(this, false);
+            } else if (!isFinishing() && !isDestroyed()) {
+                Toast.makeText(this, mensagem, Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    private void sincronizarNotificacoes(boolean ativo) {
+        SwitchMaterial notificacoes = findViewById(R.id.switchNotificacoes);
+        View sair = findViewById(R.id.btnSair);
+        if (notificacoes == null || sair == null) return;
+
+        notificacoes.setEnabled(false);
+        sair.setEnabled(false);
+
+        DispositivoService.sincronizar(this, ativo, mensagem -> {
+            boolean ok = mensagem == null;
+            if (ok) {
+                DispositivoService.salvar(this, ativo);
+                atualizarSwitchNotificacoes(ativo);
+            }
+            if (isFinishing() || isDestroyed()) return;
+
+            notificacoes.setEnabled(true);
+            sair.setEnabled(true);
+
+            if (!ok) {
+                atualizarSwitchNotificacoes(!ativo);
+                Toast.makeText(this, mensagem, Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    private void atualizarSwitchNotificacoes(boolean ativo) {
+        SwitchMaterial notificacoes = findViewById(R.id.switchNotificacoes);
+        if (notificacoes == null) return;
+
+        ajustandoNotificacoes = true;
+        notificacoes.setChecked(ativo);
+        ajustandoNotificacoes = false;
+    }
+
     private void salvarPreferenciaTema(boolean isModoClaro) {
         SharedPreferences.Editor editor = preferences.edit();
         editor.putBoolean("is_modo_claro", isModoClaro);

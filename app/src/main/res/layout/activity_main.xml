@@ -24,7 +24,7 @@
         android:layout_marginBottom="4dp"
         android:alpha="0.6"
         android:fontFamily="@font/plus_jakarta_sans"
-        android:text="Acta, seu app de PDCA"
+        android:text="ACTA, seu app de PDCA"
         android:textColor="?attr/corTextoPrincipal"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@id/txtTitle"
@@ -95,6 +95,36 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:id="@+id/skeletonSlider"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:importantForAccessibility="no"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <View
+                android:layout_width="16dp"
+                android:layout_height="10dp"
+                android:background="@drawable/bg_slider_skeleton" />
+
+            <View
+                android:layout_width="28dp"
+                android:layout_height="10dp"
+                android:layout_marginHorizontal="6dp"
+                android:background="@drawable/bg_slider_skeleton" />
+
+            <View
+                android:layout_width="20dp"
+                android:layout_height="10dp"
+                android:background="@drawable/bg_slider_skeleton" />
+        </LinearLayout>
 
     </androidx.constraintlayout.motion.widget.MotionLayout>
 

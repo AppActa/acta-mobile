@@ -62,7 +62,7 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_gravity="center"
-            android:contentDescription="Logo Acta"
+            android:contentDescription="Logo ACTA"
             android:scaleType="fitCenter"
             android:src="@drawable/logo_azul" />
     </FrameLayout>

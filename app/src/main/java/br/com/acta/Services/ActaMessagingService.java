@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 
@@ -51,14 +52,16 @@ public class ActaMessagingService extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(RemoteMessage mensagem) {
         if (!DispositivoService.habilitado(this)) return;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
+                && ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
+                != PackageManager.PERMISSION_GRANTED) return;
 
         String idNotificacao = mensagem.getData().get("idNotificacao");
         if (idNotificacao == null) idNotificacao = mensagem.getData().get("notificationId");
         if (idNotificacao == null) return;
 
         criarCanal(this);
-        if (checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) return;
-
+        if (!DispositivoService.notificacoesDisponiveis(this)) return;
         Intent intent = new Intent(this, HomeActivity.class);
         intent.putExtra("idNotificacao", idNotificacao);
         intent.setData(Uri.parse("acta://notificacoes/" + Uri.encode(idNotificacao)));
@@ -76,7 +79,7 @@ public class ActaMessagingService extends FirebaseMessagingService {
         NotificationCompat.Builder notificacaoAndroid = new NotificationCompat.Builder(this, CHANNEL);
         notificacaoAndroid.setSmallIcon(R.drawable.ic_notificacao_acta);
         notificacaoAndroid.setColor(ContextCompat.getColor(this, R.color.turquesa_dark_center));
-        notificacaoAndroid.setContentTitle("ACTA");
+        notificacaoAndroid.setContentTitle(notificacao != null && notificacao.getTitle() != null ? notificacao.getTitle() : "ACTA");
         notificacaoAndroid.setContentText(notificacao != null && notificacao.getBody() != null ? notificacao.getBody() : "Uma nova notificação está disponível.");
         notificacaoAndroid.setContentIntent(abrirCentral);
         notificacaoAndroid.setAutoCancel(true);

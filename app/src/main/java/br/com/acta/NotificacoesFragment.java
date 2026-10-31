@@ -1,14 +1,11 @@
 package br.com.acta;
 
-import static android.R.layout.simple_list_item_1;
-
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -25,9 +22,11 @@ import java.util.List;
 import java.util.Locale;
 import java.util.function.Consumer;
 
+import br.com.acta.Adapter.NotificacaoAdapter;
 import br.com.acta.Api.NotificacaoApi;
 import br.com.acta.Client.RetrofitClientFcm;
 import br.com.acta.Model.Notificacao;
+import br.com.acta.Model.Enum.DestinoDeepLink;
 import br.com.acta.utils.DeepLink;
 import br.com.acta.utils.FormatoData;
 
@@ -39,6 +38,7 @@ public class NotificacoesFragment extends Fragment {
     private final NotificacaoApi notificacaoApi = RetrofitClientFcm.api();
     private final List<Call<?>> chamadasPendentes = new ArrayList<>();
     private List<Notificacao> notificacoes = new ArrayList<>();
+    private List<Notificacao> notificacoesExibidas = new ArrayList<>();
     private ListView listaNotificacoes;
     private TextView resumoNotificacoes;
     private View botaoAtualizar;
@@ -75,7 +75,7 @@ public class NotificacoesFragment extends Fragment {
             habilitarAcoes(false);
             executar(notificacaoApi.lerTodas(), quantidadeAlterada -> carregar());
         });
-        listaNotificacoes.setOnItemClickListener((parent, viewItem, posicao, idItem) -> abrir(notificacoes.get(posicao)));
+        listaNotificacoes.setOnItemClickListener((parent, viewItem, posicao, idItem) -> abrir(notificacoesExibidas.get(posicao)));
 
         carregar();
     }
@@ -163,24 +163,17 @@ public class NotificacoesFragment extends Fragment {
     }
 
     private void mostrarNotificacoes() {
-        List<String> linhas = new ArrayList<>();
-        int quantidadeNaoLidas = 0;
+        notificacoesExibidas = new ArrayList<>();
         for (Notificacao notificacao : notificacoes) {
-            String situacao = "Lida · ";
             if (notificacao.lidoEm == null) {
-                situacao = "● Não lida · ";
-                quantidadeNaoLidas++;
+                notificacoesExibidas.add(notificacao);
             }
-            String linha = situacao + formatarTexto(notificacao.tipo);
-            linha += "\n" + formatarTexto(notificacao.categoria) + " · " + FormatoData.formatar(requireContext(), notificacao.criadoEm);
-            if (notificacao.expiraEm != null) {
-                linha += "\nExpira em: " + FormatoData.formatar(requireContext(), notificacao.expiraEm);
-            }
-            linhas.add(linha);
         }
 
-        listaNotificacoes.setAdapter(new ArrayAdapter<>(requireContext(), simple_list_item_1, linhas));
-        String resumo = notificacoes.isEmpty() ? "Nenhuma notificação." : quantidadeNaoLidas + " não lidas · " + notificacoes.size() + " notificações";
+        listaNotificacoes.setAdapter(new NotificacaoAdapter(requireContext(), notificacoesExibidas));
+        String resumo = notificacoesExibidas.isEmpty()
+            ? "Nenhuma notificação não lida."
+            : notificacoesExibidas.size() + " notificações não lidas";
         resumoNotificacoes.setText(resumo);
     }
 
@@ -204,7 +197,10 @@ public class NotificacoesFragment extends Fragment {
                 ? linkRecebido != null && linkRecebido.corresponde(notificacao.tipoEntidade, notificacao.idEntidade)
                 : String.valueOf(notificacao.id).equals(idRecebido);
             if (corresponde) {
-                listaNotificacoes.setSelection(i);
+                int posicaoExibida = notificacoesExibidas.indexOf(notificacao);
+                if (posicaoExibida >= 0) {
+                    listaNotificacoes.setSelection(posicaoExibida);
+                }
                 abrir(notificacao);
                 return;
             }
@@ -237,7 +233,9 @@ public class NotificacoesFragment extends Fragment {
         Button botaoAbrir = dialog.findViewById(R.id.abrirDialogNotificacao);
         Button botaoMarcarLida = dialog.findViewById(R.id.lerDialogNotificacao);
         TextView mensagemErro = dialog.findViewById(R.id.erroDialogNotificacao);
-        botaoAbrir.setVisibility(View.VISIBLE);
+        DeepLink linkNotificacao = DeepLink.parse(notificacao.deepLink);
+        boolean treinamento = DestinoDeepLink.TREINAMENTO.correspondeTipoEntidade(notificacao.tipoEntidade) || (linkNotificacao != null && linkNotificacao.destino == DestinoDeepLink.TREINAMENTO);
+        botaoAbrir.setVisibility(treinamento ? View.GONE : View.VISIBLE);
         botaoMarcarLida.setVisibility(notificacao.lidoEm == null ? View.VISIBLE : View.GONE);
 
         View.OnClickListener acao = botao -> {
@@ -316,6 +314,7 @@ public class NotificacoesFragment extends Fragment {
         }
         chamadasPendentes.clear();
         listaNotificacoes = null;
+        notificacoesExibidas = new ArrayList<>();
         resumoNotificacoes = null;
         botaoAtualizar = null;
         botaoMarcarTodas = null;
