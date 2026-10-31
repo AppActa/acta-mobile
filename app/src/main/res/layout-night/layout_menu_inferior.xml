@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/containerMenuInferior"
     android:layout_width="match_parent"
     android:layout_height="104dp"
@@ -27,7 +28,7 @@
             android:contentDescription="Perfil"
             android:scaleType="fitCenter"
             android:src="@drawable/group"
-            android:tint="#D6E3E3" />
+            app:tint="#D6E3E3" />
     </FrameLayout>
 
     <!-- Opção 2 (Centro-Esquerda) -->
@@ -47,7 +48,7 @@
             android:contentDescription="Todas as tarefas"
             android:scaleType="fitCenter"
             android:src="@drawable/fa7_solid_tasks"
-            android:tint="#D6E3E3" />
+            app:tint="#D6E3E3" />
     </FrameLayout>
 
     <!-- Opção 3 (Centro - Logo) -->
@@ -86,7 +87,7 @@
             android:contentDescription="Lições aprendidas"
             android:scaleType="fitCenter"
             android:src="@drawable/boxicons_clipboard_check"
-            android:tint="#D6E3E3" />
+            app:tint="#D6E3E3" />
     </FrameLayout>
 
     <!-- Opção 5 (Direita) -->
