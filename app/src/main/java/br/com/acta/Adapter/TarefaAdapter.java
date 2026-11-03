@@ -16,6 +16,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -68,7 +72,7 @@ public class TarefaAdapter extends RecyclerView.Adapter<TarefaAdapter.TarefaView
         Tarefa tarefa = tarefaList.get(position);
 
         holder.txtTitulo.setText(tarefa.getTitulo() != null ? tarefa.getTitulo() : "Organizar materiais");
-        holder.txtObjetivo.setText(tarefa.getDescricao() != null ? tarefa.getDescricao() : "Separar materiais por categoria e atualizar o inventário.");
+        holder.txtObjetivo.setText(tarefa.getDescricao() != null ? tarefa.getDescricao() : "Separar materiais por categoria e atualizar o inventario.");
 
         if (tarefa.getPrioridade() != null) {
             holder.txtCiclo.setText("Prioridade: " + tarefa.getPrioridade().name());
@@ -79,7 +83,7 @@ public class TarefaAdapter extends RecyclerView.Adapter<TarefaAdapter.TarefaView
         if (tarefa.getDataFimPrevista() != null) {
             holder.txtPrazo.setText("Prazo: " + FormatoData.formatar(holder.itemView.getContext(), tarefa.getDataFimPrevista()));
         } else {
-            holder.txtPrazo.setText("Prazo: —");
+            holder.txtPrazo.setText("Prazo: ");
         }
 
         if (tarefa.getStatus() != null) {
@@ -88,59 +92,66 @@ public class TarefaAdapter extends RecyclerView.Adapter<TarefaAdapter.TarefaView
             holder.txtStatus.setText("Status: Em andamento");
         }
 
-        boolean isConcluida = tarefa.getStatus() == StatusTarefa.CONCLUIDA;
+        StatusTarefa statusAtual = tarefa.getStatus() == null ? StatusTarefa.EM_ANDAMENTO : tarefa.getStatus();
+        boolean isConcluida = statusAtual == StatusTarefa.CONCLUIDA;
+        boolean podeIniciar = statusAtual == StatusTarefa.PENDENTE;
+        boolean podeConcluir = statusAtual == StatusTarefa.EM_ANDAMENTO || statusAtual == StatusTarefa.ATRASADA;
 
         if (isConcluida) {
             holder.txtStatusPill.setText("Concluída");
             holder.txtStatusPill.setBackgroundResource(R.drawable.bg_status_pill_dark);
-
             holder.btnConcluirAction.setEnabled(false);
             holder.btnConcluirAction.setClickable(false);
             holder.btnConcluirAction.setText("Concluída");
             holder.btnConcluirAction.setTextColor(Color.parseColor("#757575"));
             holder.btnConcluirAction.setBackgroundColor(Color.parseColor("#D6D6D6"));
         } else {
-            holder.txtStatusPill.setText(nomeStatus(tarefa.getStatus()));
+            holder.txtStatusPill.setText(nomeStatus(statusAtual));
             holder.txtStatusPill.setBackgroundResource(R.drawable.bg_status_pill);
-
-            holder.btnConcluirAction.setEnabled(true);
-            holder.btnConcluirAction.setClickable(true);
-            holder.btnConcluirAction.setText("Concluída");
+            holder.btnConcluirAction.setEnabled(podeIniciar || podeConcluir);
+            holder.btnConcluirAction.setClickable(podeIniciar || podeConcluir);
+            holder.btnConcluirAction.setText(podeIniciar ? "Iniciar tarefa" : podeConcluir ? "Concluir tarefa" : nomeStatus(statusAtual));
             holder.btnConcluirAction.setTextColor(Color.parseColor("#00A7B5"));
             holder.btnConcluirAction.setBackgroundResource(R.drawable.bg_card_white);
-
             holder.btnConcluirAction.setOnClickListener(v -> {
                 if (tarefa.getId() == null) return;
 
                 String hoje = LocalDate.now().toString();
-                String dataInicio = tarefa.getDataInicioReal() != null && !tarefa.getDataInicioReal().trim().isEmpty()
-                        ? tarefa.getDataInicioReal()
-                        : hoje;
+                StatusTarefa novoStatus = podeIniciar ? StatusTarefa.EM_ANDAMENTO : StatusTarefa.CONCLUIDA;
+                String dataInicioOriginal = tarefa.getDataInicioReal();
+                String dataInicio = podeIniciar || dataInicioOriginal == null || dataInicioOriginal.trim().isEmpty()
+                        ? hoje
+                        : normalizarData(dataInicioOriginal);
+                String dataFim = podeIniciar ? null : hoje;
+                if (dataInicio == null) {
+                    Toast.makeText(v.getContext(), "A data de inicio da tarefa esta invalida.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
-                TarefaStatusUpdateRequest request = new TarefaStatusUpdateRequest(dataInicio, hoje, StatusTarefa.CONCLUIDA);
-
+                TarefaStatusUpdateRequest request = new TarefaStatusUpdateRequest(dataInicio, dataFim, novoStatus);
                 holder.btnConcluirAction.setEnabled(false);
-
                 tarefaService.patchStatus(tarefa.getId(), request, new RepositoryCallback<Tarefa>() {
                     @Override
                     public void onSuccess(Tarefa tarefaAtualizada) {
-                        tarefa.setStatus(StatusTarefa.CONCLUIDA);
+                        tarefa.setStatus(novoStatus);
+                        tarefa.setDataInicioReal(dataInicio);
+                        if (dataFim != null) tarefa.setDataFimReal(dataFim);
                         aplicarFiltros();
-                        Toast.makeText(v.getContext(), "Tarefa concluída!", Toast.LENGTH_SHORT).show();
+                        String mensagem = novoStatus == StatusTarefa.EM_ANDAMENTO ? "Tarefa iniciada!" : "Tarefa concluida!";
+                        Toast.makeText(v.getContext(), mensagem, Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
                     public void onError(int code, String message) {
                         holder.btnConcluirAction.setEnabled(true);
-                        Toast.makeText(v.getContext(), "Erro ao concluir tarefa: " + message, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(v.getContext(), "Erro ao atualizar tarefa: " + message, Toast.LENGTH_SHORT).show();
                     }
                 });
             });
         }
-
         // Reseta visibilidade ao reciclar
         holder.containerActionConcluir.setVisibility(View.GONE);
-        holder.txtSetinhaExpand.setText("«");
+        holder.txtSetinhaExpand.setText("\u2039");
         holder.txtCiclo.setVisibility(View.VISIBLE);
         holder.txtPrazo.setVisibility(View.VISIBLE);
         holder.txtStatus.setVisibility(View.VISIBLE);
@@ -150,7 +161,7 @@ public class TarefaAdapter extends RecyclerView.Adapter<TarefaAdapter.TarefaView
             if (holder.containerActionConcluir.getVisibility() == View.VISIBLE) {
                 // FECHAR PAINEL
                 holder.containerActionConcluir.setVisibility(View.GONE);
-                holder.txtSetinhaExpand.setText("«");
+                holder.txtSetinhaExpand.setText("\u2039");
 
                 holder.txtCiclo.setVisibility(View.VISIBLE);
                 holder.txtPrazo.setVisibility(View.VISIBLE);
@@ -158,13 +169,34 @@ public class TarefaAdapter extends RecyclerView.Adapter<TarefaAdapter.TarefaView
             } else {
                 // ABRIR PAINEL (Oculta prioridade, prazo e status para manter altura do card)
                 holder.containerActionConcluir.setVisibility(View.VISIBLE);
-                holder.txtSetinhaExpand.setText("»");
+                holder.txtSetinhaExpand.setText("\u203A");
 
                 holder.txtCiclo.setVisibility(View.GONE);
                 holder.txtPrazo.setVisibility(View.GONE);
                 holder.txtStatus.setVisibility(View.GONE);
             }
         });
+    }
+
+    private String normalizarData(String valor) {
+        String data = valor.trim();
+        try {
+            return OffsetDateTime.parse(data).toLocalDate().toString();
+        } catch (DateTimeParseException ignored) {
+            try {
+                return LocalDateTime.parse(data).toLocalDate().toString();
+            } catch (DateTimeParseException erroDataHora) {
+                try {
+                    return LocalDate.parse(data).toString();
+                } catch (DateTimeParseException erroDataIso) {
+                    try {
+                        return LocalDate.parse(data, DateTimeFormatter.ofPattern("dd/MM/uuuu")).toString();
+                    } catch (DateTimeParseException erroDataBr) {
+                        return null;
+                    }
+                }
+            }
+        }
     }
 
     @Override
@@ -194,7 +226,7 @@ public class TarefaAdapter extends RecyclerView.Adapter<TarefaAdapter.TarefaView
             case BLOQUEADA:
                 return "Bloqueada";
             case CONCLUIDA:
-                return "Concluída";
+                return "Conclu\u00EDda";
             case ATRASADA:
                 return "Atrasada";
             case CANCELADA:
