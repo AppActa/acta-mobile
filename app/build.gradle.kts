@@ -13,6 +13,19 @@ val localProperties = Properties().apply {
 }
 android {
     namespace = "br.com.acta"
+    sourceSets.getByName("main").res.srcDirs(
+        "src/main/layouts/acesso",
+        "src/main/layouts/aprendizados",
+        "src/main/layouts/chat",
+        "src/main/layouts/ciclos",
+        "src/main/layouts/formularios",
+        "src/main/layouts/notificacoes",
+        "src/main/layouts/perfil",
+        "src/main/layouts/planos",
+        "src/main/layouts/principal",
+        "src/main/layouts/tarefas",
+        "src/main/layouts/treinamentos"
+    )
     compileSdk {
         version = release(36) {
             minorApiLevel = 1

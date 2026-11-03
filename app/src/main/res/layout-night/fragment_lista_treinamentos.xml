@@ -5,11 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg_inicio_cabecalho_escuro"
+    android:clipChildren="false"
+    android:clipToPadding="false"
     android:fillViewport="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:clipChildren="false">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/headerListaTreinamentos"
@@ -67,6 +70,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_inicio_fundo_escuro"
+            android:clipChildren="false"
+            android:clipToPadding="false"
             android:minHeight="600dp"
             android:paddingHorizontal="16dp"
             android:paddingTop="20dp"
@@ -95,7 +100,10 @@
                 android:id="@+id/rvListaTreinamentos"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:clipChildren="false"
+                android:clipToPadding="false"
                 android:nestedScrollingEnabled="false"
+                android:paddingTop="8dp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

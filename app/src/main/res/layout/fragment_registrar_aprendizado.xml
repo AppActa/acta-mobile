@@ -5,11 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/imagemFundoBoasVindas"
+    android:clipChildren="false"
+    android:clipToPadding="false"
     android:fillViewport="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:clipChildren="false">
 
         <!-- 1. Topo Verde-Água (Cabeçalho) -->
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -73,6 +76,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_cartao_topo_arredondado"
+            android:clipChildren="false"
+            android:clipToPadding="false"
             android:minHeight="600dp"
             android:paddingHorizontal="24dp"
             android:paddingTop="28dp"
