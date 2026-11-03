@@ -158,7 +158,11 @@ public class LicoesAprendidasFragment extends Fragment {
         }
 
         if (rvLicoes != null) {
-            rvLicoes.setAdapter(new LicaoAprendidaAdapter(licoes));
+            rvLicoes.setAdapter(new LicaoAprendidaAdapter(licoes, (card, licao) -> {
+                Bundle args = new Bundle();
+                args.putString("aprendizadoJson", new com.google.gson.Gson().toJson(licao));
+                Navigation.findNavController(card).navigate(R.id.registrarAprendizadoFragment, args);
+            }));
         }
     }
 

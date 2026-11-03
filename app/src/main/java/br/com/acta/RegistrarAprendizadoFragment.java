@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -28,6 +29,7 @@ import br.com.acta.Auth.TokenProvider;
 import br.com.acta.Client.RepositoryCallback;
 import br.com.acta.Client.RetrofitClientMongo;
 import br.com.acta.Model.LicaoAprendida;
+import com.google.gson.Gson;
 import br.com.acta.Services.LicaoAprendidaService;
 import br.com.acta.utils.SkeletonLoading;
 
@@ -90,6 +92,12 @@ public class RegistrarAprendizadoFragment extends Fragment {
             spnSeveridade.setSelection(1); // MEDIA por padrão
         }
 
+        String aprendizadoJson = getArguments() == null ? null : getArguments().getString("aprendizadoJson");
+        if (aprendizadoJson != null) {
+            exibirDetalhes(aprendizadoJson, view, btnSalvar);
+            return;
+        }
+
         if (getArguments() != null && getArguments().containsKey("idCiclo")) {
             idCiclo = getArguments().getLong("idCiclo", 0L);
         } else if (requireActivity().getIntent() != null && requireActivity().getIntent().hasExtra("idCiclo")) {
@@ -98,6 +106,47 @@ public class RegistrarAprendizadoFragment extends Fragment {
 
         if (btnSalvar != null) {
             btnSalvar.setOnClickListener(v -> salvarAprendizado());
+        }
+    }
+
+    private void exibirDetalhes(String aprendizadoJson, View view, View btnSalvar) {
+        LicaoAprendida aprendizado = new Gson().fromJson(aprendizadoJson, LicaoAprendida.class);
+        view.findViewById(R.id.txtTituloSecaoForm).setVisibility(View.GONE);
+        TextView tituloTela = view.findViewById(R.id.txtTituloRegistrarHeader);
+        tituloTela.setText("Detalhes aprendizado");
+        if (edtTitulo != null) edtTitulo.setText(aprendizado.getTitulo());
+        if (edtOQueAprendemos != null) edtOQueAprendemos.setText(aprendizado.getLicao());
+        if (edtResultado != null) edtResultado.setText(aprendizado.getResultado());
+        if (edtArea != null) edtArea.setText(aprendizado.getArea());
+        if (edtTags != null) edtTags.setText(aprendizado.getTags() == null ? "" : TextUtils.join(", ", aprendizado.getTags()));
+        tornarSomenteLeitura(edtTitulo);
+        tornarSomenteLeitura(edtOQueAprendemos);
+        tornarSomenteLeitura(edtResultado);
+        tornarSomenteLeitura(edtArea);
+        tornarSomenteLeitura(edtTags);
+        selecionarOpcao(spnFaseOrigem, aprendizado.getFaseOrigem());
+        selecionarOpcao(spnSeveridade, aprendizado.getSeveridade());
+        if (spnFaseOrigem != null) spnFaseOrigem.setEnabled(false);
+        if (spnSeveridade != null) spnSeveridade.setEnabled(false);
+        if (btnSalvar != null) btnSalvar.setVisibility(View.GONE);
+    }
+
+    private void tornarSomenteLeitura(EditText campo) {
+        if (campo != null) {
+            campo.setKeyListener(null);
+            campo.setFocusable(false);
+            campo.setCursorVisible(false);
+        }
+    }
+
+    private void selecionarOpcao(Spinner spinner, String valor) {
+        if (spinner != null && valor != null && spinner.getAdapter() != null) {
+            for (int i = 0; i < spinner.getAdapter().getCount(); i++) {
+                if (valor.equalsIgnoreCase(spinner.getAdapter().getItem(i).toString())) {
+                    spinner.setSelection(i);
+                    return;
+                }
+            }
         }
     }
 

@@ -1,6 +1,7 @@
 package br.com.acta.Adapter;
 
 import android.text.Html;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,9 +19,11 @@ import br.com.acta.R;
 public class LicaoAprendidaAdapter extends RecyclerView.Adapter<LicaoAprendidaAdapter.LicaoViewHolder> {
 
     private final List<LicaoAprendida> licaoList;
+    private final OnLicaoClickListener listener;
 
-    public LicaoAprendidaAdapter(List<LicaoAprendida> licaoList) {
+    public LicaoAprendidaAdapter(List<LicaoAprendida> licaoList, OnLicaoClickListener listener) {
         this.licaoList = licaoList != null ? licaoList : new ArrayList<>();
+        this.listener = listener;
     }
 
     @NonNull
@@ -33,6 +36,9 @@ public class LicaoAprendidaAdapter extends RecyclerView.Adapter<LicaoAprendidaAd
     @Override
     public void onBindViewHolder(@NonNull LicaoViewHolder holder, int position) {
         LicaoAprendida licao = licaoList.get(position);
+        holder.itemView.setOnClickListener(view -> {
+            if (listener != null) listener.onClick(view, licao);
+        });
 
         if (holder.txtStatusBadge != null) {
             String status = licao.getSeveridade() != null ? licao.getSeveridade() : "Pendente";
@@ -54,6 +60,12 @@ public class LicaoAprendidaAdapter extends RecyclerView.Adapter<LicaoAprendidaAd
             String htmlCiclo = "<font color='#757575'>Ciclo: </font><font color='#111111'><b>" + cicloNome + "</b></font>";
             holder.txtCiclo.setText(Html.fromHtml(htmlCiclo, Html.FROM_HTML_MODE_LEGACY));
         }
+
+        if (holder.txtTags != null) {
+            List<String> tags = licao.getTags();
+            holder.txtTags.setText(tags == null || tags.isEmpty() ? "" : "Tags: " + TextUtils.join(", ", tags));
+            holder.txtTags.setVisibility(tags == null || tags.isEmpty() ? View.GONE : View.VISIBLE);
+        }
     }
 
     @Override
@@ -61,11 +73,16 @@ public class LicaoAprendidaAdapter extends RecyclerView.Adapter<LicaoAprendidaAd
         return licaoList.size();
     }
 
+    public interface OnLicaoClickListener {
+        void onClick(View view, LicaoAprendida licao);
+    }
+
     public static class LicaoViewHolder extends RecyclerView.ViewHolder {
         TextView txtStatusBadge;
         TextView txtTitulo;
         TextView txtResponsavel;
         TextView txtCiclo;
+        TextView txtTags;
 
         public LicaoViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -73,6 +90,7 @@ public class LicaoAprendidaAdapter extends RecyclerView.Adapter<LicaoAprendidaAd
             txtTitulo = itemView.findViewById(R.id.txtTituloLicao);
             txtResponsavel = itemView.findViewById(R.id.txtResponsavelLicao);
             txtCiclo = itemView.findViewById(R.id.txtCicloLicao);
+            txtTags = itemView.findViewById(R.id.txtTagsLicao);
         }
     }
 }
